@@ -1,4 +1,5 @@
 import 'package:admin/screens/index_screen.dart';
+import 'package:admin/screens/main_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -8,7 +9,12 @@ import 'styles/no_scroll_overlay.dart';
 import 'styles/themes.dart';
 
 void main() {
+  initService();
   runApp(const MyApp());
+}
+
+void initService() {
+  Get.put(MainController());
 }
 
 class MyApp extends StatelessWidget {

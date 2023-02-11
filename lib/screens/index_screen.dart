@@ -23,7 +23,7 @@ class _IndexScreenState extends State<IndexScreen> {
   @override
   Widget build(BuildContext context) {
     return Obx(() => Scaffold(
-      backgroundColor: Colors.pink,
+      backgroundColor: Colors.white,
       extendBody: true,
       bottomNavigationBar: _bottomNavBar,
       body: PageView(
@@ -31,8 +31,8 @@ class _IndexScreenState extends State<IndexScreen> {
         onPageChanged: _onPageChanged,
         children: [
           HomeScreen(),
-          const CollectionScreen(),
-          const SingleTypeScreen(),
+          CollectionScreen(),
+          SingleTypeScreen(),
           const SettingsScreen()
         ],
       ),
