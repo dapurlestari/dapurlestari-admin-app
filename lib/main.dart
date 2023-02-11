@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       scrollBehavior: NoScrollOverlay(),
       title: ConstLib.appName,
       locale: Get.deviceLocale,
@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
       theme: Themes.light,
       color: Colors.white,
       builder: (_, child) => CustomMaterialBuilder(child: child,),
-      home: IndexScreen(),
+      home: const IndexScreen(),
     );
   }
 }

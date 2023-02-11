@@ -5,8 +5,8 @@ import 'color_lib.dart';
 
 class Themes {
   static ThemeData get light => ThemeData(
-      primaryColor: ColorLib.primary,
-      scaffoldBackgroundColor: ColorLib.bgLight,
-      fontFamily: ConstLib.primaryFont
+    primaryColor: ColorLib.primary,
+    scaffoldBackgroundColor: ColorLib.bgLight,
+    fontFamily: ConstLib.primaryFont,
   );
 }

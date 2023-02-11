@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class IndexScreen extends StatefulWidget {
-  IndexScreen({Key? key}) : super(key: key);
+  const IndexScreen({Key? key}) : super(key: key);
 
   @override
   State<IndexScreen> createState() => _IndexScreenState();
@@ -25,65 +25,67 @@ class _IndexScreenState extends State<IndexScreen> {
     return Obx(() => Scaffold(
       backgroundColor: Colors.pink,
       extendBody: true,
-      bottomNavigationBar: Container(
-        height: showMenuLabel ? 80 : 65,
-        margin: const EdgeInsets.fromLTRB(40, 0, 40, 20),
-        padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: const [
-            BoxShadow(
-              color: Colors.black12,
-              blurRadius: 10,
-              spreadRadius: 0,
-              offset: Offset(0, 2),
-            )
-          ]
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: indexController.menu.map((menu) {
-            return Expanded(
-              child: InkWell(
-                onLongPress: _toggleMenuLabel,
-                onTap: () => _onTapMenu(menu),
-                child: Container(
-                  color: Colors.white,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Icon(
-                        menu.icon,
-                        color: menu.active ? Colors.indigoAccent : null,
-                      ),
-                      if (showMenuLabel) const SizedBox(height: 8),
-                      if (showMenuLabel) Text(
-                        menu.label,
-                        style: Get.textTheme.bodySmall?.copyWith(
-                          color: menu.active ? Colors.indigoAccent : null,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-            );
-          }).toList(),
-        ),
-      ),
+      bottomNavigationBar: _bottomNavBar,
       body: PageView(
         controller: pageController,
         onPageChanged: _onPageChanged,
         children: [
           HomeScreen(),
-          CollectionScreen(),
-          SingleTypeScreen(),
-          SettingsScreen()
+          const CollectionScreen(),
+          const SingleTypeScreen(),
+          const SettingsScreen()
         ],
       ),
     ));
   }
+
+  Widget get _bottomNavBar => Container(
+    height: showMenuLabel ? 80 : 65,
+    margin: const EdgeInsets.fromLTRB(40, 0, 40, 20),
+    padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
+    decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 10,
+            spreadRadius: 0,
+            offset: Offset(0, 2),
+          )
+        ]
+    ),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: indexController.menu.map((menu) {
+        return Expanded(
+          child: InkWell(
+            onLongPress: _toggleMenuLabel,
+            onTap: () => _onTapMenu(menu),
+            child: Container(
+              color: Colors.white,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(
+                    menu.icon,
+                    color: menu.active ? Colors.indigoAccent : null,
+                  ),
+                  if (showMenuLabel) const SizedBox(height: 8),
+                  if (showMenuLabel) Text(
+                    menu.label,
+                    style: Get.textTheme.bodySmall?.copyWith(
+                      color: menu.active ? Colors.indigoAccent : null,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        );
+      }).toList(),
+    ),
+  );
 
   void _onPageChanged(int index) {
     indexController.clearActiveMenu();
@@ -97,6 +99,10 @@ class _IndexScreenState extends State<IndexScreen> {
     int index = indexController.menu.indexWhere((item) => item.id == menu.id);
     menu.active = true;
     pageController.jumpToPage(index);
+    /*pageController.animateToPage(index,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut
+    );*/
     setState(() {});
   }
 
