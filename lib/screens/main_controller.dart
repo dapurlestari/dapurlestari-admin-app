@@ -12,6 +12,8 @@ class MainController extends GetxController {
   final isLoadingContentTypes = false.obs;
   final isLoadingMediaLibrary = false.obs;
   final mediaLibraryEnableGridView = false.obs;
+  final mediaLibraryEnableSelection = false.obs;
+  final mediaLibraryEnableMultiSelect = false.obs;
 
   Future<void> _fetchContentTypes() async {
     isLoadingContentTypes.value = true;

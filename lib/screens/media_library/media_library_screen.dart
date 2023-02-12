@@ -5,14 +5,20 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
+import 'package:line_icons/line_icons.dart';
 
 class MediaLibraryScreen extends StatelessWidget {
-  MediaLibraryScreen({Key? key}) : super(key: key);
+  final bool enableSelection;
+  MediaLibraryScreen({Key? key,
+    this.enableSelection = false
+  }) : super(key: key);
 
   final MainController _mainController = Get.find();
 
   @override
   Widget build(BuildContext context) {
+    _mainController.mediaLibraryEnableSelection.value = enableSelection;
+
     return Obx(() => CustomScaffold(
       title: 'Media Library',
       showBackButton: true,
@@ -68,7 +74,16 @@ class MediaLibraryScreen extends StatelessWidget {
                           color: Colors.white
                       )),
                     ),
-                  )
+                  ),
+                  if (_mainController.mediaLibraryEnableSelection.value) Positioned(
+                    top: 6,
+                    left: 6,
+                    child: Icon(
+                      _mainController.mediaLibraryEnableMultiSelect.value ? LineIcons.square : LineIcons.circle,
+                      size: 18,
+                      color: Colors.grey.shade700,
+                    ),
+                  ),
                 ],
               )),
               if (!_mainController.mediaLibraryEnableGridView.value) Container(
