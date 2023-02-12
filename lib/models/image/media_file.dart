@@ -22,6 +22,7 @@ class MediaFile {
     this.providerMetadata,
     required this.createdAt,
     required this.updatedAt,
+    this.selected = false
   });
 
   String name;
@@ -40,6 +41,7 @@ class MediaFile {
   dynamic providerMetadata;
   DateTime createdAt;
   DateTime updatedAt;
+  bool selected;
 
   factory MediaFile.fromJson(Map<String, dynamic> map) {
     final json = map.containsKey('attributes') ? map['attributes'] : map;
@@ -94,6 +96,7 @@ class MediaFile {
   String get getAlternativeText => alternativeText.isNotEmpty ? alternativeText : 'No Alternative Text Provided';
   String get mimeExtOnly => mime.split('/')[1].toUpperCase();
   bool get isImage => mime.contains('image');
+  bool get hasURL => url.isNotEmpty;
 
   static Future<List<MediaFile>?> get() async {
     StrapiResponse response = await API.get(

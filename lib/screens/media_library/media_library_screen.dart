@@ -9,16 +9,16 @@ import 'package:line_icons/line_icons.dart';
 
 class MediaLibraryScreen extends StatelessWidget {
   final bool enableSelection;
+  final bool isMultiselect;
   MediaLibraryScreen({Key? key,
-    this.enableSelection = false
+    this.enableSelection = false,
+    this.isMultiselect = false,
   }) : super(key: key);
 
   final MainController _mainController = Get.find();
 
   @override
   Widget build(BuildContext context) {
-    _mainController.mediaLibraryEnableSelection.value = enableSelection;
-
     return Obx(() => CustomScaffold(
       title: 'Media Library',
       showBackButton: true,
@@ -32,6 +32,17 @@ class MediaLibraryScreen extends StatelessWidget {
             color: Colors.grey.shade800
           ),
           onPressed: _mainController.mediaLibraryEnableGridView.toggle,
+        ),
+        if (enableSelection) IconButton(
+          icon: Icon(FeatherIcons.save,
+            color: Colors.grey.shade800,
+          ),
+          onPressed: () {
+            MediaFile? media = _mainController.mediaFiles.firstWhereOrNull((e) => e.selected);
+            media?.selected = false;
+            _mainController.mediaFiles.refresh();
+            Get.back(result: media);
+          },
         )
       ],
     ));
@@ -53,57 +64,88 @@ class MediaLibraryScreen extends StatelessWidget {
         itemCount: _mainController.mediaFiles.length,
         itemBuilder: (_, i) {
           MediaFile media = _mainController.mediaFiles[i];
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(child: Stack(
-                children: [
-                  media.isImage ? mediaImage(media) : mediaDocument(media),
-                  Positioned(
-                    bottom: 6,
-                    right: 6,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                      decoration: BoxDecoration(
-                        color: Colors.black38,
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: Text(media.mimeExtOnly, style: Get.textTheme.bodySmall?.copyWith(
-                          fontSize: 9,
-                          color: Colors.white
-                      )),
-                    ),
-                  ),
-                  if (_mainController.mediaLibraryEnableSelection.value) Positioned(
-                    top: 6,
-                    left: 6,
-                    child: Icon(
-                      _mainController.mediaLibraryEnableMultiSelect.value ? LineIcons.square : LineIcons.circle,
-                      size: 18,
-                      color: Colors.grey.shade700,
-                    ),
-                  ),
-                ],
-              )),
-              if (!_mainController.mediaLibraryEnableGridView.value) Container(
-                padding: const EdgeInsets.fromLTRB(4, 4, 4, 0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
+          return InkWell(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(child: Stack(
                   children: [
-                    Text(media.name,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
-                      style: Get.textTheme.titleSmall,
+                    media.isImage ? mediaImage(media) : mediaDocument(media),
+                    Positioned(
+                      bottom: 6,
+                      right: 6,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                        decoration: BoxDecoration(
+                          color: Colors.black38,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: Text(media.mimeExtOnly, style: Get.textTheme.bodySmall?.copyWith(
+                            fontSize: 9,
+                            color: Colors.white
+                        )),
+                      ),
                     ),
-                    Text(media.getAlternativeText, style: Get.textTheme.bodySmall?.copyWith(
-                      color: Colors.grey.shade600
-                    )),
+                    if (enableSelection) Positioned(
+                      top: 6,
+                      left: 6,
+                      child: Container(
+                        padding: const EdgeInsets.fromLTRB(4, 4, 8, 4),
+                        decoration: !media.selected ? null : BoxDecoration(
+                          color: Colors.indigoAccent,
+                          borderRadius: BorderRadius.circular(15)
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              isMultiselect
+                                  ? !media.selected ? LineIcons.checkSquare : LineIcons.square
+                                  : !media.selected ? LineIcons.circle : LineIcons.checkCircle,
+                              size: 16,
+                              color: media.selected ? Colors.white : Colors.grey.shade700,
+                            ),
+                            if (media.selected) const SizedBox(width: 6,),
+                            if (media.selected) Text('Selected', style: Get.textTheme.titleSmall?.copyWith(
+                              color: Colors.white,
+                              fontSize: 12
+                            ),)
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
-                ),
-              )
-            ],
+                )),
+                if (!_mainController.mediaLibraryEnableGridView.value) Container(
+                  padding: const EdgeInsets.fromLTRB(4, 4, 4, 0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(media.name,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                        style: Get.textTheme.titleSmall,
+                      ),
+                      Text(media.getAlternativeText, style: Get.textTheme.bodySmall?.copyWith(
+                        color: Colors.grey.shade600
+                      )),
+                    ],
+                  ),
+                )
+              ],
+            ),
+            onTap: () {
+              if (enableSelection) {
+                int index = _mainController.mediaFiles.indexWhere((e) => e.selected);
+                if (!isMultiselect && index > -1) {
+                  _mainController.mediaFiles[index].selected = false;
+                }
+
+                media.selected = !media.selected;
+                _mainController.mediaFiles.refresh();
+              }
+            },
           );
         }
     );

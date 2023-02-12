@@ -1,6 +1,9 @@
 import 'package:admin/components/custom_scaffold.dart';
-import 'package:admin/components/loadings.dart';
+import 'package:admin/models/image/media_file.dart';
+import 'package:admin/screens/media_library/media_library_screen.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 
@@ -243,6 +246,73 @@ class SettingsScreen extends StatelessWidget {
                       minLines: 1,
                       maxLines: 5
                     ),
+                    AspectRatio(
+                      aspectRatio: 7/4,
+                      child: InkWell(
+                        child: Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey.shade600),
+                              borderRadius: BorderRadius.circular(8)
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              settingsController.metaImage.value.hasURL ? Stack(
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.symmetric(horizontal: 14),
+                                    height: 180,
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        image: DecorationImage(
+                                            image: CachedNetworkImageProvider(
+                                                settingsController.metaImage.value.url
+                                            ),
+                                            fit: BoxFit.cover
+                                        )
+                                    ),
+                                  ),
+                                  Positioned(
+                                    bottom: 0,
+                                    right: 15,
+                                    child: IconButton(
+                                      icon: const CircleAvatar(
+                                        backgroundColor: Colors.red,
+                                        child: Icon(FeatherIcons.trash2,
+                                          size: 18,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        settingsController.metaImage.value = MediaFile.dummy();
+                                      },
+                                    ),
+                                  )
+                                ],
+                              ) : Column(
+                                children: const [
+                                  Icon(FeatherIcons.uploadCloud),
+                                  SizedBox(height: 8),
+                                  Text('Upload image or choose from library'),
+                                ],
+                              ),
+                              const SizedBox(height: 20),
+                              Text('Meta Image', style: Get.textTheme.titleMedium),
+                            ],
+                          ),
+                        ),
+                        onTap: () async {
+                          MediaFile? media = await Get.to(() => MediaLibraryScreen(
+                            enableSelection: true,
+                          ));
+                          if (media != null) {
+                            settingsController.metaImage.value = media;
+                          }
+                        },
+                      ),
+                    )
                     // meta image goes here
                   ],
                 )

@@ -1,4 +1,5 @@
 import 'package:admin/models/app/config.dart';
+import 'package:admin/models/image/media_file.dart';
 import 'package:admin/models/map/map_marker.dart';
 import 'package:admin/services/logger.dart';
 import 'package:admin/services/soft_keyboard.dart';
@@ -49,6 +50,7 @@ class SettingsController extends GetxController {
   final metaDescriptionField = TextEditingController().obs;
   final canonicalURLField = TextEditingController().obs;
   final metaKeywordsField = TextEditingController().obs;
+  final metaImage = MediaFile.dummy().obs;
 
   Future<void> fetch() async {
     final config = await Config.get();
