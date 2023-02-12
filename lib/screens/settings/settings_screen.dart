@@ -1,6 +1,7 @@
 import 'package:admin/components/custom_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:line_icons/line_icons.dart';
 
 import '../../components/forms/custom_text_field.dart';
 
@@ -11,6 +12,12 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomScaffold(
       title: 'Settings',
+      actions: [
+        IconButton(
+          icon: const Icon(LineIcons.checkCircle, color: Colors.indigoAccent),
+          onPressed: () {},
+        )
+      ],
       body: ListView(
         padding: const EdgeInsets.fromLTRB(20, 22, 20, 150),
         children: [

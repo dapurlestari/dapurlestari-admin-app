@@ -7,11 +7,13 @@ class CustomScaffold extends StatelessWidget {
   final bool useAppBar;
   final bool showBackButton;
   final String? title;
+  final List<Widget>? actions;
   const CustomScaffold({Key? key,
     required this.body,
     this.useAppBar = true,
     this.showBackButton = false,
     this.title,
+    this.actions,
   }) : super(key: key);
 
   @override
@@ -24,6 +26,10 @@ class CustomScaffold extends StatelessWidget {
         shadowColor: Colors.grey.shade300,
         elevation: 0.5,
         titleSpacing: 20,
+        actions: actions == null ? null : [
+          ...actions!,
+          const SizedBox(width: 10,)
+        ],
         title: Row(
           children: [
             if (showBackButton) IconButton(
