@@ -25,7 +25,7 @@ class CustomScaffold extends StatelessWidget {
         backgroundColor: Colors.white,
         shadowColor: Colors.grey.shade300,
         elevation: 0.5,
-        titleSpacing: 20,
+        titleSpacing: showBackButton ? 8 : 20,
         actions: actions == null ? null : [
           ...actions!,
           const SizedBox(width: 10,)
@@ -33,10 +33,13 @@ class CustomScaffold extends StatelessWidget {
         title: Row(
           children: [
             if (showBackButton) IconButton(
-              icon: Icon(FeatherIcons.chevronLeft, color: Colors.grey.shade800, size: 20),
+              icon: Icon(FeatherIcons.chevronLeft,
+                color: Colors.grey.shade800,
+                size: 25
+              ),
               onPressed: Get.back,
             ),
-            if (showBackButton) const SizedBox(width: 12,),
+            if (showBackButton) const SizedBox(width: 10,),
             Text(title ?? '', style: Get.textTheme.titleLarge?.copyWith(
               fontSize: 26,
               fontWeight: FontWeight.w600,

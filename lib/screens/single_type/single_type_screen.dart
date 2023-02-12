@@ -21,7 +21,7 @@ class SingleTypeScreen extends StatelessWidget {
   }
 
   Widget get _body {
-    if (mainController.isLoading.value) {
+    if (mainController.isLoadingContentTypes.value) {
       return Center(child: Loadings.basic(),);
     }
 

@@ -91,6 +91,10 @@ class MediaFile {
     "updatedAt": updatedAt.toIso8601String(),
   };
 
+  String get getAlternativeText => alternativeText.isNotEmpty ? alternativeText : 'No Alternative Text Provided';
+  String get mimeExtOnly => mime.split('/')[1].toUpperCase();
+  bool get isImage => mime.contains('image');
+
   static Future<List<MediaFile>?> get() async {
     StrapiResponse response = await API.get(
         page: 'upload/files',
@@ -103,6 +107,15 @@ class MediaFile {
     }
 
     return null;
+  }
+
+  static String dummyImage({
+    int width = 500,
+    int height = 400,
+    String extension = 'jpg',
+    String text = 'No Image',
+  }) {
+    return 'https://placehold.co/${width}x$height@2x.$extension?text=$text&font=montserrat';
   }
 }
 

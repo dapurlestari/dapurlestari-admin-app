@@ -1,5 +1,7 @@
+import 'package:admin/screens/media_library/media_library_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:get/get.dart';
 
 class Menu {
   final int id;
@@ -7,13 +9,15 @@ class Menu {
   final String subtitle;
   final IconData icon;
   bool active;
+  final GestureTapCallback? onTap;
 
   Menu({
     this.id = 0,
     this.title = '',
     this.subtitle = '',
     this.icon = FeatherIcons.home,
-    this.active = false
+    this.active = false,
+    this.onTap
   });
 
   static final navBar = [
@@ -48,6 +52,7 @@ class Menu {
       title: 'Media Library',
       subtitle: 'Explore and manage uploaded files and media',
       icon: FeatherIcons.image,
+      onTap: () => Get.to(() => MediaLibraryScreen())
     ),
     Menu(
       title: 'Email',

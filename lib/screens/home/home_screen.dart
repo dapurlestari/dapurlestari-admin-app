@@ -6,7 +6,6 @@ import 'package:admin/services/constant_lib.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
-import 'package:line_icons/line_icons.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -147,48 +146,51 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget menuItem(Menu menu) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
-      padding: const EdgeInsets.symmetric(
-          vertical: 14,
-          horizontal: 14
-      ),
-      decoration: const BoxDecoration(
-          color: Colors.white
-      ),
-      child: Row(
-        children: [
-          Expanded(child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(menu.title, style: Get.textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: Colors.indigoAccent
-              )),
-              Text(menu.subtitle,
-                style: Get.textTheme.bodyMedium?.copyWith(
-                    fontFamily: ConstLib.secondaryFont,
-                    letterSpacing: 0.4,
-                    color: Colors.grey.shade900
+    return InkWell(
+      onTap: menu.onTap,
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(
+            vertical: 14,
+            horizontal: 14
+        ),
+        decoration: const BoxDecoration(
+            color: Colors.white
+        ),
+        child: Row(
+          children: [
+            Expanded(child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(menu.title, style: Get.textTheme.titleLarge?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: Colors.indigoAccent
+                )),
+                Text(menu.subtitle,
+                  style: Get.textTheme.bodyMedium?.copyWith(
+                      fontFamily: ConstLib.secondaryFont,
+                      letterSpacing: 0.4,
+                      color: Colors.grey.shade900
+                  ),
+                ),
+              ],
+            )),
+            Container(
+              padding: const EdgeInsets.all(14.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(
+                    color: const Color(0xFF4120A9)
                 ),
               ),
-            ],
-          )),
-          Container(
-            padding: const EdgeInsets.all(14.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                  color: const Color(0xFF4120A9)
+              child: Icon(
+                menu.icon,
+                size: 18,
+                color: const Color(0xFF4120A9),
               ),
-            ),
-            child: Icon(
-              menu.icon,
-              size: 18,
-              color: const Color(0xFF4120A9),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
