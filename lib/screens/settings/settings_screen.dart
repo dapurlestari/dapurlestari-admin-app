@@ -29,14 +29,12 @@ class SettingsScreen extends StatelessWidget {
                   hint: 'Summarize this config',
                   label: 'Title'
                 ),
-                const SizedBox(height: 20),
                 CustomField.text(
                     hint: 'Insert some words',
                     label: 'Subtitle',
                     minLines: 3,
                     maxLines: 5
                 ),
-                const SizedBox(height: 20),
                 CustomField.text(
                   hint: '© 2018-2023',
                   label: 'Copyright',
@@ -53,17 +51,14 @@ class SettingsScreen extends StatelessWidget {
                   hint: 'my@mail.com',
                   label: 'Email',
                 ),
-                const SizedBox(height: 20),
                 CustomField.text(
                   hint: '62123123123',
                   label: 'Phone',
                 ),
-                const SizedBox(height: 20),
                 CustomField.text(
                   hint: '6289720000',
                   label: 'WhatsApp Link',
                 ),
-                const SizedBox(height: 20),
                 CustomField.text(
                     hint: 'Address',
                     label: 'Address',
@@ -82,7 +77,6 @@ class SettingsScreen extends StatelessWidget {
                   hint: '8 - 18',
                   label: 'Zoom',
                 ),
-                const SizedBox(height: 20),
               ],
             )
           ),

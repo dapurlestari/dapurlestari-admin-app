@@ -9,36 +9,39 @@ class CustomField {
     int? maxLines,
     TextInputAction? action,
   }) {
-    return TextField(
-      minLines: minLines,
-      maxLines: maxLines,
-      textInputAction: action ?? TextInputAction.next,
-      style: Get.textTheme.bodyLarge?.copyWith(
-          fontSize: 16,
-          fontWeight: FontWeight.w400,
-          color: Colors.grey.shade900
-      ),
-      decoration: InputDecoration(
-        hintText: hint,
-        label: label.isNotEmpty ? Text(label) : null,
-        labelStyle: Get.textTheme.bodyLarge?.copyWith(
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      child: TextField(
+        minLines: minLines,
+        maxLines: maxLines,
+        textInputAction: action ?? TextInputAction.next,
+        style: Get.textTheme.bodyLarge?.copyWith(
             fontSize: 16,
-            fontWeight: FontWeight.w300,
-            color: Colors.grey.shade800
+            fontWeight: FontWeight.w400,
+            color: Colors.grey.shade900
         ),
-        hintStyle: Get.textTheme.bodyLarge?.copyWith(
-            fontSize: 14,
-            fontWeight: FontWeight.w300,
-            color: Colors.grey.shade500
-        ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(color: Colors.grey.shade600),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: Colors.indigoAccent),
+        decoration: InputDecoration(
+          hintText: hint,
+          label: label.isNotEmpty ? Text(label) : null,
+          labelStyle: Get.textTheme.bodyLarge?.copyWith(
+              fontSize: 16,
+              fontWeight: FontWeight.w300,
+              color: Colors.grey.shade800
+          ),
+          hintStyle: Get.textTheme.bodyLarge?.copyWith(
+              fontSize: 14,
+              fontWeight: FontWeight.w300,
+              color: Colors.grey.shade500
+          ),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide(color: Colors.grey.shade600),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: const BorderSide(color: Colors.indigoAccent),
+          ),
         ),
       ),
     );
