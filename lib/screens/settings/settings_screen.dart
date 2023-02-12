@@ -29,14 +29,16 @@ class SettingsScreen extends StatelessWidget {
                 content: Column(
                   children: [
                     CustomField.text(
-                        hint: 'Summarize this config',
-                        label: 'Title'
+                      controller: settingsController.titleField.value,
+                      hint: 'Summarize this config',
+                      label: 'Title'
                     ),
                     CustomField.text(
-                        hint: 'Insert some words',
-                        label: 'Subtitle',
-                        minLines: 3,
-                        maxLines: 5
+                      controller: settingsController.subtitleField.value,
+                      hint: 'Insert some words',
+                      label: 'Subtitle',
+                      minLines: 3,
+                      maxLines: 5
                     ),
                     CustomField.text(
                       controller: settingsController.copyrightField.value,
@@ -53,24 +55,29 @@ class SettingsScreen extends StatelessWidget {
                 content: Column(
                   children: [
                     CustomField.text(
+                      controller: settingsController.emailField.value,
                       hint: 'my@mail.com',
                       label: 'Email',
                     ),
                     CustomField.text(
+                      controller: settingsController.phoneField.value,
                       hint: '62857320000',
                       label: 'Phone',
                     ),
                     CustomField.text(
+                      controller: settingsController.whatsappLinkField.value,
                       hint: 'https://wa.me/6289720000?text=Hello',
                       label: 'WhatsApp Link',
                       minLines: 1,
                       maxLines: 3
                     ),
                     CustomField.text(
+                      controller: settingsController.openingHoursField.value,
                       hint: 'Senin - Sabtu. 10.00-16.00',
                       label: 'Opening Hours',
                     ),
                     CustomField.text(
+                        controller: settingsController.addressField.value,
                         hint: 'Address',
                         label: 'Address',
                         minLines: 3,
@@ -87,10 +94,12 @@ class SettingsScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomField.text(
+                      controller: settingsController.zoomField.value,
                       hint: '8 - 18',
                       label: 'Zoom',
                     ),
                     CustomField.text(
+                      controller: settingsController.placeholderField.value,
                       hint: 'https://placehold.co/600x400@2x.jpg',
                       label: 'Placeholder Image URL',
                     ),
@@ -152,10 +161,12 @@ class SettingsScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomField.text(
+                      controller: settingsController.markerLabelField.value,
                       hint: 'Marker title goes here',
                       label: 'Label',
                     ),
                     CustomField.text(
+                      controller: settingsController.markerDescriptionField.value,
                       hint: 'Insert some words',
                       label: 'Description',
                     ),
@@ -171,11 +182,13 @@ class SettingsScreen extends StatelessWidget {
                       ),
                       children: [
                         CustomField.text(
+                          controller: settingsController.markerLatitudeField.value,
                           hint: '-7.40000',
                           label: 'Latitude',
                           margin: EdgeInsets.zero
                         ),
                         CustomField.text(
+                          controller: settingsController.markerLongitudeField.value,
                           hint: '112.50000',
                           label: 'Longitude',
                           margin: EdgeInsets.zero
@@ -202,20 +215,24 @@ class SettingsScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomField.text(
+                      controller: settingsController.metaTitleField.value,
                       hint: 'Site title goes here',
                       label: 'Meta Title (Applied to Meta Social)',
                     ),
                     CustomField.text(
+                      controller: settingsController.metaDescriptionField.value,
                       hint: 'Describe your site here',
                       label: 'Meta Description (Applied to Meta Social)',
                       minLines: 1,
                       maxLines: 2
                     ),
                     CustomField.text(
+                      controller: settingsController.canonicalURLField.value,
                       hint: 'https://site.com/page',
                       label: 'Canonical URL',
                     ),
                     CustomField.text(
+                      controller: settingsController.metaKeywordsField.value,
                       hint: 'Insert some keywords (comma separated)',
                       label: 'Meta Keywords',
                       minLines: 1,

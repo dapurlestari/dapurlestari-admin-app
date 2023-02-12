@@ -8,7 +8,7 @@ class MapObject {
     this.scaleControl = false,
     this.streetViewControl = false,
     this.rotateControl = false,
-    this.fullscreenControl = false,
+    this.fullScreenControl = false,
     this.zoomControl = false,
     this.mapTypeControl = false,
     this.placeholderImageUrl,
@@ -21,7 +21,7 @@ class MapObject {
   bool scaleControl;
   bool streetViewControl;
   bool rotateControl;
-  bool fullscreenControl;
+  bool fullScreenControl;
   bool zoomControl;
   bool mapTypeControl;
   dynamic placeholderImageUrl;
@@ -34,7 +34,7 @@ class MapObject {
     scaleControl: json["scaleControl"],
     streetViewControl: json["streetViewControl"],
     rotateControl: json["rotateControl"],
-    fullscreenControl: json["fullscreenControl"],
+    fullScreenControl: json["fullscreenControl"],
     zoomControl: json["zoomControl"],
     mapTypeControl: json["mapTypeControl"],
     placeholderImageUrl: json["placeholder_image_url"] ?? '',
@@ -52,7 +52,7 @@ class MapObject {
     "scaleControl": scaleControl,
     "streetViewControl": streetViewControl,
     "rotateControl": rotateControl,
-    "fullscreenControl": fullscreenControl,
+    "fullscreenControl": fullScreenControl,
     "zoomControl": zoomControl,
     "mapTypeControl": mapTypeControl,
     "placeholder_image_url": placeholderImageUrl,
