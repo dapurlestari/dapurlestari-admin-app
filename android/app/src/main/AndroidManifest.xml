@@ -12,7 +12,7 @@
 
     <uses-feature android:name="android.hardware.camera2" android:required="true" />
    <application
-        android:label="Dapur Lestari Admin"
+        android:label="DL Admin"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
