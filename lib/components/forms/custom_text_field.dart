@@ -7,7 +7,7 @@ class CustomField {
     String? hint,
     String label = '',
     int? minLines,
-    int? maxLines,
+    int maxLines = 1,
     TextInputAction? action,
     EdgeInsets? margin
   }) {
@@ -16,7 +16,7 @@ class CustomField {
       child: TextField(
         minLines: minLines,
         maxLines: maxLines,
-        textInputAction: action ?? TextInputAction.next,
+        textInputAction: action ?? (maxLines > 1 ? TextInputAction.newline : TextInputAction.next),
         style: Get.textTheme.bodyLarge?.copyWith(
             fontSize: 16,
             fontWeight: FontWeight.w400,

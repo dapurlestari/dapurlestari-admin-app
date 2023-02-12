@@ -41,6 +41,7 @@ class SettingsScreen extends StatelessWidget {
                     CustomField.text(
                       hint: '© 2018-2023',
                       label: 'Copyright',
+                      margin: EdgeInsets.zero
                     ),
                   ],
                 )
@@ -68,7 +69,8 @@ class SettingsScreen extends StatelessWidget {
                         hint: 'Address',
                         label: 'Address',
                         minLines: 3,
-                        maxLines: 5
+                        maxLines: 5,
+                        margin: EdgeInsets.zero
                     ),
                   ],
                 )
@@ -185,6 +187,36 @@ class SettingsScreen extends StatelessWidget {
                         ),
                       ],
                     )
+                  ],
+                )
+            ),
+            const SizedBox(height: 40),
+            CustomField.fieldGroup(
+                label: 'SEO',
+                content: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomField.text(
+                      hint: 'Site title goes here',
+                      label: 'Meta Title (Applied to Meta Social)',
+                    ),
+                    CustomField.text(
+                      hint: 'Describe your site here',
+                      label: 'Meta Description (Applied to Meta Social)',
+                      minLines: 1,
+                      maxLines: 2
+                    ),
+                    CustomField.text(
+                      hint: 'https://site.com/page',
+                      label: 'Canonical URL',
+                    ),
+                    CustomField.text(
+                      hint: 'Insert some keywords (comma separated)',
+                      label: 'Meta Keywords',
+                      minLines: 1,
+                      maxLines: 5
+                    ),
+                    // meta image goes here
                   ],
                 )
             ),

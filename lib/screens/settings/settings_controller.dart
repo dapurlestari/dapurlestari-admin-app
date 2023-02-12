@@ -12,4 +12,8 @@ class SettingsController extends GetxController {
 
   final markerClickable = false.obs;
   final markerDraggable = false.obs;
+
+  void fetch() {
+
+  }
 }
