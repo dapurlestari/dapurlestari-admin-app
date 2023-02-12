@@ -9,9 +9,10 @@ class CustomField {
     int? minLines,
     int? maxLines,
     TextInputAction? action,
+    EdgeInsets? margin
   }) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: margin ?? const EdgeInsets.only(bottom: 12),
       child: TextField(
         minLines: minLines,
         maxLines: maxLines,
@@ -51,12 +52,13 @@ class CustomField {
   static Widget chip({
     String label = '',
     bool enable = false,
+    EdgeInsets? padding,
     required GestureTapCallback? onTap
   }) {
     return InkWell(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        padding: padding ?? const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         decoration: BoxDecoration(
             color: Colors.grey.shade100,
             borderRadius: BorderRadius.circular(8)

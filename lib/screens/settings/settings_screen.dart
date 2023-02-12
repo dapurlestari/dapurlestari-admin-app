@@ -55,12 +55,14 @@ class SettingsScreen extends StatelessWidget {
                       label: 'Email',
                     ),
                     CustomField.text(
-                      hint: '62123123123',
+                      hint: '62857320000',
                       label: 'Phone',
                     ),
                     CustomField.text(
-                      hint: '6289720000',
+                      hint: 'https://wa.me/6289720000?text=Hello',
                       label: 'WhatsApp Link',
+                      minLines: 1,
+                      maxLines: 3
                     ),
                     CustomField.text(
                         hint: 'Address',
@@ -81,8 +83,14 @@ class SettingsScreen extends StatelessWidget {
                       hint: '8 - 18',
                       label: 'Zoom',
                     ),
+                    CustomField.text(
+                      hint: 'https://placehold.co/600x400@2x.jpg',
+                      label: 'Placeholder Image URL',
+                    ),
                     GridView(
                       shrinkWrap: true,
+                      padding: EdgeInsets.zero,
+                      physics: const NeverScrollableScrollPhysics(),
                       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
                         childAspectRatio: 9/2,
@@ -106,6 +114,16 @@ class SettingsScreen extends StatelessWidget {
                             onTap: settingsController.rotateControl.toggle
                         ),
                         CustomField.chip(
+                            label: 'Zoom Control',
+                            enable: settingsController.zoomControl.value,
+                            onTap: settingsController.zoomControl.toggle
+                        ),
+                        CustomField.chip(
+                            label: 'Map Type Control',
+                            enable: settingsController.mapTypeControl.value,
+                            onTap: settingsController.mapTypeControl.toggle
+                        ),
+                        CustomField.chip(
                             label: 'Street View Control',
                             enable: settingsController.streetViewControl.value,
                             onTap: settingsController.streetViewControl.toggle
@@ -114,6 +132,56 @@ class SettingsScreen extends StatelessWidget {
                             label: 'Full Screen Control',
                             enable: settingsController.fullScreenControl.value,
                             onTap: settingsController.fullScreenControl.toggle
+                        ),
+                      ],
+                    )
+                  ],
+                )
+            ),
+            const SizedBox(height: 40),
+            CustomField.fieldGroup(
+                label: 'Google Map Markers',
+                content: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomField.text(
+                      hint: 'Marker title goes here',
+                      label: 'Label',
+                    ),
+                    CustomField.text(
+                      hint: 'Insert some words',
+                      label: 'Description',
+                    ),
+                    GridView(
+                      shrinkWrap: true,
+                      padding: EdgeInsets.zero,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 9/2,
+                        mainAxisSpacing: 12,
+                        crossAxisSpacing: 12,
+                      ),
+                      children: [
+                        CustomField.text(
+                          hint: '-7.40000',
+                          label: 'Latitude',
+                          margin: EdgeInsets.zero
+                        ),
+                        CustomField.text(
+                          hint: '112.50000',
+                          label: 'Longitude',
+                          margin: EdgeInsets.zero
+                        ),
+                        CustomField.chip(
+                            label: 'Clickable',
+                            enable: settingsController.markerClickable.value,
+                            onTap: settingsController.markerClickable.toggle
+                        ),
+                        CustomField.chip(
+                            label: 'Draggable',
+                            enable: settingsController.markerDraggable.value,
+                            onTap: settingsController.markerDraggable.toggle
                         ),
                       ],
                     )
