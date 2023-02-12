@@ -18,7 +18,7 @@ class SettingsScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(LineIcons.checkCircle, color: Colors.indigoAccent),
-            onPressed: () {},
+            onPressed: settingsController.save,
           )
         ],
         body: ListView(
@@ -39,6 +39,7 @@ class SettingsScreen extends StatelessWidget {
                         maxLines: 5
                     ),
                     CustomField.text(
+                      controller: settingsController.copyrightField.value,
                       hint: '© 2018-2023',
                       label: 'Copyright',
                       margin: EdgeInsets.zero
@@ -64,6 +65,10 @@ class SettingsScreen extends StatelessWidget {
                       label: 'WhatsApp Link',
                       minLines: 1,
                       maxLines: 3
+                    ),
+                    CustomField.text(
+                      hint: 'Senin - Sabtu. 10.00-16.00',
+                      label: 'Opening Hours',
                     ),
                     CustomField.text(
                         hint: 'Address',

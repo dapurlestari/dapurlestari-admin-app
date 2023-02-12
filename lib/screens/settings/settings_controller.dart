@@ -1,4 +1,7 @@
-import 'package:admin/models/app/menu.dart';
+import 'package:admin/models/app/config.dart';
+import 'package:admin/services/logger.dart';
+import 'package:admin/services/soft_keyboard.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 class SettingsController extends GetxController {
@@ -13,7 +16,27 @@ class SettingsController extends GetxController {
   final markerClickable = false.obs;
   final markerDraggable = false.obs;
 
-  void fetch() {
+  final copyrightField = TextEditingController().obs;
 
+  final config = Config.dummy().obs;
+
+  Future<void> fetch() async {
+    final config = await Config.get();
+    if (config != null) {
+      logInfo(config.copyright, logLabel: 'copyright');
+
+      this.config.value = config;
+      copyrightField.value.text = config.copyright;
+    }
+  }
+
+  void save() {
+    SoftKeyboard.hide();
+  }
+
+  @override
+  void onInit() {
+    fetch();
+    super.onInit();
   }
 }

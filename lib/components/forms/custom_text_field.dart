@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 class CustomField {
   static Widget text({
+    TextEditingController? controller,
     String? hint,
     String label = '',
     int? minLines,
@@ -14,6 +15,7 @@ class CustomField {
     return Container(
       margin: margin ?? const EdgeInsets.only(bottom: 12),
       child: TextField(
+        controller: controller,
         minLines: minLines,
         maxLines: maxLines,
         textInputAction: action ?? (maxLines > 1 ? TextInputAction.newline : TextInputAction.next),

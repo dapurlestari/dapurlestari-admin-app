@@ -3,17 +3,17 @@ import '../../env/env.dart';
 
 class Image {
   Image({
-    required this.name,
+    this.name = '',
     this.alternativeText = '',
     this.caption = '',
-    required this.width,
-    required this.height,
+    this.width = 0,
+    this.height = 0,
     required this.formats,
-    required this.hash,
-    required this.ext,
-    required this.mime,
-    required this.size,
-    required this.url,
+    this.hash = '',
+    this.ext = '',
+    this.mime = '',
+    this.size = 0,
+    this.url = '',
     this.previewUrl,
     required this.provider,
     this.providerMetadata,
@@ -60,6 +60,15 @@ class Image {
     );
   }
 
+  factory Image.dummy() {
+    return Image(
+      formats: ImageFormat.dummy(),
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+      provider: '',
+    );
+  }
+
   Map<String, dynamic> toJson() => {
     "name": name,
     "alternativeText": alternativeText,
@@ -94,6 +103,11 @@ class ImageFormat {
     thumbnail: SizeFormat.fromJson(json["thumbnail"]),
   );
 
+  factory ImageFormat.dummy() => ImageFormat(
+    // small: SizeFormat.fromJson(json["small"]),
+    thumbnail: SizeFormat.dummy(),
+  );
+
   Map<String, dynamic> toJson() => {
     // "small": small.toJson(),
     "thumbnail": thumbnail.toJson(),
@@ -102,15 +116,15 @@ class ImageFormat {
 
 class SizeFormat {
   SizeFormat({
-    required this.ext,
-    required this.url,
-    required this.hash,
-    required this.mime,
-    required this.name,
-    this.path,
-    required this.size,
-    required this.width,
-    required this.height,
+    this.ext = '',
+    this.url = '',
+    this.hash = '',
+    this.mime = '',
+    this.name = '',
+    this.path = '',
+    this.size = 0,
+    this.width = 0,
+    this.height = 0,
   });
 
   String ext;
@@ -118,22 +132,24 @@ class SizeFormat {
   String hash;
   String mime;
   String name;
-  dynamic path;
+  String path;
   double size;
   int width;
   int height;
 
   factory SizeFormat.fromJson(Map<String, dynamic> json) => SizeFormat(
-    ext: json["ext"],
+    ext: json["ext"] ?? '',
     url: '${Env.baseURL}${json["url"]}',
-    hash: json["hash"],
-    mime: json["mime"],
-    name: json["name"],
-    path: json["path"],
+    hash: json["hash"] ?? '',
+    mime: json["mime"] ?? '',
+    name: json["name"] ?? '',
+    path: json["path"] ?? '',
     size: json["size"]?.toDouble(),
-    width: json["width"],
-    height: json["height"],
+    width: json["width"] ?? 0,
+    height: json["height"] ?? 0,
   );
+
+  factory SizeFormat.dummy() => SizeFormat();
 
   Map<String, dynamic> toJson() => {
     "ext": ext,

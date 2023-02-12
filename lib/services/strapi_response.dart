@@ -12,10 +12,10 @@ class StrapiResponse {
   factory StrapiResponse.response(Map<String, dynamic> json) {
     if (json.containsKey('error')) {
       return StrapiResponse.error(json);
-    } else if (json.containsKey('meta')) {
-      return StrapiResponse.success(json);
     } else if (json.containsKey('data')) {
       return StrapiResponse.successNoMeta(json);
+    } else if (json.containsKey('meta')) {
+      return StrapiResponse.success(json);
     } else {
       return StrapiResponse();
     }
