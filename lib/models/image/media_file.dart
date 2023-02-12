@@ -1,8 +1,11 @@
 
+import 'package:admin/services/api.dart';
+import 'package:admin/services/strapi_response.dart';
+
 import '../../env/env.dart';
 
-class Image {
-  Image({
+class MediaFile {
+  MediaFile({
     this.name = '',
     this.alternativeText = '',
     this.caption = '',
@@ -26,7 +29,7 @@ class Image {
   String caption;
   int width;
   int height;
-  ImageFormat formats;
+  ImageFormat? formats;
   String hash;
   String ext;
   String mime;
@@ -38,15 +41,15 @@ class Image {
   DateTime createdAt;
   DateTime updatedAt;
 
-  factory Image.fromJson(Map<String, dynamic> map) {
-    final json = map['attributes'];
-    return Image(
+  factory MediaFile.fromJson(Map<String, dynamic> map) {
+    final json = map.containsKey('attributes') ? map['attributes'] : map;
+    return MediaFile(
       name: json["name"],
       alternativeText: json["alternativeText"] ?? '',
       caption: json["caption"] ?? '',
-      width: json["width"],
-      height: json["height"],
-      formats: ImageFormat.fromJson(json["formats"]),
+      width: json["width"] ?? 0,
+      height: json["height"] ?? 0,
+      formats: json["formats"] != null ? ImageFormat.fromJson(json["formats"]) : null,
       hash: json["hash"],
       ext: json["ext"],
       mime: json["mime"],
@@ -60,8 +63,8 @@ class Image {
     );
   }
 
-  factory Image.dummy() {
-    return Image(
+  factory MediaFile.dummy() {
+    return MediaFile(
       formats: ImageFormat.dummy(),
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
@@ -75,7 +78,7 @@ class Image {
     "caption": caption,
     "width": width,
     "height": height,
-    "formats": formats.toJson(),
+    "formats": formats?.toJson(),
     "hash": hash,
     "ext": ext,
     "mime": mime,
@@ -87,6 +90,20 @@ class Image {
     "createdAt": createdAt.toIso8601String(),
     "updatedAt": updatedAt.toIso8601String(),
   };
+
+  static Future<List<MediaFile>?> get() async {
+    StrapiResponse response = await API.get(
+        page: 'upload/files',
+        // populateMode: APIPopulate.all,
+        // showLog: true
+    );
+
+    if (response.isSuccess) {
+      return (response.data as List).map((e) => MediaFile.fromJson(e)).toList();
+    }
+
+    return null;
+  }
 }
 
 class ImageFormat {

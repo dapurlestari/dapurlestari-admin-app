@@ -71,13 +71,20 @@ class API {
     logInfo(response.data.runtimeType.toString(), logLabel: '${label}_response_type');
     StrapiResponse strapiResponse = StrapiResponse();
     if (response.data != null) {
-      strapiResponse = StrapiResponse.response(response.data);
+      Map<String, dynamic> newData = {};
+      if (response.data is List) {
+        newData['data'] = response.data;
+      } else {
+        newData = response.data;
+      }
+
+      strapiResponse = StrapiResponse.response(newData);
 
       if (showLog) {
-        if (response.data is List) {
-          logInfo((response.data as List).first.toString(), logLabel: '${label}_response_data');
+        if (newData is List) {
+          logInfo((newData as List).first.toString(), logLabel: '${label}_response_data');
         } else {
-          logInfo(response.data.toString(), logLabel: '${label}_response_data');
+          logInfo(newData.toString(), logLabel: '${label}_response_data');
         }
       }
     }

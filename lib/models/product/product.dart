@@ -1,4 +1,4 @@
-import 'package:admin/models/image/image.dart';
+import 'package:admin/models/image/media_file.dart';
 import 'package:admin/services/api.dart';
 import 'package:admin/services/constant_lib.dart';
 import 'package:admin/services/logger.dart';
@@ -25,7 +25,7 @@ class Product {
   String deletedAt = '';
   int productCategoryId = 0;
   int bundleId = 0;
-  List<Image>? images;
+  List<MediaFile>? images;
   Seo? seo;
 
   Product({
@@ -70,7 +70,7 @@ class Product {
     bundleId: json["bundle_id"] ?? 0,
     images: !json.containsKey('images')
         ? null
-        : (json['images']['data'] as List).map((e) => Image.fromJson(e)).toList(),
+        : (json['images']['data'] as List).map((e) => MediaFile.fromJson(e)).toList(),
     seo: !json.containsKey('seo') ? null : json['seo'] == null ? null : Seo.fromJson(json['seo']),
   );
 
@@ -96,7 +96,7 @@ class Product {
   }
 
   bool get hasImages => images != null;
-  String get thumbnail => hasImages ? images!.first.formats.thumbnail.url : '';
+  String get thumbnail => hasImages ? images!.first.formats!.thumbnail.url : '';
   String get image => hasImages ? images!.first.url : '';
 
   static Future<List<Product>> get() async {

@@ -1,4 +1,4 @@
-import 'package:admin/models/image/image.dart';
+import 'package:admin/models/image/media_file.dart';
 
 import 'meta_social.dart';
 
@@ -24,7 +24,7 @@ class Seo {
   dynamic structuredData;
   String metaViewport;
   String canonicalUrl;
-  Image? metaImage;
+  MediaFile? metaImage;
   List<MetaSocial> metaSocial;
 
   factory Seo.fromJson(Map<String, dynamic> json) => Seo(
@@ -36,12 +36,12 @@ class Seo {
     structuredData: json["structuredData"],
     metaViewport: json["metaViewport"] ?? '',
     canonicalUrl: json["canonicalURL"] ?? '',
-    metaImage: json["metaImage"]["data"] != null ? Image.fromJson(json["metaImage"]["data"]) : null,
+    metaImage: json["metaImage"]["data"] != null ? MediaFile.fromJson(json["metaImage"]["data"]) : null,
     metaSocial: List<MetaSocial>.from(json["metaSocial"].map((x) => MetaSocial.fromJson(x))),
   );
 
   factory Seo.dummy() => Seo(
-    metaImage: Image.dummy(),
+    metaImage: MediaFile.dummy(),
     metaSocial: [],
   );
 
