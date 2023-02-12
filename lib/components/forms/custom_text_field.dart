@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
 
 class CustomField {
@@ -42,6 +43,38 @@ class CustomField {
             borderRadius: BorderRadius.circular(8),
             borderSide: const BorderSide(color: Colors.indigoAccent),
           ),
+        ),
+      ),
+    );
+  }
+
+  static Widget chip({
+    String label = '',
+    bool enable = false,
+    required GestureTapCallback? onTap
+  }) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        decoration: BoxDecoration(
+            color: Colors.grey.shade100,
+            borderRadius: BorderRadius.circular(8)
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(label, style: Get.textTheme.bodyLarge?.copyWith(
+                fontSize: 16,
+                fontWeight: FontWeight.w300,
+                color: Colors.grey.shade900
+            )),
+            const SizedBox(width: 12),
+            Icon(!enable ? FeatherIcons.toggleLeft : FeatherIcons.toggleRight,
+              color: !enable ? Colors.grey.shade800 : Colors.indigoAccent,
+            )
+          ],
         ),
       ),
     );
