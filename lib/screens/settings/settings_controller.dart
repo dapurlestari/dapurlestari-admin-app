@@ -3,9 +3,15 @@ import 'package:admin/models/map/map_marker.dart';
 import 'package:admin/services/logger.dart';
 import 'package:admin/services/soft_keyboard.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
+import '../../models/seo/seo.dart';
+
 class SettingsController extends GetxController {
+
+  final config = Config.dummy().obs;
+  final saving = false.obs;
 
   /* General */
   final titleField = TextEditingController().obs;
@@ -43,8 +49,6 @@ class SettingsController extends GetxController {
   final metaDescriptionField = TextEditingController().obs;
   final canonicalURLField = TextEditingController().obs;
   final metaKeywordsField = TextEditingController().obs;
-
-  final config = Config.dummy().obs;
 
   Future<void> fetch() async {
     final config = await Config.get();
@@ -89,8 +93,62 @@ class SettingsController extends GetxController {
     }
   }
 
-  void save() {
+  Future<void> save() async {
+    if (saving.value) {
+      Fluttertoast.showToast(msg: 'Saving in progress!');
+      return;
+    }
+
     SoftKeyboard.hide();
+
+    saving.value = true;
+    Config? newConfig = Config.dummy();
+    newConfig.title = titleField.value.text;
+    newConfig.subtitle = subtitleField.value.text;
+    newConfig.copyright = copyrightField.value.text;
+
+    newConfig.email = emailField.value.text;
+    newConfig.phone = phoneField.value.text;
+    newConfig.whatsappLink = whatsappLinkField.value.text;
+    newConfig.openingHours = openingHoursField.value.text;
+    newConfig.address = addressField.value.text;
+
+    newConfig.map.zoom = int.tryParse(zoomField.value.text) ?? 0;
+    newConfig.map.placeholderImageUrl = placeholderField.value.text;
+    newConfig.map.draggable = draggable.value;
+    newConfig.map.scaleControl = scaleControl.value;
+    newConfig.map.rotateControl = rotateControl.value;
+    newConfig.map.zoomControl = zoomControl.value;
+    newConfig.map.mapTypeControl = mapTypeControl.value;
+    newConfig.map.streetViewControl = streetViewControl.value;
+    newConfig.map.fullScreenControl = fullScreenControl.value;
+
+    MapMarker marker = MapMarker();
+    marker.label = markerLabelField.value.text;
+    marker.description = markerDescriptionField.value.text;
+    marker.latitude = double.tryParse(markerLatitudeField.value.text) ?? 0;
+    marker.longitude = double.tryParse(markerLongitudeField.value.text) ?? 0;
+    marker.clickable = markerClickable.value;
+    marker.draggable = markerDraggable.value;
+    newConfig.map.markers[0] = marker;
+
+    Seo newSeo = Seo.dummy();
+    newSeo.metaTitle = metaTitleField.value.text;
+    newSeo.metaDescription = metaDescriptionField.value.text;
+    newSeo.canonicalUrl = canonicalURLField.value.text;
+    newSeo.keywords = metaKeywordsField.value.text;
+    newConfig.seo = newSeo;
+    logInfo(newConfig.toJson(), logLabel: 'new_config');
+
+    newConfig = await newConfig.save();
+    if (newConfig != null) {
+      config.value = newConfig;
+      Fluttertoast.showToast(msg: 'Config Updated!');
+    } else {
+      Fluttertoast.showToast(msg: 'Config Update Failed!');
+    }
+
+    saving.value = false;
   }
 
   @override

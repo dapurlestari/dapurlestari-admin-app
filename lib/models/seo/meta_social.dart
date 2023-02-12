@@ -19,7 +19,7 @@ class MetaSocial {
   );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
+    // "id": id,
     "socialNetwork": socialNetwork,
     "title": title,
     "description": description,

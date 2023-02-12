@@ -61,9 +61,9 @@ class Config {
   );
 
   Map<String, dynamic> toJson() => {
-    "createdAt": createdAt.toIso8601String(),
-    "updatedAt": updatedAt.toIso8601String(),
-    "publishedAt": publishedAt.toIso8601String(),
+    // "createdAt": createdAt.toIso8601String(),
+    // "updatedAt": updatedAt.toIso8601String(),
+    // "publishedAt": publishedAt.toIso8601String(),
     "address": address,
     "opening_hours": openingHours,
     "email": email,
@@ -86,6 +86,26 @@ class Config {
           'map.markers'
         ],
         // showLog: true
+    );
+
+    if (response.isSuccess) {
+      return Config.fromJson(response.data['attributes']);
+    }
+
+    return null;
+  }
+
+  Future<Config?> save() async {
+    StrapiResponse response = await API.put(
+        page: 'config',
+        data: toJson(),
+        populateMode: APIPopulate.custom,
+        populateList: [
+          'seo.metaSocial',
+          'seo.metaImage',
+          'map.markers'
+        ],
+        showLog: true
     );
 
     if (response.isSuccess) {

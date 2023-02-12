@@ -30,7 +30,7 @@ class MapMarker {
   factory MapMarker.dummy() => MapMarker();
 
   Map<String, dynamic> toJson() => {
-    "id": id,
+    // "id": id,
     "label": label,
     "description": description,
     "latitude": latitude,

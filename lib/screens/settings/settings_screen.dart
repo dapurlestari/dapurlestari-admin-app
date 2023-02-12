@@ -1,4 +1,5 @@
 import 'package:admin/components/custom_scaffold.dart';
+import 'package:admin/components/loadings.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
@@ -17,7 +18,11 @@ class SettingsScreen extends StatelessWidget {
         title: 'Settings',
         actions: [
           IconButton(
-            icon: const Icon(LineIcons.checkCircle, color: Colors.indigoAccent),
+            icon: Icon(settingsController.saving.value
+              ? LineIcons.circle
+              : LineIcons.checkCircle,
+              color: Colors.indigoAccent
+            ),
             onPressed: settingsController.save,
           )
         ],

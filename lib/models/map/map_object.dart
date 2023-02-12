@@ -46,7 +46,7 @@ class MapObject {
   );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
+    // "id": id,
     "zoom": zoom,
     "draggable": draggable,
     "scaleControl": scaleControl,
