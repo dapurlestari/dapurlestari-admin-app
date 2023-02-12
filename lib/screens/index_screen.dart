@@ -18,7 +18,7 @@ class _IndexScreenState extends State<IndexScreen> {
   final indexController = Get.put(IndexController());
 
   final pageController = PageController();
-  bool showMenuLabel = true;
+  bool showMenuLabel = false;
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +73,7 @@ class _IndexScreenState extends State<IndexScreen> {
                   ),
                   if (showMenuLabel) const SizedBox(height: 8),
                   if (showMenuLabel) Text(
-                    menu.label,
+                    menu.title,
                     style: Get.textTheme.bodySmall?.copyWith(
                       color: menu.active ? Colors.indigoAccent : null,
                     ),

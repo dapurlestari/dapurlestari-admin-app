@@ -2,6 +2,7 @@ import 'package:admin/components/custom_scaffold.dart';
 import 'package:admin/components/loadings.dart';
 import 'package:admin/models/server/content_type.dart';
 import 'package:admin/screens/main_controller.dart';
+import 'package:admin/services/constant_lib.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
@@ -51,8 +52,11 @@ class CollectionScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 2,),
                       Text(type.uid,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
                         style: Get.textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.w400,
+                            fontFamily: ConstLib.monospaceFont,
                             color: Colors.grey.shade500,
                             fontSize: 14
                         )

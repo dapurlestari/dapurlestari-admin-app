@@ -28,14 +28,14 @@ class AccessStatus {
       id: 2,
       label: 'API Status',
       icon: FeatherIcons.package,
-      bgColor: Colors.pink.shade50,
+      bgColor: Colors.indigo.shade50,
       healthy: false,
     ),
     AccessStatus(
       id: 3,
       label: 'Site Status',
       icon: FeatherIcons.layout,
-      bgColor: Colors.deepOrange.shade50,
+      bgColor: Colors.indigo.shade50,
       healthy: false,
     ),
   ];
