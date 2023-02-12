@@ -19,17 +19,20 @@ class SettingsScreen extends StatelessWidget {
             content: Column(
               children: [
                 CustomField.text(
-                  hint: 'Title',
+                  hint: 'Summarize this config',
+                  label: 'Title'
                 ),
                 const SizedBox(height: 20),
                 CustomField.text(
-                    hint: 'Subtitle',
+                    hint: 'Insert some words',
+                    label: 'Subtitle',
                     minLines: 3,
                     maxLines: 5
                 ),
                 const SizedBox(height: 20),
                 CustomField.text(
-                  hint: 'Copyright',
+                  hint: '© 2018-2023',
+                  label: 'Copyright',
                 ),
               ],
             )
@@ -40,19 +43,23 @@ class SettingsScreen extends StatelessWidget {
             content: Column(
               children: [
                 CustomField.text(
-                  hint: 'Email',
+                  hint: 'my@mail.com',
+                  label: 'Email',
                 ),
                 const SizedBox(height: 20),
                 CustomField.text(
-                  hint: 'Phone',
+                  hint: '62123123123',
+                  label: 'Phone',
                 ),
                 const SizedBox(height: 20),
                 CustomField.text(
-                  hint: 'WhatsApp Link',
+                  hint: '6289720000',
+                  label: 'WhatsApp Link',
                 ),
                 const SizedBox(height: 20),
                 CustomField.text(
                     hint: 'Address',
+                    label: 'Address',
                     minLines: 3,
                     maxLines: 5
                 ),
@@ -65,7 +72,8 @@ class SettingsScreen extends StatelessWidget {
             content: Column(
               children: [
                 CustomField.text(
-                  hint: 'Zoom Level e.g. 8, 10, 13',
+                  hint: '8 - 18',
+                  label: 'Zoom',
                 ),
                 const SizedBox(height: 20),
               ],
