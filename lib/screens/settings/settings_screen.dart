@@ -275,17 +275,28 @@ class SettingsScreen extends StatelessWidget {
                                     ),
                                   ),
                                   Positioned(
-                                    bottom: 0,
-                                    right: 15,
-                                    child: IconButton(
-                                      icon: const CircleAvatar(
-                                        backgroundColor: Colors.red,
-                                        child: Icon(FeatherIcons.trash2,
+                                    top: 10,
+                                    right: 25,
+                                    child: InkWell(
+                                      child: Container(
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          color: Colors.red,
+                                          borderRadius: BorderRadius.circular(30),
+                                          boxShadow: const [
+                                            BoxShadow(
+                                              color: Colors.black45,
+                                              spreadRadius: 0,
+                                              blurRadius: 10
+                                            )
+                                          ]
+                                        ),
+                                        child: const Icon(FeatherIcons.trash2,
                                           size: 18,
                                           color: Colors.white,
                                         ),
                                       ),
-                                      onPressed: () {
+                                      onTap: () {
                                         settingsController.metaImage.value = MediaFile.dummy();
                                       },
                                     ),
