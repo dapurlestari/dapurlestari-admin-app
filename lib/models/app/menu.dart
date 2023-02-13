@@ -1,4 +1,5 @@
 import 'package:admin/screens/media_library/media_library_screen.dart';
+import 'package:admin/screens/settings/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
@@ -39,12 +40,6 @@ class Menu {
       icon: FeatherIcons.layout,
       active: false,
     ),
-    Menu(
-      id: 4,
-      title: 'Settings',
-      icon: FeatherIcons.settings,
-      active: false,
-    ),
   ];
 
   static final homeMenu = [
@@ -58,6 +53,12 @@ class Menu {
       title: 'Email',
       subtitle: 'Test drive sending email to specific users',
       icon: FeatherIcons.mail,
+    ),
+    Menu(
+        title: 'Settings',
+        subtitle: 'Customize default site configuration',
+        icon: FeatherIcons.settings,
+        onTap: () => Get.to(() => SettingsScreen(showBackButton: true,))
     ),
   ];
 }

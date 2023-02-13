@@ -33,7 +33,6 @@ class _IndexScreenState extends State<IndexScreen> {
           HomeScreen(),
           CollectionScreen(),
           SingleTypeScreen(),
-          SettingsScreen()
         ],
       ),
     ));
