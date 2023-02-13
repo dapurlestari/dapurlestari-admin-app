@@ -1,5 +1,8 @@
+import 'package:admin/screens/bundle/bundle_screen.dart';
 import 'package:admin/services/api.dart';
+import 'package:admin/services/constant_lib.dart';
 import 'package:admin/services/strapi_response.dart';
+import 'package:get/get.dart';
 
 import 'content_schema.dart';
 
@@ -34,6 +37,15 @@ class ContentType {
   bool get isNotPlugin => !isPlugin;
   bool get isConfig => apiId == 'config';
   bool get isNotConfig => !isConfig;
+  String get apiRoute => uid.split('.')[1]; //e.g. api::product.product => product
+
+  void open() {
+    switch (apiId) {
+      case ConstLib.bundle:
+        Get.to(() => BundleScreen());
+        break;
+    }
+  }
 
   static Future<List<ContentType>> get() async {
     StrapiResponse response = await API.get(
