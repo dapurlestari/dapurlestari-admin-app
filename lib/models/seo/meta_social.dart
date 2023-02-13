@@ -1,4 +1,5 @@
 import 'package:admin/models/image/media_file.dart';
+import 'package:admin/services/constant_lib.dart';
 
 class MetaSocial {
   MetaSocial({
@@ -22,6 +23,27 @@ class MetaSocial {
     description: json["description"],
     image: json["image"]["data"] != null ? MediaFile.fromJson(json["image"]["data"]) : null,
   );
+
+  static List<MetaSocial> defaultSocials({
+    required String title,
+    required String description,
+    required MediaFile mediaFile
+  }) {
+    return [
+      MetaSocial(
+        title: title,
+        description: description,
+        socialNetwork: ConstLib.metaFacebook,
+        image: mediaFile
+      ),
+      MetaSocial(
+        title: title,
+        description: description,
+        socialNetwork: ConstLib.metaTwitter,
+        image: mediaFile
+      ),
+    ];
+  }
 
   Map<String, dynamic> toJson() => {
     // "id": id,

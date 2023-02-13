@@ -4,6 +4,7 @@ import 'package:admin/models/image/media_file.dart';
 import 'package:admin/screens/components/media_file_picker.dart';
 import 'package:admin/screens/components/seo_form.dart';
 import 'package:admin/screens/media_library/media_library_screen.dart';
+import 'package:admin/services/constant_lib.dart';
 import 'package:admin/services/logger.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -227,7 +228,10 @@ class SettingsScreen extends StatelessWidget {
                     )
                 ),
                 const SizedBox(height: 40),
-                SeoForm(seo: settingsController.config.value.seo)
+                SeoForm(
+                  seo: settingsController.config.value.seo,
+                  tag: ConstLib.configPage,
+                )
               ],
             )
           ),

@@ -3,6 +3,7 @@ import 'package:admin/models/seo/seo.dart';
 import 'package:admin/services/api.dart';
 import 'package:admin/services/constant_lib.dart';
 import 'package:admin/services/strapi_response.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class PrivacyPolicy {
   PrivacyPolicy({
@@ -37,7 +38,7 @@ class PrivacyPolicy {
 
   Map<String, dynamic> toJson() => {
     "contentful": contentful.toJson(),
-    // "seo": seo.toJson(),
+    "seo": seo.toJson(),
   };
 
   static Future<PrivacyPolicy> get() async {
@@ -59,10 +60,11 @@ class PrivacyPolicy {
       page: ConstLib.privacyPolicyPage,
       data: toJson(),
       populateMode: APIPopulate.deep,
-      showLog: true
+      // showLog: true
     );
 
     if (response.isSuccess) {
+      Fluttertoast.showToast(msg: 'Privacy Policy Updated!');
       return PrivacyPolicy.fromJson(response.data[ConstLib.attributes]);
     }
 

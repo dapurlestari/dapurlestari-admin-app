@@ -24,6 +24,7 @@ class ConstLib {
   static const String testimonial = 'testimonial';
 
 /* API Route - Collection */
+  static const String configPage = 'config';
   static const String privacyPolicyPage = 'privacy-policy-page';
   static const String termsServicePage = 'terms-of-service-page';
 }

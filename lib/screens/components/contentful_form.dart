@@ -7,36 +7,37 @@ import 'package:get/get.dart';
 
 class ContentfulForm extends StatelessWidget {
   final Contentful contentful;
-  ContentfulForm({Key? key,
+  final String tag;
+  const ContentfulForm({Key? key,
     required this.contentful,
+    this.tag = '',
   }) : super(key: key);
-
-  final ContentfulController _controller = Get.put(ContentfulController());
 
   @override
   Widget build(BuildContext context) {
-    _controller.titleField.value.text = contentful.title;
-    _controller.subtitleField.value.text = contentful.subtitle;
-    _controller.contentField.value.text = contentful.content;
+    final ContentfulController controller = Get.put(ContentfulController(), tag: '$tag.contentful');
+    controller.titleField.value.text = contentful.title;
+    controller.subtitleField.value.text = contentful.subtitle;
+    controller.contentField.value.text = contentful.content;
 
     return Obx(() => CustomField.fieldGroup(
         label: 'Contentful',
         content: Column(
           children: [
             CustomField.text(
-                controller: _controller.titleField.value,
+                controller: controller.titleField.value,
                 hint: 'Summarize this config',
                 label: 'Title'
             ),
             CustomField.text(
-                controller: _controller.subtitleField.value,
+                controller: controller.subtitleField.value,
                 hint: 'Insert some words',
                 label: 'Subtitle',
                 minLines: 3,
                 maxLines: 5
             ),
             CustomField.text(
-              controller: _controller.contentField.value,
+              controller: controller.contentField.value,
               hint: 'Describe privacy policy',
               label: 'Content',
               minLines: 5,
@@ -44,6 +45,7 @@ class ContentfulForm extends StatelessWidget {
             ),
             MediaFilePicker(
               mediaFile: contentful.featuredImage,
+              tag: '$tag.contentful.media',
             )
           ],
         )

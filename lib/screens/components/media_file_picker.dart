@@ -9,15 +9,16 @@ import 'package:get/get.dart';
 
 class MediaFilePicker extends StatelessWidget {
   final MediaFile mediaFile;
-  MediaFilePicker({Key? key,
+  final String tag;
+  const MediaFilePicker({Key? key,
     required this.mediaFile,
+    this.tag = '',
   }) : super(key: key);
-
-  final MediaFilePickerController _controller = Get.put(MediaFilePickerController());
 
   @override
   Widget build(BuildContext context) {
-    _controller.metaImage.value = mediaFile;
+    final MediaFilePickerController controller = Get.put(MediaFilePickerController(), tag: tag);
+    controller.metaImage.value = mediaFile;
 
     return Obx(() => AspectRatio(
       aspectRatio: 7/4,
@@ -31,7 +32,7 @@ class MediaFilePicker extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _controller.metaImage.value.hasURL ? Stack(
+              controller.metaImage.value.hasURL ? Stack(
                 children: [
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 14),
@@ -41,7 +42,7 @@ class MediaFilePicker extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                         image: DecorationImage(
                             image: CachedNetworkImageProvider(
-                                _controller.metaImage.value.url
+                                controller.metaImage.value.url
                             ),
                             fit: BoxFit.cover
                         )
@@ -70,7 +71,7 @@ class MediaFilePicker extends StatelessWidget {
                         ),
                       ),
                       onTap: () {
-                        _controller.metaImage.value = MediaFile.dummy();
+                        controller.metaImage.value = MediaFile.dummy();
                       },
                     ),
                   )
@@ -93,8 +94,8 @@ class MediaFilePicker extends StatelessWidget {
             enableSelection: true,
           ));
           if (media != null) {
-            _controller.metaImage.value = media;
-            logInfo(_controller.metaImage.value.id, logLabel: 'media_id');
+            controller.metaImage.value = media;
+            logInfo(controller.metaImage.value.id, logLabel: 'media_id');
           }
         },
       ),

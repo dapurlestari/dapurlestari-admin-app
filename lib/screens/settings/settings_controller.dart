@@ -1,5 +1,4 @@
 import 'package:admin/models/app/config.dart';
-import 'package:admin/models/image/media_file.dart';
 import 'package:admin/models/map/map_marker.dart';
 import 'package:admin/models/seo/meta_social.dart';
 import 'package:admin/screens/components/media_file_picker.dart';
@@ -95,8 +94,8 @@ class SettingsController extends GetxController {
 
     SoftKeyboard.hide();
 
-    final SeoController seoController = Get.find();
-    final MediaFilePickerController mediaFilePickerController = Get.find();
+    final SeoController seoC = Get.find(tag: '${ConstLib.configPage}.seo');
+    final MediaFilePickerController seoMediaC = Get.find(tag: '${ConstLib.configPage}.seo.media');
     saving.value = true;
     config.value.title = titleField.value.text;
     config.value.subtitle = subtitleField.value.text;
@@ -128,33 +127,22 @@ class SettingsController extends GetxController {
     config.value.map.markers[0] = marker;
 
     Seo newSeo = Seo.dummy();
-    String metaSocialDescription = seoController.metaSocialDescriptionField.value.text;
-    newSeo.metaTitle = seoController.metaTitleField.value.text;
-    newSeo.metaDescription = seoController.metaDescriptionField.value.text;
-    newSeo.canonicalUrl = seoController.canonicalURLField.value.text;
-    newSeo.keywords = seoController.metaKeywordsField.value.text;
-    newSeo.metaImage = mediaFilePickerController.metaImage.value;
-    newSeo.metaSocial.addAll([
-      MetaSocial(
-          title: newSeo.metaTitle,
-          description: metaSocialDescription,
-          socialNetwork: ConstLib.metaFacebook,
-          image: newSeo.metaImage
-      ),
-      MetaSocial(
-          title: newSeo.metaTitle,
-          description: metaSocialDescription,
-          socialNetwork: ConstLib.metaTwitter,
-          image: newSeo.metaImage
-      )
-    ]);
-    newSeo.metaImage = mediaFilePickerController.metaImage.value;
+    String metaSocialDescription = seoC.metaSocialDescriptionField.value.text;
+    newSeo.metaTitle = seoC.metaTitleField.value.text;
+    newSeo.metaDescription = seoC.metaDescriptionField.value.text;
+    newSeo.canonicalUrl = seoC.canonicalURLField.value.text;
+    newSeo.keywords = seoC.metaKeywordsField.value.text;
+    newSeo.metaImage = seoMediaC.metaImage.value;
+    newSeo.metaSocial = MetaSocial.defaultSocials(
+      title: newSeo.metaTitle,
+      description: metaSocialDescription,
+      mediaFile: seoMediaC.metaImage.value
+    );
     config.value.seo = newSeo;
 
-    logInfo(config.value.toJson(), logLabel: 'new_config');
+    // logInfo(config.value.toJson(), logLabel: 'new_config');
 
     config.value = await config.value.save();
-    Fluttertoast.showToast(msg: 'Config Updated!');
 
     saving.value = false;
   }

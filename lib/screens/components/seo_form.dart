@@ -7,17 +7,23 @@ import 'media_file_picker.dart';
 
 class SeoForm extends StatelessWidget {
   final Seo seo;
-  SeoForm({Key? key, required this.seo}) : super(key: key);
-
-  final SeoController _controller = Get.put(SeoController());
+  final String tag;
+  const SeoForm({Key? key,
+    required this.seo,
+    this.tag = '',
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    _controller.metaTitleField.value.text = seo.metaTitle;
-    _controller.metaDescriptionField.value.text = seo.metaDescription;
-    _controller.metaSocialDescriptionField.value.text = seo.metaSocial[0].description;
-    _controller.canonicalURLField.value.text = seo.canonicalUrl;
-    _controller.metaKeywordsField.value.text = seo.keywords;
+
+    final SeoController controller = Get.put(SeoController(), tag: '$tag.seo');
+    controller.metaTitleField.value.text = seo.metaTitle;
+    controller.metaDescriptionField.value.text = seo.metaDescription;
+    if (seo.metaSocial.isNotEmpty) {
+      controller.metaSocialDescriptionField.value.text = seo.metaSocial[0].description;
+    }
+    controller.canonicalURLField.value.text = seo.canonicalUrl;
+    controller.metaKeywordsField.value.text = seo.keywords;
 
     return Obx(() => CustomField.fieldGroup(
         label: 'SEO',
@@ -25,19 +31,19 @@ class SeoForm extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CustomField.text(
-              controller: _controller.metaTitleField.value,
+              controller: controller.metaTitleField.value,
               hint: 'Site title goes here',
               label: 'Meta Title (Applied to Meta Social)',
             ),
             CustomField.text(
-                controller: _controller.metaDescriptionField.value,
+                controller: controller.metaDescriptionField.value,
                 hint: 'Describe your site here',
                 label: 'Meta Description',
                 minLines: 1,
                 maxLines: 2
             ),
             CustomField.text(
-                controller: _controller.metaSocialDescriptionField.value,
+                controller: controller.metaSocialDescriptionField.value,
                 hint: 'Add description for social media',
                 label: 'Meta Social Description (Max. 65)',
                 minLines: 1,
@@ -45,18 +51,18 @@ class SeoForm extends StatelessWidget {
                 maxLength: 65
             ),
             CustomField.text(
-              controller: _controller.canonicalURLField.value,
+              controller: controller.canonicalURLField.value,
               hint: 'https://site.com/page',
               label: 'Canonical URL',
             ),
             CustomField.text(
-                controller: _controller.metaKeywordsField.value,
+                controller: controller.metaKeywordsField.value,
                 hint: 'Insert some keywords (comma separated)',
                 label: 'Meta Keywords',
                 minLines: 1,
                 maxLines: 5
             ),
-            MediaFilePicker(mediaFile: seo.metaImage)
+            MediaFilePicker(mediaFile: seo.metaImage, tag: '$tag.seo.media',)
           ],
         )
     ));

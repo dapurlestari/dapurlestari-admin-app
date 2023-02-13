@@ -2,6 +2,7 @@ import 'package:admin/models/map/map_object.dart';
 import 'package:admin/services/api.dart';
 import 'package:admin/services/logger.dart';
 import 'package:admin/services/strapi_response.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../seo/seo.dart';
 
@@ -107,10 +108,11 @@ class Config {
           'seo.metaImage',
           'map.markers'
         ],
-        showLog: true
+        // showLog: true
     );
 
     if (response.isSuccess) {
+      Fluttertoast.showToast(msg: 'Settings Updated!');
       return Config.fromJson(response.data['attributes']);
     }
 

@@ -1,6 +1,9 @@
 import 'package:admin/components/custom_scaffold.dart';
+import 'package:admin/components/loadings.dart';
 import 'package:admin/screens/components/contentful_form.dart';
+import 'package:admin/screens/components/seo_form.dart';
 import 'package:admin/screens/single_type/privacy_policy/privacy_policy_controller.dart';
+import 'package:admin/services/constant_lib.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
@@ -17,9 +20,9 @@ class PrivacyPolicyScreen extends StatelessWidget {
         showBackButton: true,
         actions: [
           IconButton(
-            icon: Icon(_controller.saving.value
-                ? LineIcons.circle
-                : LineIcons.checkCircle,
+            icon: _controller.saving.value
+                ? Loadings.basicPrimary
+                : const Icon(LineIcons.checkCircle,
                 color: Colors.indigoAccent
             ),
             onPressed: _controller.save,
@@ -30,6 +33,12 @@ class PrivacyPolicyScreen extends StatelessWidget {
           children: [
             ContentfulForm(
               contentful: _controller.privacyPolicy.value.contentful,
+              tag: ConstLib.privacyPolicyPage,
+            ),
+            const SizedBox(height: 40),
+            SeoForm(
+              seo: _controller.privacyPolicy.value.seo,
+              tag: ConstLib.privacyPolicyPage,
             )
           ],
         )

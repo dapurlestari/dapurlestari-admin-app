@@ -36,4 +36,6 @@ class Contentful {
     "content": content,
     "featured_image": featuredImage.id,
   };
+
+  // String get controllerTag => '$';
 }
