@@ -4,6 +4,7 @@ import 'package:admin/services/api.dart';
 import 'package:admin/services/constant_lib.dart';
 import 'package:admin/services/strapi_response.dart';
 import 'package:get/get.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'content_schema.dart';
 
@@ -47,6 +48,9 @@ class ContentType {
         break;
       case ConstLib.category:
         Get.to(() => CategoryScreen());
+        break;
+      default:
+        Fluttertoast.showToast(msg: 'Coming soon!');
         break;
     }
   }
