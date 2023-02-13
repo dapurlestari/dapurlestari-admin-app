@@ -20,7 +20,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
         showBackButton: true,
         actions: [
           IconButton(
-            icon: _controller.saving.value
+            icon: _controller.saving.value || _controller.isRefresh.value
                 ? Loadings.basicPrimary
                 : const Icon(LineIcons.checkCircle,
                 color: Colors.indigoAccent
