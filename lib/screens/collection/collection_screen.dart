@@ -32,6 +32,7 @@ class CollectionScreen extends StatelessWidget {
         ContentType type = mainController.collectionTypes[i];
         return InkWell(
           splashColor: Colors.yellow,
+          onTap: type.open,
           child: Container(
             color: Colors.white,
             padding: const EdgeInsets.symmetric(
