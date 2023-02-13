@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:admin/env/env.dart';
+import 'package:admin/services/constant_lib.dart';
 import 'package:dio/dio.dart';
 
 import 'logger.dart';
@@ -20,7 +21,10 @@ class API {
     Map<String, dynamic>? params,
     APIPopulate populateMode = APIPopulate.none,
     List<String>? populateList,
+    int paginationPage = 1,
+    int paginationSize = ConstLib.defaultPageSize,
     bool useToken = true,
+    bool paginate = false,
     bool showLog = false,
   }) async {
     String label = '${page}_api';
@@ -55,6 +59,11 @@ class API {
           });
         }
         break;
+    }
+
+    if (paginate) {
+      defaultParams['pagination[page]'] = paginationPage;
+      defaultParams['pagination[pageSize]'] = paginationSize;
     }
 
     if (params != null) defaultParams.addAll(params);

@@ -7,8 +7,20 @@ class ConstLib {
   // API Structure Keys
   static const String id = 'id';
   static const String attributes = 'attributes';
+  static const int defaultPageSize = 10;
 
   /* SEO */
   static const String metaFacebook = 'Facebook';
   static const String metaTwitter = 'Twitter';
+
+  /* API Route - Collection */
+  static const String bundle = 'bundle';
+  static const String category = 'category';
+  static const String experience = 'experience';
+  static const String faq = 'faq';
+  static const String product = 'product';
+  static const String socialMedia = 'social-media';
+  static const String team = 'team';
+  static const String testimonial = 'testimonial';
+
 }
