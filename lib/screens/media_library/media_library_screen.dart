@@ -1,4 +1,5 @@
 import 'package:admin/components/custom_scaffold.dart';
+import 'package:admin/components/loadings.dart';
 import 'package:admin/models/image/media_file.dart';
 import 'package:admin/screens/main_controller.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -170,8 +171,8 @@ class MediaLibraryScreen extends StatelessWidget {
             )
         ),
       ),
-      placeholder: (context, url) => const Center(
-        child: Icon(FeatherIcons.circle),
+      placeholder: (context, url) => Center(
+        child: Loadings.basicPrimary,
       ),
       errorWidget: (context, url, error) => const Center(
         child: Text('Image Error')
