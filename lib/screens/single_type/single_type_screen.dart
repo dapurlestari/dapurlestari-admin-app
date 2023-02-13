@@ -32,6 +32,7 @@ class SingleTypeScreen extends StatelessWidget {
         ContentType type = mainController.singleTypes[i];
         return InkWell(
           splashColor: Colors.yellow,
+          onTap: type.open,
           child: Container(
             color: Colors.white,
             padding: const EdgeInsets.symmetric(

@@ -21,8 +21,8 @@ class Faq {
 
   factory Faq.fromJson(Map<String, dynamic> json, int id) => Faq(
     id: id,
-    question: json["question"],
-    answer: json["answer"],
+    question: json["question"] ?? '',
+    answer: json["answer"] ?? '',
     createdAt: DateTime.parse(json["createdAt"]),
     updatedAt: DateTime.parse(json["updatedAt"]),
     publishedAt: DateTime.parse(json["publishedAt"]),
@@ -44,7 +44,7 @@ class Faq {
 
   static Future<List<Faq>> get() async {
     StrapiResponse response = await API.get(
-      page: 'social-medias',
+      page: 'faqs',
       populateMode: APIPopulate.all,
       // showLog: true
     );

@@ -12,6 +12,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomScaffold(
       title: 'Privacy Policy',
+      showBackButton: true,
       body: Container()
     );
   }

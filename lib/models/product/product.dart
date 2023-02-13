@@ -105,13 +105,13 @@ class Product {
       page: 'products',
       paginate: true,
       paginationPage: page,
-      populateMode: APIPopulate.all,
+      populateMode: APIPopulate.deep,
       // showLog: true
     );
 
     if (response.isSuccess) {
       return (response.data as List).map((e) {
-        logInfo(e, logLabel: 'data');
+        // logInfo(e, logLabel: 'data');
         int id = e[ConstLib.id];
         Product product = Product.fromJson(e[ConstLib.attributes]);
         product.id = id;

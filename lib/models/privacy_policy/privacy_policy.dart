@@ -46,7 +46,7 @@ class PrivacyPolicy {
   static Future<PrivacyPolicy> get() async {
     StrapiResponse response = await API.get(
       page: ConstLib.privacyPolicyPage,
-      populateMode: APIPopulate.all,
+      populateMode: APIPopulate.deep,
       // showLog: true
     );
 
