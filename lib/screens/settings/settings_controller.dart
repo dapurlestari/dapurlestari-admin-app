@@ -2,6 +2,8 @@ import 'package:admin/models/app/config.dart';
 import 'package:admin/models/image/media_file.dart';
 import 'package:admin/models/map/map_marker.dart';
 import 'package:admin/models/seo/meta_social.dart';
+import 'package:admin/screens/components/media_file_picker.dart';
+import 'package:admin/screens/components/seo_form.dart';
 import 'package:admin/services/constant_lib.dart';
 import 'package:admin/services/logger.dart';
 import 'package:admin/services/soft_keyboard.dart';
@@ -47,42 +49,34 @@ class SettingsController extends GetxController {
   final markerClickable = false.obs;
   final markerDraggable = false.obs;
 
-  /* SEO */
-  final metaTitleField = TextEditingController().obs;
-  final metaDescriptionField = TextEditingController().obs;
-  final metaSocialDescriptionField = TextEditingController().obs;
-  final canonicalURLField = TextEditingController().obs;
-  final metaKeywordsField = TextEditingController().obs;
-  final metaImage = MediaFile.dummy().obs;
-
   Future<void> fetch() async {
-    final config = await Config.get();
-    if (config != null) {
-      logInfo(config.copyright, logLabel: 'copyright');
+    final newConfig = await Config.get();
+    if (newConfig != null) {
+      logInfo(newConfig.copyright, logLabel: 'copyright');
 
-      this.config.value = config;
-      titleField.value.text = config.title;
-      subtitleField.value.text = config.subtitle;
-      copyrightField.value.text = config.copyright;
+      config.value = newConfig;
+      titleField.value.text = newConfig.title;
+      subtitleField.value.text = newConfig.subtitle;
+      copyrightField.value.text = newConfig.copyright;
 
-      emailField.value.text = config.email;
-      phoneField.value.text = config.phone;
-      whatsappLinkField.value.text = config.whatsappLink;
-      openingHoursField.value.text = config.openingHours;
-      addressField.value.text = config.address;
+      emailField.value.text = newConfig.email;
+      phoneField.value.text = newConfig.phone;
+      whatsappLinkField.value.text = newConfig.whatsappLink;
+      openingHoursField.value.text = newConfig.openingHours;
+      addressField.value.text = newConfig.address;
 
-      zoomField.value.text = '${config.map.zoom}';
-      placeholderField.value.text = config.map.placeholderImageUrl;
-      draggable.value = config.map.draggable;
-      scaleControl.value = config.map.scaleControl;
-      rotateControl.value = config.map.rotateControl;
-      zoomControl.value = config.map.zoomControl;
-      mapTypeControl.value = config.map.mapTypeControl;
-      streetViewControl.value = config.map.streetViewControl;
-      fullScreenControl.value = config.map.fullScreenControl;
+      zoomField.value.text = '${newConfig.map.zoom}';
+      placeholderField.value.text = newConfig.map.placeholderImageUrl;
+      draggable.value = newConfig.map.draggable;
+      scaleControl.value = newConfig.map.scaleControl;
+      rotateControl.value = newConfig.map.rotateControl;
+      zoomControl.value = newConfig.map.zoomControl;
+      mapTypeControl.value = newConfig.map.mapTypeControl;
+      streetViewControl.value = newConfig.map.streetViewControl;
+      fullScreenControl.value = newConfig.map.fullScreenControl;
 
-      if (config.map.markers.isNotEmpty) {
-        MapMarker marker = config.map.markers[0];
+      if (newConfig.map.markers.isNotEmpty) {
+        MapMarker marker = newConfig.map.markers[0];
         markerLabelField.value.text = marker.label;
         markerDescriptionField.value.text = marker.description;
         markerLatitudeField.value.text = '${marker.latitude}';
@@ -90,15 +84,6 @@ class SettingsController extends GetxController {
         markerClickable.value = marker.clickable;
         markerDraggable.value = marker.draggable;
       }
-
-      metaTitleField.value.text = config.seo.metaTitle;
-      metaDescriptionField.value.text = config.seo.metaDescription;
-      if (config.seo.metaSocial.isNotEmpty) {
-        metaSocialDescriptionField.value.text = config.seo.metaSocial[0].description;
-      }
-      canonicalURLField.value.text = config.seo.canonicalUrl;
-      metaKeywordsField.value.text = config.seo.keywords;
-      metaImage.value = config.seo.metaImage ?? MediaFile.dummy();
     }
   }
 
@@ -110,27 +95,28 @@ class SettingsController extends GetxController {
 
     SoftKeyboard.hide();
 
+    final SeoController seoController = Get.find();
+    final MediaFilePickerController mediaFilePickerController = Get.find();
     saving.value = true;
-    Config? newConfig = Config.dummy();
-    newConfig.title = titleField.value.text;
-    newConfig.subtitle = subtitleField.value.text;
-    newConfig.copyright = copyrightField.value.text;
+    config.value.title = titleField.value.text;
+    config.value.subtitle = subtitleField.value.text;
+    config.value.copyright = copyrightField.value.text;
 
-    newConfig.email = emailField.value.text;
-    newConfig.phone = phoneField.value.text;
-    newConfig.whatsappLink = whatsappLinkField.value.text;
-    newConfig.openingHours = openingHoursField.value.text;
-    newConfig.address = addressField.value.text;
+    config.value.email = emailField.value.text;
+    config.value.phone = phoneField.value.text;
+    config.value.whatsappLink = whatsappLinkField.value.text;
+    config.value.openingHours = openingHoursField.value.text;
+    config.value.address = addressField.value.text;
 
-    newConfig.map.zoom = int.tryParse(zoomField.value.text) ?? 0;
-    newConfig.map.placeholderImageUrl = placeholderField.value.text;
-    newConfig.map.draggable = draggable.value;
-    newConfig.map.scaleControl = scaleControl.value;
-    newConfig.map.rotateControl = rotateControl.value;
-    newConfig.map.zoomControl = zoomControl.value;
-    newConfig.map.mapTypeControl = mapTypeControl.value;
-    newConfig.map.streetViewControl = streetViewControl.value;
-    newConfig.map.fullScreenControl = fullScreenControl.value;
+    config.value.map.zoom = int.tryParse(zoomField.value.text) ?? 0;
+    config.value.map.placeholderImageUrl = placeholderField.value.text;
+    config.value.map.draggable = draggable.value;
+    config.value.map.scaleControl = scaleControl.value;
+    config.value.map.rotateControl = rotateControl.value;
+    config.value.map.zoomControl = zoomControl.value;
+    config.value.map.mapTypeControl = mapTypeControl.value;
+    config.value.map.streetViewControl = streetViewControl.value;
+    config.value.map.fullScreenControl = fullScreenControl.value;
 
     MapMarker marker = MapMarker();
     marker.label = markerLabelField.value.text;
@@ -139,39 +125,36 @@ class SettingsController extends GetxController {
     marker.longitude = double.tryParse(markerLongitudeField.value.text) ?? 0;
     marker.clickable = markerClickable.value;
     marker.draggable = markerDraggable.value;
-    newConfig.map.markers[0] = marker;
+    config.value.map.markers[0] = marker;
 
     Seo newSeo = Seo.dummy();
-    newSeo.metaTitle = metaTitleField.value.text;
-    newSeo.metaDescription = metaDescriptionField.value.text;
-    newSeo.canonicalUrl = canonicalURLField.value.text;
-    newSeo.keywords = metaKeywordsField.value.text;
-    newSeo.metaImage = metaImage.value;
+    String metaSocialDescription = seoController.metaSocialDescriptionField.value.text;
+    newSeo.metaTitle = seoController.metaTitleField.value.text;
+    newSeo.metaDescription = seoController.metaDescriptionField.value.text;
+    newSeo.canonicalUrl = seoController.canonicalURLField.value.text;
+    newSeo.keywords = seoController.metaKeywordsField.value.text;
+    newSeo.metaImage = mediaFilePickerController.metaImage.value;
     newSeo.metaSocial.addAll([
       MetaSocial(
-          title: metaTitleField.value.text,
-          description: metaSocialDescriptionField.value.text,
+          title: newSeo.metaTitle,
+          description: metaSocialDescription,
           socialNetwork: ConstLib.metaFacebook,
-          image: metaImage.value
+          image: newSeo.metaImage
       ),
       MetaSocial(
-          title: metaTitleField.value.text,
-          description: metaSocialDescriptionField.value.text,
+          title: newSeo.metaTitle,
+          description: metaSocialDescription,
           socialNetwork: ConstLib.metaTwitter,
-          image: metaImage.value
+          image: newSeo.metaImage
       )
     ]);
+    newSeo.metaImage = mediaFilePickerController.metaImage.value;
+    config.value.seo = newSeo;
 
-    newConfig.seo = newSeo;
-    logInfo(newConfig.toJson(), logLabel: 'new_config');
+    logInfo(config.value.toJson(), logLabel: 'new_config');
 
-    newConfig = await newConfig.save();
-    if (newConfig != null) {
-      config.value = newConfig;
-      Fluttertoast.showToast(msg: 'Config Updated!');
-    } else {
-      Fluttertoast.showToast(msg: 'Config Update Failed!');
-    }
+    config.value = await config.value.save();
+    Fluttertoast.showToast(msg: 'Config Updated!');
 
     saving.value = false;
   }

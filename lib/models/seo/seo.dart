@@ -12,7 +12,7 @@ class Seo {
     this.structuredData = '',
     this.metaViewport = '',
     this.canonicalUrl = '',
-    this.metaImage,
+    required this.metaImage,
     required this.metaSocial,
   });
 
@@ -24,7 +24,7 @@ class Seo {
   dynamic structuredData;
   String metaViewport;
   String canonicalUrl;
-  MediaFile? metaImage;
+  MediaFile metaImage;
   List<MetaSocial> metaSocial;
 
   factory Seo.fromJson(Map<String, dynamic> json) => Seo(
@@ -36,7 +36,7 @@ class Seo {
     structuredData: json["structuredData"],
     metaViewport: json["metaViewport"] ?? '',
     canonicalUrl: json["canonicalURL"] ?? '',
-    metaImage: json["metaImage"]["data"] != null ? MediaFile.fromJson(json["metaImage"]["data"]) : null,
+    metaImage: json["metaImage"]["data"] != null ? MediaFile.fromJson(json["metaImage"]["data"]) : MediaFile.dummy(),
     metaSocial: List<MetaSocial>.from(json["metaSocial"].map((x) => MetaSocial.fromJson(x))),
   );
 
@@ -54,7 +54,7 @@ class Seo {
     "structuredData": structuredData,
     "metaViewport": metaViewport,
     "canonicalURL": canonicalUrl,
-    "metaImage": metaImage?.id,
+    "metaImage": metaImage.id,
     "metaSocial": List<dynamic>.from(metaSocial.map((x) => x.toJson())),
   };
 }

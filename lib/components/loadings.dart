@@ -1,12 +1,65 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class Loadings {
-  static Widget basic() {
-    return const Center(
-      child: CircularProgressIndicator(
-        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-        strokeWidth: 2,
+  static Widget basic({
+    Size size = const Size(20, 20),
+    double width = 2,
+    Color? color
+  }) {
+    return Center(
+      child: SizedBox(
+        width: size.width,
+        height: size.height,
+        child: CircularProgressIndicator(
+          strokeWidth: width,
+          valueColor: AlwaysStoppedAnimation<Color>(color ?? Get.theme.progressIndicatorTheme.color ?? Colors.lightBlueAccent),
+        ),
       ),
     );
   }
+
+  static Widget get basicPrimary => basic(color: Colors.indigoAccent, size: const Size(18, 18));
+  static Widget get basicPrimarySmall => basic(color: Colors.indigoAccent, size: const Size(15, 15));
+  static Widget get basicSecondary => basic(color: Colors.indigoAccent, size: const Size(18, 18));
+  static Widget get basicSecondarySmall => basic(color: Colors.indigoAccent, size: const Size(15, 15));
+  static Widget get basicLight => basic(color: Colors.indigoAccent, size: const Size(17, 17));
+  static Widget get basicLightSmall => basic(color: Colors.indigoAccent, size: const Size(15, 15));
+  static Widget get primaryWithBg => Center(
+    child: CircleAvatar(
+      radius: 20,
+      backgroundColor: Get.theme.progressIndicatorTheme.refreshBackgroundColor ?? Colors.white,
+      child: basic(),
+    ),
+  );
+
+  static Widget get primaryWithBgDark => Center(
+    child: CircleAvatar(
+      radius: 20,
+      backgroundColor: Colors.black26,
+      child: basic(color: Colors.indigoAccent),
+    ),
+  );
+
+  static Widget get primaryWithBgLight => Center(
+    child: CircleAvatar(
+      radius: 20,
+      backgroundColor: Colors.white10,
+      child: basic(color: Colors.indigoAccent),
+    ),
+  );
+
+  static Widget overlaid() => Container(
+    width: Get.width,
+    height: Get.height,
+    color: Colors.black26,
+    child: Center(
+      child: SizedBox(
+        width: double.infinity,
+        height: 50,
+        // color: Colors.orangeAccent.withOpacity(0.4),
+        child: basic(),
+      ),
+    ),
+  );
 }

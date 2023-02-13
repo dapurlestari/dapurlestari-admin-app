@@ -96,7 +96,7 @@ class Config {
     return null;
   }
 
-  Future<Config?> save() async {
+  Future<Config> save() async {
     StrapiResponse response = await API.put(
         page: 'config',
         data: toJson(),
@@ -114,6 +114,6 @@ class Config {
       return Config.fromJson(response.data['attributes']);
     }
 
-    return null;
+    return Config.dummy();
   }
 }
