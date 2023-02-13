@@ -1,6 +1,7 @@
 import 'package:admin/components/custom_scaffold.dart';
 import 'package:admin/models/image/media_file.dart';
 import 'package:admin/screens/media_library/media_library_screen.dart';
+import 'package:admin/services/logger.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
@@ -320,6 +321,7 @@ class SettingsScreen extends StatelessWidget {
                           ));
                           if (media != null) {
                             settingsController.metaImage.value = media;
+                            logInfo(settingsController.metaImage.value.id, logLabel: 'media_id');
                           }
                         },
                       ),

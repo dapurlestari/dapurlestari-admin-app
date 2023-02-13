@@ -6,6 +6,7 @@ import '../../env/env.dart';
 
 class MediaFile {
   MediaFile({
+    this.id = 0,
     this.name = '',
     this.alternativeText = '',
     this.caption = '',
@@ -25,6 +26,7 @@ class MediaFile {
     this.selected = false
   });
 
+  int id;
   String name;
   String alternativeText;
   String caption;
@@ -44,8 +46,10 @@ class MediaFile {
   bool selected;
 
   factory MediaFile.fromJson(Map<String, dynamic> map) {
+    int id = map['id'];
     final json = map.containsKey('attributes') ? map['attributes'] : map;
     return MediaFile(
+      id: id,
       name: json["name"],
       alternativeText: json["alternativeText"] ?? '',
       caption: json["caption"] ?? '',

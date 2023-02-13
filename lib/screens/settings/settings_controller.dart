@@ -92,6 +92,7 @@ class SettingsController extends GetxController {
       metaDescriptionField.value.text = config.seo.metaDescription;
       canonicalURLField.value.text = config.seo.canonicalUrl;
       metaKeywordsField.value.text = config.seo.keywords;
+      metaImage.value = config.seo.metaImage ?? MediaFile.dummy();
     }
   }
 
@@ -139,6 +140,7 @@ class SettingsController extends GetxController {
     newSeo.metaDescription = metaDescriptionField.value.text;
     newSeo.canonicalUrl = canonicalURLField.value.text;
     newSeo.keywords = metaKeywordsField.value.text;
+    newSeo.metaImage = metaImage.value;
     newConfig.seo = newSeo;
     logInfo(newConfig.toJson(), logLabel: 'new_config');
 

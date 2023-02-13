@@ -54,6 +54,7 @@ class Seo {
     "structuredData": structuredData,
     "metaViewport": metaViewport,
     "canonicalURL": canonicalUrl,
+    "metaImage": metaImage?.id,
     "metaSocial": List<dynamic>.from(metaSocial.map((x) => x.toJson())),
   };
 }
