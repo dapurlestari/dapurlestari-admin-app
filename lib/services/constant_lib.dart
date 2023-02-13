@@ -7,4 +7,8 @@ class ConstLib {
   // API Structure Keys
   static const String id = 'id';
   static const String attributes = 'attributes';
+
+  /* SEO */
+  static const String metaFacebook = 'Facebook';
+  static const String metaTwitter = 'Twitter';
 }

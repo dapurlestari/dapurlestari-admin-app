@@ -1,3 +1,4 @@
+import 'package:admin/services/soft_keyboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
@@ -9,6 +10,7 @@ class CustomField {
     String label = '',
     int? minLines,
     int maxLines = 1,
+    int? maxLength,
     TextInputAction? action,
     EdgeInsets? margin
   }) {
@@ -18,6 +20,9 @@ class CustomField {
         controller: controller,
         minLines: minLines,
         maxLines: maxLines,
+        inputFormatters: maxLength != null ? [
+          SoftKeyboard.limit(maxLength)
+        ] : null,
         textInputAction: action ?? (maxLines > 1 ? TextInputAction.newline : TextInputAction.next),
         style: Get.textTheme.bodyLarge?.copyWith(
             fontSize: 16,

@@ -82,8 +82,9 @@ class Config {
         populateMode: APIPopulate.custom,
         populateList: [
           'seo.metaSocial',
+          'seo.metaSocial.image',
           'seo.metaImage',
-          'map.markers'
+          'map.markers',
         ],
         // showLog: true
     );
@@ -102,6 +103,7 @@ class Config {
         populateMode: APIPopulate.custom,
         populateList: [
           'seo.metaSocial',
+          'seo.metaSocial.image',
           'seo.metaImage',
           'map.markers'
         ],

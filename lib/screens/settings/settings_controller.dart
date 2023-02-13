@@ -1,6 +1,8 @@
 import 'package:admin/models/app/config.dart';
 import 'package:admin/models/image/media_file.dart';
 import 'package:admin/models/map/map_marker.dart';
+import 'package:admin/models/seo/meta_social.dart';
+import 'package:admin/services/constant_lib.dart';
 import 'package:admin/services/logger.dart';
 import 'package:admin/services/soft_keyboard.dart';
 import 'package:flutter/cupertino.dart';
@@ -48,6 +50,7 @@ class SettingsController extends GetxController {
   /* SEO */
   final metaTitleField = TextEditingController().obs;
   final metaDescriptionField = TextEditingController().obs;
+  final metaSocialDescriptionField = TextEditingController().obs;
   final canonicalURLField = TextEditingController().obs;
   final metaKeywordsField = TextEditingController().obs;
   final metaImage = MediaFile.dummy().obs;
@@ -90,6 +93,9 @@ class SettingsController extends GetxController {
 
       metaTitleField.value.text = config.seo.metaTitle;
       metaDescriptionField.value.text = config.seo.metaDescription;
+      if (config.seo.metaSocial.isNotEmpty) {
+        metaSocialDescriptionField.value.text = config.seo.metaSocial[0].description;
+      }
       canonicalURLField.value.text = config.seo.canonicalUrl;
       metaKeywordsField.value.text = config.seo.keywords;
       metaImage.value = config.seo.metaImage ?? MediaFile.dummy();
@@ -141,6 +147,21 @@ class SettingsController extends GetxController {
     newSeo.canonicalUrl = canonicalURLField.value.text;
     newSeo.keywords = metaKeywordsField.value.text;
     newSeo.metaImage = metaImage.value;
+    newSeo.metaSocial.addAll([
+      MetaSocial(
+          title: metaTitleField.value.text,
+          description: metaSocialDescriptionField.value.text,
+          socialNetwork: ConstLib.metaFacebook,
+          image: metaImage.value
+      ),
+      MetaSocial(
+          title: metaTitleField.value.text,
+          description: metaSocialDescriptionField.value.text,
+          socialNetwork: ConstLib.metaTwitter,
+          image: metaImage.value
+      )
+    ]);
+
     newConfig.seo = newSeo;
     logInfo(newConfig.toJson(), logLabel: 'new_config');
 

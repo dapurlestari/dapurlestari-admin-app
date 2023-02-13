@@ -231,9 +231,17 @@ class SettingsScreen extends StatelessWidget {
                     CustomField.text(
                       controller: settingsController.metaDescriptionField.value,
                       hint: 'Describe your site here',
-                      label: 'Meta Description (Applied to Meta Social)',
+                      label: 'Meta Description',
                       minLines: 1,
                       maxLines: 2
+                    ),
+                    CustomField.text(
+                      controller: settingsController.metaSocialDescriptionField.value,
+                      hint: 'Add description for social media',
+                      label: 'Meta Social Description (Max. 65)',
+                      minLines: 1,
+                      maxLines: 2,
+                      maxLength: 65
                     ),
                     CustomField.text(
                       controller: settingsController.canonicalURLField.value,
