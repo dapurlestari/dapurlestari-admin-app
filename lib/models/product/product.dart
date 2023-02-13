@@ -1,10 +1,9 @@
 import 'package:admin/models/image/media_file.dart';
+import 'package:admin/models/seo/seo.dart';
 import 'package:admin/services/api.dart';
 import 'package:admin/services/constant_lib.dart';
 import 'package:admin/services/logger.dart';
 import 'package:admin/services/strapi_response.dart';
-
-import 'seo.dart';
 
 class Product {
 
@@ -99,11 +98,15 @@ class Product {
   String get thumbnail => hasImages ? images!.first.formats!.thumbnail.url : '';
   String get image => hasImages ? images!.first.url : '';
 
-  static Future<List<Product>> get() async {
+  static Future<List<Product>> get({
+    int page = 1
+  }) async {
     StrapiResponse response = await API.get(
       page: 'products',
+      paginate: true,
+      paginationPage: page,
       populateMode: APIPopulate.all,
-      showLog: true
+      // showLog: true
     );
 
     if (response.isSuccess) {
