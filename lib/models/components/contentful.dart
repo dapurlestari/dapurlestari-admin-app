@@ -30,10 +30,10 @@ class Contentful {
   );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
+    // "id": id,
     "title": title,
     "subtitle": subtitle,
     "content": content,
-    "featured_image": featuredImage.toJson(),
+    "featured_image": featuredImage.id,
   };
 }

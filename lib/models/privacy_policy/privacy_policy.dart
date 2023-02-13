@@ -36,11 +36,8 @@ class PrivacyPolicy {
   );
 
   Map<String, dynamic> toJson() => {
-    "createdAt": createdAt.toIso8601String(),
-    "updatedAt": updatedAt.toIso8601String(),
-    "publishedAt": publishedAt.toIso8601String(),
     "contentful": contentful.toJson(),
-    "seo": seo.toJson(),
+    // "seo": seo.toJson(),
   };
 
   static Future<PrivacyPolicy> get() async {
@@ -48,6 +45,21 @@ class PrivacyPolicy {
       page: ConstLib.privacyPolicyPage,
       populateMode: APIPopulate.deep,
       // showLog: true
+    );
+
+    if (response.isSuccess) {
+      return PrivacyPolicy.fromJson(response.data[ConstLib.attributes]);
+    }
+
+    return PrivacyPolicy.dummy();
+  }
+
+  Future<PrivacyPolicy> save() async {
+    StrapiResponse response = await API.put(
+      page: ConstLib.privacyPolicyPage,
+      data: toJson(),
+      populateMode: APIPopulate.deep,
+      showLog: true
     );
 
     if (response.isSuccess) {
