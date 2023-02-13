@@ -1,4 +1,5 @@
 import 'package:admin/screens/bundle/bundle_screen.dart';
+import 'package:admin/screens/category/category_screen.dart';
 import 'package:admin/services/api.dart';
 import 'package:admin/services/constant_lib.dart';
 import 'package:admin/services/strapi_response.dart';
@@ -43,6 +44,9 @@ class ContentType {
     switch (apiId) {
       case ConstLib.bundle:
         Get.to(() => BundleScreen());
+        break;
+      case ConstLib.category:
+        Get.to(() => CategoryScreen());
         break;
     }
   }
