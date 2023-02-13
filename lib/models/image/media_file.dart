@@ -1,6 +1,13 @@
 
+import 'dart:io';
+
 import 'package:admin/services/api.dart';
+import 'package:admin/services/logger.dart';
 import 'package:admin/services/strapi_response.dart';
+import 'package:dio/dio.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:path/path.dart';
+import 'package:http_parser/http_parser.dart' show MediaType;
 
 import '../../env/env.dart';
 
@@ -111,6 +118,35 @@ class MediaFile {
 
     if (response.isSuccess) {
       return (response.data as List).map((e) => MediaFile.fromJson(e)).toList();
+    }
+
+    return null;
+  }
+
+  static Future<MediaFile?> upload({
+    required File file
+  }) async {
+    Map<String, dynamic> data = {
+      'files': MultipartFile.fromBytes(
+        file.readAsBytesSync(),
+        filename: basename(file.path),
+        contentType: MediaType('image', extension(file.path).replaceAll('.', ''))
+      ),
+    };
+    StrapiResponse response = await API.post(
+      page: 'upload',
+      files: data,
+      encodedData: false,
+      // populateMode: APIPopulate.all,
+      // showLog: true
+    );
+
+    if (response.isSuccess) {
+      Fluttertoast.showToast(msg: 'Success upload media!');
+      logInfo(response.data, logLabel: 'upload_response');
+      return MediaFile.fromJson(response.data[0]); // response is a list
+    } else {
+      Fluttertoast.showToast(msg: 'Failed upload media!');
     }
 
     return null;

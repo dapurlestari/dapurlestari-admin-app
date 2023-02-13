@@ -33,6 +33,12 @@ class MediaLibraryScreen extends StatelessWidget {
           ),
           onPressed: _mainController.mediaLibraryEnableGridView.toggle,
         ),
+        IconButton(
+          icon: Icon(FeatherIcons.upload,
+            color: Colors.grey.shade800
+          ),
+          onPressed: _mainController.uploadToLibrary,
+        ),
         if (enableSelection) IconButton(
           icon: Icon(FeatherIcons.save,
             color: Colors.grey.shade800,

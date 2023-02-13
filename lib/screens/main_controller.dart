@@ -1,8 +1,13 @@
 
+import 'dart:io';
+
+import 'package:admin/components/image_manager/image_cropper.dart';
 import 'package:admin/models/image/media_file.dart';
 import 'package:admin/models/server/content_type.dart';
 import 'package:admin/services/logger.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 class MainController extends GetxController {
   final contentTypes = <ContentType>[].obs;
@@ -33,6 +38,36 @@ class MainController extends GetxController {
       mediaFiles.value = media;
     }
     isLoadingMediaLibrary.value = false;
+  }
+
+  Future<void> uploadToLibrary() async {
+    MediaFile? media = await uploadMediaFile();
+    if (media != null) {
+      mediaFiles.insert(0, media);
+    }
+  }
+
+  Future<MediaFile?> uploadMediaFile({Function? onComplete}) async {
+    final ImagePicker picker = ImagePicker();
+    final xFile = await picker.pickImage(source: ImageSource.gallery);
+
+    logInfo(xFile != null, logLabel: 'file_upload');
+    if (xFile != null) {
+      File? croppedFile = await CustomImageCropper.defaultCropperWithCompression(
+          file: File(xFile.path),
+          title: 'Media File'
+      );
+
+      if (croppedFile != null) {
+        logInfo(croppedFile.path, logLabel: 'cropped_path');
+        return await MediaFile.upload(file: croppedFile);
+      }
+    } else {
+      Fluttertoast.showToast(msg: 'Pick image canceled by user!');
+    }
+
+    if (onComplete != null) onComplete();
+    return null;
   }
 
   @override
