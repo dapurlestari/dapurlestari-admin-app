@@ -1,5 +1,6 @@
 import 'package:admin/screens/bundle/bundle_screen.dart';
 import 'package:admin/screens/category/category_screen.dart';
+import 'package:admin/screens/faq/faq_screen.dart';
 import 'package:admin/screens/product/product_screen.dart';
 import 'package:admin/screens/social_media/social_media_screen.dart';
 import 'package:admin/services/api.dart';
@@ -56,6 +57,9 @@ class ContentType {
         break;
       case ConstLib.socialMedia:
         Get.to(() => SocialMediaScreen());
+        break;
+      case ConstLib.faq:
+        Get.to(() => FaqScreen());
         break;
       default:
         Fluttertoast.showToast(msg: 'Coming soon!');
