@@ -6,6 +6,7 @@ import 'package:admin/screens/bundle/bundle_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class BundleScreen extends StatelessWidget {
@@ -20,7 +21,13 @@ class BundleScreen extends StatelessWidget {
         showBackButton: true,
         actions: [
           if (_controller.isRefresh.value) Loadings.basicPrimary,
-          const SizedBox(width: 20,)
+          const SizedBox(width: 20,),
+          IconButton(
+            icon: const Icon(LineIcons.plus,
+                color: Colors.indigoAccent
+            ),
+            onPressed: () => Get.to(() => BundleForm(bundle: Bundle.dummy())),
+          )
         ],
         body: SmartRefresher(
           controller: _controller.refresher.value,

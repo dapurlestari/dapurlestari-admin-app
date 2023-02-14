@@ -1,10 +1,10 @@
 
 import 'package:admin/components/loadings.dart';
+import 'package:admin/components/table/tables.dart';
 import 'package:admin/models/image/media_file.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
@@ -81,38 +81,6 @@ class _ImageViewerState extends State<ImageViewer> {
     ),
   );
 
-  Widget get _unablePreviewIndicator {
-    bool isImage = widget.images[_index].isImage;
-    if (!isImage) {
-      return Container();
-    }
-
-    return Container(
-      height: 50,
-      margin: const EdgeInsets.symmetric(horizontal: 20),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: Colors.grey.shade800.withOpacity(0.75),
-        borderRadius: BorderRadius.circular(30),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Icon(FeatherIcons.x, color: Colors.grey.shade100, size: 18),
-          const SizedBox(width: 10),
-          Text(
-            'Oops, unable to preview this file!',
-            style: Get.textTheme.bodySmall?.copyWith(color: Colors.grey.shade100),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget get _extensionIndicator {
     if (kReleaseMode) return Container();
 
@@ -162,90 +130,62 @@ class _ImageViewerState extends State<ImageViewer> {
             0: FixedColumnWidth(100),
           },
           children: [
-            _exifItem(
+            Tables.rowItemLight(
               title: 'ID',
-              value: '#${media.id}'
+              value: '#${media.id}',
             ),
-            _exifItem(
+            Tables.rowItemLight(
               title: 'Name',
               value: media.name
             ),
-            _exifItem(
-                title: 'MIME Type',
-                value: media.mime
+            Tables.rowItemLight(
+              title: 'MIME Type',
+              value: media.mime
             ),
-            _exifItem(
+            Tables.rowItemLight(
               title: 'Extension',
               value: media.ext
             ),
-            _exifItem(
-                title: 'Dimension (px)',
-                value: '${media.width}x${media.height}'
+            Tables.rowItemLight(
+              title: 'Dimension (px)',
+              value: '${media.width}x${media.height}'
             ),
-            _exifItem(
-                title: 'File Size (kb)',
-                value: '${media.size}'
+            Tables.rowItemLight(
+              title: 'File Size (kb)',
+              value: '${media.size}'
             ),
-            _exifItem(
-                title: 'Available Formats',
-                value: media.availableFormats
+            Tables.rowItemLight(
+              title: 'Available Formats',
+              value: media.availableFormats
             ),
-            _exifItem(
-                title: 'Caption',
-                value: media.caption
+            Tables.rowItemLight(
+              title: 'Caption',
+              value: media.caption
             ),
-            _exifItem(
-                title: 'Alternative Text',
-                value: media.alternativeText
+            Tables.rowItemLight(
+              title: 'Alternative Text',
+              value: media.alternativeText
             ),
-            _exifItem(
-                title: 'Provider',
-                value: media.provider
+            Tables.rowItemLight(
+              title: 'Provider',
+              value: media.provider
             ),
-            _exifItem(
-                title: 'Preview URL',
-                value: media.previewUrl
+            Tables.rowItemLight(
+              title: 'Preview URL',
+              value: media.previewUrl
             ),
-            _exifItem(
-                title: 'URL',
-                value: media.url
+            Tables.rowItemLight(
+              title: 'URL',
+              value: media.url
             ),
-            _exifItem(
-                title: 'File Hash',
-                value: media.hash
+            Tables.rowItemLight(
+              title: 'File Hash',
+              value: media.hash
             ),
           ],
         ),
       ),
     );
-  }
-
-  TableRow _exifItem({
-    required String title,
-    required String value
-  }) {
-    return TableRow(children: [
-      Padding(
-        padding: const EdgeInsets.only(bottom: 10,),
-        child: Text(
-          title,
-          style: Get.textTheme.titleSmall?.copyWith(
-              color: Colors.white,
-              fontWeight: FontWeight.w600
-          )
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.only(left: 20, bottom: 10),
-        child: Text(
-          value.isEmpty ? '-' : value,
-          style: Get.textTheme.titleSmall?.copyWith(
-              color: Colors.white,
-              fontWeight: FontWeight.w300
-          ),
-        ),
-      )
-    ]);
   }
 
   Widget get _pageIndicator => Container(

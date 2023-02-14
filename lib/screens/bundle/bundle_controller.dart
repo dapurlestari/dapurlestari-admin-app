@@ -40,13 +40,35 @@ class BundleController extends GetxController {
     descriptionField.value.text = bundle.description;
   }
 
-  Future<void> save() async {
+  Future<void> add() async {
+    saving.value = true;
+    Bundle bundle = Bundle.dummy();
+    bundle.name = titleField.value.text;
+    bundle.description = descriptionField.value.text;
+    bundle = await bundle.add();
+    bundles.add(bundle);
+    saving.value = false;
+    Get.back(); // bac to list
+  }
+
+  Future<void> edit() async {
     saving.value = true;
     bundle.value.name = titleField.value.text;
     bundle.value.description = descriptionField.value.text;
     bundle.value = await bundle.value.save();
     bundles.refresh();
     saving.value = false;
+  }
+
+  Future<void> save() async {
+    bool valid = titleField.value.text.isNotEmpty && descriptionField.value.text.isNotEmpty;
+    if (valid) {
+      if (bundle.value.isNotEmpty) {
+        edit();
+      } else {
+        add();
+      }
+    }
   }
 
   @override

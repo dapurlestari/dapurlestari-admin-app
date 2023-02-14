@@ -49,6 +49,8 @@ class Bundle {
     // "products": List<dynamic>.from(products.map((x) => x.toJson())),
   };
 
+  bool get isNotEmpty => id > 0;
+
   static Future<List<Bundle>> get({
     int page = 1
   }) async {
@@ -66,6 +68,20 @@ class Bundle {
     }
 
     return [];
+  }
+
+  Future<Bundle> add() async {
+    StrapiResponse response = await API.post(
+        page: 'bundles',
+        data: toJson()
+        // showLog: true
+    );
+
+    if (response.isSuccess) {
+      return Bundle.fromJson(response.data[ConstLib.attributes], response.data[ConstLib.id]);
+    }
+
+    return Bundle.dummy();
   }
 
   Future<Bundle> save() async {

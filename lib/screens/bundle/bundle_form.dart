@@ -1,8 +1,8 @@
-import 'package:admin/components/buttons/custom_button.dart';
 import 'package:admin/components/custom_scaffold.dart';
 import 'package:admin/components/forms/custom_text_field.dart';
 import 'package:admin/components/loadings.dart';
 import 'package:admin/models/bundle/bundle.dart';
+import 'package:admin/screens/components/date_time_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
@@ -23,7 +23,7 @@ class BundleForm extends StatelessWidget {
     _controller.initForm(bundle);
 
     return Obx(() => CustomScaffold(
-        title: 'Bundle #${bundle.id}',
+        title: bundle.isNotEmpty ? 'Bundle #${bundle.id}' : 'Bundle',
         actions: [
           IconButton(
             icon: _controller.saving.value
@@ -60,8 +60,17 @@ class BundleForm extends StatelessWidget {
                         ],
                       )
                   ),
-                  const SizedBox(height: 40),
-                  CustomField.fieldGroup(
+                  if (bundle.isNotEmpty) const SizedBox(height: 40),
+                  if (bundle.isNotEmpty) CustomField.fieldGroup(
+                    label: 'Info',
+                    content: DateTimeInfo(
+                        created: bundle.createdAt,
+                        published: bundle.publishedAt,
+                        edited: bundle.updatedAt
+                    )
+                  ),
+                  if (bundle.isNotEmpty) const SizedBox(height: 50),
+                  if (bundle.isNotEmpty) CustomField.fieldGroup(
                       label: 'Products',
                       content: TextButton(
                         child: Row(
