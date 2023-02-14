@@ -17,7 +17,7 @@ class StrapiResponse {
     } else if (json.containsKey('meta')) {
       return StrapiResponse.success(json);
     } else {
-      return StrapiResponse();
+      return StrapiResponse.errorDefault();
     }
   }
 
@@ -31,7 +31,11 @@ class StrapiResponse {
   );
 
   factory StrapiResponse.error(Map<String, dynamic> json) => StrapiResponse(
-    meta: Meta.fromJson(json["error"]),
+    error: Error.fromJson(json["error"]),
+  );
+
+  factory StrapiResponse.errorDefault() => StrapiResponse(
+    error: Error(),
   );
 
   Map<String, dynamic> toJson() => {
@@ -47,23 +51,23 @@ class Meta {
     required this.pagination,
   });
 
-  Pagination pagination;
+  Pagination? pagination;
 
   factory Meta.fromJson(Map<String, dynamic> json) => Meta(
-    pagination: Pagination.fromJson(json["pagination"]),
+    pagination: Pagination.fromJson(json["pagination"] ?? Pagination().toJson()),
   );
 
   Map<String, dynamic> toJson() => {
-    "pagination": pagination.toJson(),
+    "pagination": pagination?.toJson(),
   };
 }
 
 class Pagination {
   Pagination({
-    required this.page,
-    required this.pageSize,
-    required this.pageCount,
-    required this.total,
+    this.page = 0,
+    this.pageSize = 0,
+    this.pageCount = 0,
+    this.total = 0,
   });
 
   int page;
@@ -88,29 +92,29 @@ class Pagination {
 
 class Error {
   Error({
-    required this.status,
-    required this.name,
-    required this.message,
-    required this.details,
+    this.status = 400,
+    this.name = 'None',
+    this.message = 'None',
+    // required this.details,
   });
 
   int status;
   String name;
   String message;
-  ErrorDetails details;
+  // ErrorDetails details;
 
   factory Error.fromJson(Map<String, dynamic> json) => Error(
     status: json["status"],
     name: json["name"],
     message: json["message"],
-    details: ErrorDetails.fromJson(json["details"]),
+    // details: ErrorDetails.fromJson(json["details"]),
   );
 
   Map<String, dynamic> toJson() => {
     "status": status,
     "name": name,
     "message": message,
-    "details": details.toJson(),
+    // "details": details.toJson(),
   };
 }
 
