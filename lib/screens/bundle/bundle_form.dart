@@ -1,8 +1,10 @@
+import 'package:admin/components/buttons/custom_button.dart';
 import 'package:admin/components/custom_scaffold.dart';
 import 'package:admin/components/forms/custom_text_field.dart';
 import 'package:admin/components/loadings.dart';
 import 'package:admin/models/bundle/bundle.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 
@@ -59,6 +61,19 @@ class BundleForm extends StatelessWidget {
                   )
               ),
               const SizedBox(height: 40),
+              CustomField.fieldGroup(
+                  label: 'Products',
+                  content: TextButton(
+                    child: Row(
+                      children: const [
+                        Text('View Related Products'),
+                        SizedBox(width: 4),
+                        Icon(FeatherIcons.arrowRight, size: 14,)
+                      ],
+                    ),
+                    onPressed: () {},
+                  )
+              ),
             ],
           ),
         )

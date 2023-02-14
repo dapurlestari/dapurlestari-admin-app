@@ -57,7 +57,7 @@ class Bundle {
         paginate: true,
         paginationPage: page,
         populateMode: APIPopulate.all,
-        showLog: true
+        // showLog: true
     );
 
     if (response.isSuccess) {
