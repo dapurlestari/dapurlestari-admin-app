@@ -25,7 +25,7 @@ class MediaFile {
     this.mime = '',
     this.size = 0,
     this.url = '',
-    this.previewUrl,
+    this.previewUrl = '',
     required this.provider,
     this.providerMetadata,
     required this.createdAt,
@@ -45,7 +45,7 @@ class MediaFile {
   String mime;
   double size;
   String url;
-  dynamic previewUrl;
+  String previewUrl;
   String provider;
   dynamic providerMetadata;
   DateTime createdAt;
@@ -68,7 +68,7 @@ class MediaFile {
       mime: json["mime"],
       size: json["size"]?.toDouble(),
       url: '${Env.baseURL}${json["url"]}',
-      previewUrl: json["previewUrl"],
+      previewUrl: json["previewUrl"] ?? '',
       provider: json["provider"],
       providerMetadata: json["provider_metadata"],
       createdAt: DateTime.parse(json["createdAt"]),
@@ -106,6 +106,12 @@ class MediaFile {
 
   String get getAlternativeText => alternativeText.isNotEmpty ? alternativeText : 'No Alternative Text Provided';
   String get mimeExtOnly => mime.split('/')[1].toUpperCase();
+  String get availableFormats {
+    if (formats == null) return '';
+    return formats!.toJson().keys.map((e)
+      => '$e: ${formats!.toJson()[e].isNotEmpty}'
+    ).join(', ');
+  }
   bool get isImage => mime.contains('image');
   bool get hasURL => url.isNotEmpty;
 
@@ -164,26 +170,36 @@ class MediaFile {
 
 class ImageFormat {
   ImageFormat({
-    // required this.small,
     required this.thumbnail,
+    required this.small,
+    required this.medium,
+    required this.large,
   });
 
-  // SizeFormat small;
   SizeFormat thumbnail;
+  SizeFormat small;
+  SizeFormat medium;
+  SizeFormat large;
 
   factory ImageFormat.fromJson(Map<String, dynamic> json) => ImageFormat(
-    // small: SizeFormat.fromJson(json["small"]),
     thumbnail: SizeFormat.fromJson(json["thumbnail"]),
+    small: json.containsKey('small') ? SizeFormat.fromJson(json["small"]) : SizeFormat.dummy(),
+    medium: json.containsKey('medium') ? SizeFormat.fromJson(json["medium"]) : SizeFormat.dummy(),
+    large: json.containsKey('large') ? SizeFormat.fromJson(json["large"]) : SizeFormat.dummy(),
   );
 
   factory ImageFormat.dummy() => ImageFormat(
-    // small: SizeFormat.fromJson(json["small"]),
     thumbnail: SizeFormat.dummy(),
+    small: SizeFormat.dummy(),
+    medium: SizeFormat.dummy(),
+    large: SizeFormat.dummy(),
   );
 
   Map<String, dynamic> toJson() => {
-    // "small": small.toJson(),
-    "thumbnail": thumbnail.toJson(),
+    "thumbnail": !thumbnail.isValid ? '' : thumbnail.toJson(),
+    "small": !small.isValid ? '' : small.toJson(),
+    "medium": !medium.isValid ? '' : medium.toJson(),
+    "large": !large.isValid ? '' : large.toJson(),
   };
 }
 
@@ -223,6 +239,8 @@ class SizeFormat {
   );
 
   factory SizeFormat.dummy() => SizeFormat();
+
+  bool get isValid => ext.isNotEmpty;
 
   Map<String, dynamic> toJson() => {
     "ext": ext,

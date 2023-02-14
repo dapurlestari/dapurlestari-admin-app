@@ -1,4 +1,5 @@
 import 'package:admin/components/custom_scaffold.dart';
+import 'package:admin/components/image_manager/image_viewer.dart';
 import 'package:admin/components/loadings.dart';
 import 'package:admin/models/image/media_file.dart';
 import 'package:admin/screens/main_controller.dart';
@@ -159,24 +160,30 @@ class MediaLibraryScreen extends StatelessWidget {
   }
 
   Widget mediaImage(MediaFile media) {
-    return CachedNetworkImage(
-      imageUrl: media.url,
-      imageBuilder: (context, imageProvider) => Container(
-        decoration: BoxDecoration(
-            border: Border.all(color: Colors.indigoAccent),
-            borderRadius: BorderRadius.circular(10),
-            image: DecorationImage(
-              image: imageProvider,
-              fit: BoxFit.cover,
-            )
+    return InkWell(
+      child: CachedNetworkImage(
+        imageUrl: media.url,
+        imageBuilder: (context, imageProvider) => Container(
+          decoration: BoxDecoration(
+              border: Border.all(color: Colors.indigoAccent),
+              borderRadius: BorderRadius.circular(10),
+              image: DecorationImage(
+                image: imageProvider,
+                fit: BoxFit.cover,
+              )
+          ),
+        ),
+        placeholder: (context, url) => Center(
+          child: Loadings.basicPrimary,
+        ),
+        errorWidget: (context, url, error) => const Center(
+          child: Text('Image Error')
         ),
       ),
-      placeholder: (context, url) => Center(
-        child: Loadings.basicPrimary,
-      ),
-      errorWidget: (context, url, error) => const Center(
-        child: Text('Image Error')
-      ),
+      onTap: () {
+        int index = _mainController.mediaFiles.indexWhere((e) => e.id == media.id);
+        Get.to(() => ImageViewer(images: _mainController.mediaFiles, initialPage: index,));
+      },
     );
   }
 
