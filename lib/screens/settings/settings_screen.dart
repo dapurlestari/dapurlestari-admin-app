@@ -28,7 +28,7 @@ class SettingsScreen extends StatelessWidget {
         showBackButton: showBackButton,
         actions: [
           IconButton(
-            icon: settingsController.saving.value
+            icon: settingsController.saving.value || settingsController.isRefresh.value
                 ? Loadings.basicPrimary
                 : const Icon(LineIcons.checkCircle,
               color: Colors.indigoAccent

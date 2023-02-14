@@ -8,6 +8,7 @@ import 'package:admin/services/logger.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class MainController extends GetxController {
   final contentTypes = <ContentType>[].obs;
@@ -17,6 +18,7 @@ class MainController extends GetxController {
   final isLoadingContentTypes = false.obs;
   final isLoadingMediaLibrary = false.obs;
   final mediaLibraryEnableGridView = false.obs;
+  final mediaLibraryRefresher = RefreshController().obs;
 
   Future<void> _fetchContentTypes() async {
     isLoadingContentTypes.value = true;
@@ -39,13 +41,19 @@ class MainController extends GetxController {
   }
 
   Future<void> _fetchMedia() async {
-    isLoadingMediaLibrary.value = true;
     List<MediaFile>? media = await MediaFile.get();
     if (media != null) {
       logInfo(media.first.name, logLabel: 'first_media');
       mediaFiles.value = media;
     }
     isLoadingMediaLibrary.value = false;
+    mediaLibraryRefresher.value.refreshCompleted();
+    mediaLibraryRefresher.value.loadComplete();
+  }
+
+  void refreshMediaLibrary() {
+    isLoadingMediaLibrary.value = true;
+    _fetchMedia();
   }
 
   Future<void> uploadToLibrary() async {
@@ -81,7 +89,7 @@ class MainController extends GetxController {
   @override
   void onInit() {
     _fetchContentTypes();
-    _fetchMedia();
+    refreshMediaLibrary();
     super.onInit();
   }
 }

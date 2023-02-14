@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class MediaLibraryScreen extends StatelessWidget {
   final bool enableSelection;
@@ -25,8 +26,14 @@ class MediaLibraryScreen extends StatelessWidget {
     return Obx(() => CustomScaffold(
       title: 'Media Library',
       showBackButton: true,
-      body: _body,
+      body: SmartRefresher(
+        controller: _mainController.mediaLibraryRefresher.value,
+        onRefresh: _mainController.refreshMediaLibrary,
+        child: _body,
+      ),
       actions: [
+        if (_mainController.isLoadingMediaLibrary.value) Loadings.basicPrimary,
+        const SizedBox(width: 10),
         IconButton(
           icon: Icon(
             _mainController.mediaLibraryEnableGridView.value
@@ -206,22 +213,29 @@ class MediaLibraryScreen extends StatelessWidget {
 
   Widget get _shimmer {
     return GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            childAspectRatio: 7/5,
-            mainAxisSpacing: 10,
+        padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: _mainController.mediaLibraryEnableGridView.value ? 3 : 2,
+            childAspectRatio: 1/1,
+            mainAxisSpacing: 16,
             crossAxisSpacing: 10
         ),
         itemCount: 12,
         itemBuilder: (_, i) {
-          return Container(
-            decoration: BoxDecoration(
+          return CachedNetworkImage(
+            imageUrl: MediaFile.dummyImage(),
+            fit: BoxFit.cover,
+            imageBuilder: (context, imageProvider) => Container(
+              decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(color: Colors.indigoAccent, width: 0.7)
+              )
             ),
-            child: CachedNetworkImage(
-              imageUrl: MediaFile.dummyImage(),
-              fit: BoxFit.contain,
+            placeholder: (context, url) => Center(
+              child: Loadings.basicPrimary,
+            ),
+            errorWidget: (context, url, error) => const Center(
+                child: Text('Image Error')
             ),
           );
         }

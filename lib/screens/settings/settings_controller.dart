@@ -15,6 +15,7 @@ import '../../models/seo/seo.dart';
 class SettingsController extends GetxController {
 
   final config = Config.dummy().obs;
+  final isRefresh = false.obs;
   final saving = false.obs;
 
   /* General */
@@ -49,6 +50,7 @@ class SettingsController extends GetxController {
   final markerDraggable = false.obs;
 
   Future<void> fetch() async {
+    isRefresh.value = true;
     final newConfig = await Config.get();
     if (newConfig != null) {
       logInfo(newConfig.copyright, logLabel: 'copyright');
@@ -84,6 +86,7 @@ class SettingsController extends GetxController {
         markerDraggable.value = marker.draggable;
       }
     }
+    isRefresh.value = false;
   }
 
   Future<void> save() async {

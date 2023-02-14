@@ -159,8 +159,8 @@ class MediaFile {
   }
 
   static String dummyImage({
-    int width = 500,
-    int height = 400,
+    int width = 300,
+    int height = 300,
     String extension = 'jpg',
     String text = 'No Image',
   }) {
