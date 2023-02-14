@@ -1,5 +1,6 @@
 import 'package:admin/models/bundle/bundle.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -62,12 +63,15 @@ class BundleController extends GetxController {
 
   Future<void> save() async {
     bool valid = titleField.value.text.isNotEmpty && descriptionField.value.text.isNotEmpty;
-    if (valid) {
-      if (bundle.value.isNotEmpty) {
-        edit();
-      } else {
-        add();
-      }
+    if (!valid) {
+      Fluttertoast.showToast(msg: 'All fields are required!');
+      return;
+    }
+
+    if (bundle.value.isNotEmpty) {
+      edit();
+    } else {
+      add();
     }
   }
 
