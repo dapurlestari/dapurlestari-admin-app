@@ -4,6 +4,7 @@ import 'package:admin/services/api.dart';
 import 'package:admin/services/constant_lib.dart';
 import 'package:admin/services/logger.dart';
 import 'package:admin/services/strapi_response.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Product {
 
@@ -19,8 +20,9 @@ class Product {
   int stock = 0;
   int status = 0;
   String slug;
-  String? createdAt;
-  String? updatedAt;
+  DateTime createdAt;
+  DateTime updatedAt;
+  DateTime publishedAt;
   String deletedAt = '';
   int productCategoryId = 0;
   int bundleId = 0;
@@ -40,8 +42,9 @@ class Product {
     this.stock = 0,
     this.status = 0,
     this.slug = '',
-    this.createdAt,
-    this.updatedAt,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.publishedAt,
     this.deletedAt = '',
     this.productCategoryId = 0,
     this.bundleId = 0,
@@ -49,8 +52,8 @@ class Product {
     this.seo,
   });
 
-  factory Product.fromJson(Map<String, dynamic> json) => Product(
-    id: json["id"] ?? 0,
+  factory Product.fromJson(Map<String, dynamic> json, int id) => Product(
+    id: id,
     code: json["code"] ?? '',
     name: json["name"] ?? '',
     description: json["description"] ?? '',
@@ -62,9 +65,9 @@ class Product {
     stock: json["stock"] ?? 0,
     status: json["status"] ?? 1,
     slug: json["slug"] ?? '',
-    createdAt: json["createdAt"] ?? '',
-    updatedAt: json["updatedAt"] ?? '',
-    deletedAt: json["deletedAt"] ?? '',
+    createdAt: DateTime.parse(json["createdAt"]),
+    updatedAt: DateTime.parse(json["updatedAt"]),
+    publishedAt: DateTime.parse(json["publishedAt"]),
     productCategoryId: json["product_category_id"] ?? 0,
     bundleId: json["bundle_id"] ?? 0,
     images: !json.containsKey('images')
@@ -73,9 +76,15 @@ class Product {
     seo: !json.containsKey('seo') ? null : json['seo'] == null ? null : Seo.fromJson(json['seo']),
   );
 
+  factory Product.dummy() => Product(
+    createdAt: DateTime.now(),
+    updatedAt: DateTime.now(),
+    publishedAt: DateTime.now()
+  );
+
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['id'] = id;
+    // data['id'] = id;
     data['code'] = code;
     data['name'] = name;
     data['description'] = description;
@@ -86,14 +95,15 @@ class Product {
     data['price'] = price;
     data['stock'] = stock;
     data['status'] = status;
-    data['created_at'] = createdAt;
-    data['updated_at'] = updatedAt;
-    data['deleted_at'] = deletedAt;
+    // data['created_at'] = createdAt.toIso8601String();
+    // data['updated_at'] = updatedAt.toIso8601String();
+    // data['deleted_at'] = deletedAt.toIso8601String();
     data['product_category_id'] = productCategoryId;
     data['bundle_id'] = bundleId;
     return data;
   }
 
+  bool get isNotEmpty => id > 0;
   bool get hasImages => images != null;
   String get thumbnail => hasImages ? images!.first.formats!.thumbnail.url : '';
   String get image => hasImages ? images!.first.url : '';
@@ -110,15 +120,40 @@ class Product {
     );
 
     if (response.isSuccess) {
-      return (response.data as List).map((e) {
-        // logInfo(e, logLabel: 'data');
-        int id = e[ConstLib.id];
-        Product product = Product.fromJson(e[ConstLib.attributes]);
-        product.id = id;
-        return product;
-      }).toList();
+      return (response.data as List).map((e)
+        => Product.fromJson(e[ConstLib.attributes], e[ConstLib.id])
+      ).toList();
     }
 
-    return [Product()];
+    return [];
+  }
+
+  Future<Product> add() async {
+    StrapiResponse response = await API.post(
+        page: 'products',
+        data: toJson()
+      // showLog: true
+    );
+
+    if (response.isSuccess) {
+      Fluttertoast.showToast(msg: 'Success add product');
+      return Product.fromJson(response.data[ConstLib.attributes], response.data[ConstLib.id]);
+    }
+
+    return Product.dummy();
+  }
+
+  Future<Product> save() async {
+    StrapiResponse response = await API.put(
+        page: 'products/$id',
+        data: toJson()
+      // showLog: true
+    );
+
+    if (response.isSuccess) {
+      return Product.fromJson(response.data[ConstLib.attributes], response.data[ConstLib.id]);
+    }
+
+    return Product.dummy();
   }
 }

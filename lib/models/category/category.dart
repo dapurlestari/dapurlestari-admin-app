@@ -13,7 +13,6 @@ class Category {
     required this.createdAt,
     required this.updatedAt,
     required this.publishedAt,
-    required this.products,
     required this.seo,
   });
 
@@ -23,7 +22,6 @@ class Category {
   DateTime createdAt;
   DateTime updatedAt;
   DateTime publishedAt;
-  List<Product> products;
   Seo seo;
 
   factory Category.fromJson(Map<String, dynamic> json, int id) => Category(
@@ -34,14 +32,12 @@ class Category {
     updatedAt: DateTime.parse(json["updatedAt"]),
     publishedAt: DateTime.parse(json["publishedAt"]),
     seo: json["seo"] != null ? Seo.fromJson(json["seo"]) : Seo.dummy(),
-    products: json["products"] == null ? [] : List<Product>.from(json["products"]["data"].map((x) => Product.fromJson(x))),
   );
 
   factory Category.dummy() => Category(
     createdAt: DateTime.now(),
     updatedAt: DateTime.now(),
     publishedAt: DateTime.now(),
-    products: [],
     seo: Seo.dummy(),
   );
 

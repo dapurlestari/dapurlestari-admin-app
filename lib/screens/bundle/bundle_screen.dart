@@ -64,7 +64,7 @@ class BundleScreen extends StatelessWidget {
       )),
       subtitle: Padding(
         padding: const EdgeInsets.only(left: 0.5),
-        child: Text('Products: ${bundle.products.length}',
+        child: Text(bundle.description,
           style: Get.textTheme.bodyMedium?.copyWith(
             color: Colors.blueGrey.shade500,
           )

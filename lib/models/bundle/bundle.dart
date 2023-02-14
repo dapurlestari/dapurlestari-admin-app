@@ -13,7 +13,6 @@ class Bundle {
     required this.createdAt,
     required this.updatedAt,
     required this.publishedAt,
-    required this.products,
   });
 
   int id;
@@ -22,7 +21,6 @@ class Bundle {
   DateTime createdAt;
   DateTime updatedAt;
   DateTime publishedAt;
-  List<Product> products;
 
   factory Bundle.fromJson(Map<String, dynamic> json, int id) => Bundle(
     id: id,
@@ -31,14 +29,12 @@ class Bundle {
     createdAt: DateTime.parse(json["createdAt"]),
     updatedAt: DateTime.parse(json["updatedAt"]),
     publishedAt: DateTime.parse(json["publishedAt"]),
-    products: json["products"] == null ? [] : List<Product>.from(json["products"]["data"].map((x) => Product.fromJson(x))),
   );
 
   factory Bundle.dummy() => Bundle(
     createdAt: DateTime.now(),
     updatedAt: DateTime.now(),
     publishedAt: DateTime.now(),
-    products: [],
   );
 
   Map<String, dynamic> toJson() => {

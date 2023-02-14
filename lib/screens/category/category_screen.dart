@@ -19,7 +19,6 @@ class CategoryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() => CustomScaffold(
         title: 'Category',
-        showBackButton: true,
         actions: [
           if (_controller.isRefresh.value) Loadings.basicPrimary,
           const SizedBox(width: 20,),
@@ -65,7 +64,7 @@ class CategoryScreen extends StatelessWidget {
       )),
       subtitle: Padding(
         padding: const EdgeInsets.only(left: 0.5),
-        child: Text('Products: ${category.products.length}',
+        child: Text(category.iconName,
           style: Get.textTheme.bodyMedium?.copyWith(
             color: Colors.blueGrey.shade500,
           )
