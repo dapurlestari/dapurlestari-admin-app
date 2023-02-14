@@ -77,7 +77,7 @@ class HomeScreen extends StatelessWidget {
     ));
   }
 
-  Widget statusCard(AccessStatus accessStatus) {
+  Widget statusCardCompact(AccessStatus accessStatus) {
     return Container(
       decoration: BoxDecoration(
           color: accessStatus.bgColor,
@@ -126,9 +126,7 @@ class HomeScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Icon(
-                accessStatus.healthy ? FeatherIcons.cloud : FeatherIcons.cloudOff
-              ),
+              Icon(accessStatus.icon),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

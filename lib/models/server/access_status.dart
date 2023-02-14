@@ -20,14 +20,14 @@ class AccessStatus {
     AccessStatus(
       id: 1,
       label: 'Server Status',
-      icon: FeatherIcons.home,
+      icon: FeatherIcons.server,
       bgColor: Colors.indigo.shade50,
       healthy: false,
     ),
     AccessStatus(
       id: 2,
       label: 'API Status',
-      icon: FeatherIcons.package,
+      icon: FeatherIcons.layers,
       bgColor: Colors.indigo.shade50,
       healthy: false,
     ),
