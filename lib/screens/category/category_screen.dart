@@ -1,8 +1,11 @@
 import 'package:admin/components/custom_scaffold.dart';
+import 'package:admin/components/loadings.dart';
 import 'package:admin/models/category/category.dart';
+import 'package:admin/screens/category/category_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'category_controller.dart';
@@ -17,6 +20,16 @@ class CategoryScreen extends StatelessWidget {
     return Obx(() => CustomScaffold(
         title: 'Category',
         showBackButton: true,
+        actions: [
+          if (_controller.isRefresh.value) Loadings.basicPrimary,
+          const SizedBox(width: 20,),
+          IconButton(
+            icon: const Icon(LineIcons.plus,
+                color: Colors.indigoAccent
+            ),
+            onPressed: () => Get.to(() => CategoryForm(category: Category.dummy(),)),
+          )
+        ],
         body: SmartRefresher(
           controller: _controller.refresher.value,
           onRefresh: _controller.onRefresh,
@@ -72,6 +85,7 @@ class CategoryScreen extends StatelessWidget {
           color: Color(0xFF4120A9),
         ),
       ),
+      onTap: () => Get.to(() => CategoryForm(category: category)),
     );
   }
 }

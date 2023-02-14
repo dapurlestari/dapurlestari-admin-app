@@ -3,6 +3,7 @@ import 'package:admin/models/seo/seo.dart';
 import 'package:admin/services/api.dart';
 import 'package:admin/services/constant_lib.dart';
 import 'package:admin/services/strapi_response.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Category {
   Category({
@@ -33,25 +34,27 @@ class Category {
     updatedAt: DateTime.parse(json["updatedAt"]),
     publishedAt: DateTime.parse(json["publishedAt"]),
     seo: json["seo"] != null ? Seo.fromJson(json["seo"]) : Seo.dummy(),
-    products: List<Product>.from(json["products"]["data"].map((x) => Product.fromJson(x))),
+    products: json["products"] == null ? [] : List<Product>.from(json["products"]["data"].map((x) => Product.fromJson(x))),
   );
 
-  factory Category.dummy(Map<String, dynamic> json) => Category(
+  factory Category.dummy() => Category(
     createdAt: DateTime.now(),
     updatedAt: DateTime.now(),
     publishedAt: DateTime.now(),
     products: [],
-    seo: json["seo"] != null ? Seo.fromJson(json["seo"]) : Seo.dummy(),
+    seo: Seo.dummy(),
   );
 
   Map<String, dynamic> toJson() => {
     "name": name,
     "icon_name": iconName,
-    "createdAt": createdAt.toIso8601String(),
-    "updatedAt": updatedAt.toIso8601String(),
-    "publishedAt": publishedAt.toIso8601String(),
-    "seo": seo.toJson(),
+    // "createdAt": createdAt.toIso8601String(),
+    // "updatedAt": updatedAt.toIso8601String(),
+    // "publishedAt": publishedAt.toIso8601String(),
+    // "seo": seo.toJson(),
   };
+
+  bool get isNotEmpty => id > 0;
 
   static Future<List<Category>> get({
     int page = 1
@@ -70,5 +73,35 @@ class Category {
     }
 
     return [];
+  }
+
+  Future<Category> add() async {
+    StrapiResponse response = await API.post(
+        page: 'categories',
+        data: toJson()
+      // showLog: true
+    );
+
+    if (response.isSuccess) {
+      Fluttertoast.showToast(msg: 'Success add category');
+      return Category.fromJson(response.data[ConstLib.attributes], response.data[ConstLib.id]);
+    }
+
+    return Category.dummy();
+  }
+
+  Future<Category> save() async {
+    StrapiResponse response = await API.put(
+        page: 'categories/$id',
+        data: toJson()
+      // showLog: true
+    );
+
+    if (response.isSuccess) {
+      Fluttertoast.showToast(msg: 'Success edit category');
+      return Category.fromJson(response.data[ConstLib.attributes], response.data[ConstLib.id]);
+    }
+
+    return Category.dummy();
   }
 }
