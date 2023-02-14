@@ -29,8 +29,8 @@ class MediaLibraryScreen extends StatelessWidget {
         IconButton(
           icon: Icon(
             _mainController.mediaLibraryEnableGridView.value
-              ? FeatherIcons.grid
-              : FeatherIcons.columns,
+              ? FeatherIcons.columns
+              : FeatherIcons.grid,
             color: Colors.grey.shade800
           ),
           onPressed: _mainController.mediaLibraryEnableGridView.toggle,
