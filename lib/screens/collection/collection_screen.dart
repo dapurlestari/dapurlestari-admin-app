@@ -16,6 +16,7 @@ class CollectionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() => CustomScaffold(
       title: 'Collection',
+      showBackButton: false,
       body: _body
     ));
   }

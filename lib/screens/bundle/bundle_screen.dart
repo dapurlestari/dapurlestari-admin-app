@@ -2,6 +2,7 @@ import 'package:admin/components/custom_scaffold.dart';
 import 'package:admin/components/loadings.dart';
 import 'package:admin/models/bundle/bundle.dart';
 import 'package:admin/screens/bundle/bundle_controller.dart';
+import 'package:admin/screens/bundle/bundle_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
@@ -76,6 +77,7 @@ class BundleScreen extends StatelessWidget {
           color: Color(0xFF4120A9),
         ),
       ),
+      onTap: () => Get.to(() => BundleForm(bundle: bundle,)),
     );
   }
 }

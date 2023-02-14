@@ -11,7 +11,7 @@ class CustomScaffold extends StatelessWidget {
   const CustomScaffold({Key? key,
     required this.body,
     this.useAppBar = true,
-    this.showBackButton = false,
+    this.showBackButton = true,
     this.title,
     this.actions,
   }) : super(key: key);

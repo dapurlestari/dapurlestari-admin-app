@@ -16,6 +16,7 @@ class SingleTypeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() => CustomScaffold(
       title: 'Single Type',
+      showBackButton: false,
       body: _body
     ));
   }
