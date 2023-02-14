@@ -45,16 +45,23 @@ class Seo {
     metaSocial: [],
   );
 
-  Map<String, dynamic> toJson() => {
-    // "id": id,
-    "metaTitle": metaTitle,
-    "metaDescription": metaDescription,
-    "keywords": keywords,
-    "metaRobots": metaRobots,
-    "structuredData": structuredData,
-    "metaViewport": metaViewport,
-    "canonicalURL": canonicalUrl,
-    "metaImage": metaImage.id,
-    "metaSocial": List<dynamic>.from(metaSocial.map((x) => x.toJson())),
-  };
+  Map<String, dynamic> toJson() {
+    final map = {
+      // "id": id,
+      "metaTitle": metaTitle,
+      "metaDescription": metaDescription,
+      "keywords": keywords,
+      "metaRobots": metaRobots,
+      "structuredData": structuredData,
+      "metaViewport": metaViewport,
+      "canonicalURL": canonicalUrl,
+      "metaImage": metaImage.id,
+    };
+
+    if (metaSocial.first.description.isNotEmpty) { // only check first item
+      map['metaSocial'] = List<dynamic>.from(metaSocial.map((x) => x.toJson()));
+    }
+
+    return map;
+  }
 }

@@ -36,10 +36,20 @@ class TermsService {
     seo: Seo.dummy(),
   );
 
-  Map<String, dynamic> toJson() => {
-    "contentful": contentful.toJson(),
-    "seo": seo.toJson(),
-  };
+  Map<String, dynamic> toJson() {
+    final map = {
+      "contentful": contentful.toJson(),
+    };
+
+    if (seo.metaTitle.isNotEmpty
+      && seo.metaDescription.isNotEmpty
+      && seo.metaImage.hasURL
+    ) {
+      map['seo'] = seo.toJson();
+    }
+
+    return map;
+  }
 
   static Future<TermsService> get() async {
     StrapiResponse response = await API.get(
