@@ -160,26 +160,30 @@ class MediaLibraryScreen extends StatelessWidget {
   }
 
   Widget mediaImage(MediaFile media) {
-    return InkWell(
-      child: CachedNetworkImage(
-        imageUrl: media.url,
-        imageBuilder: (context, imageProvider) => Container(
-          decoration: BoxDecoration(
-              border: Border.all(color: Colors.indigoAccent),
-              borderRadius: BorderRadius.circular(10),
-              image: DecorationImage(
-                image: imageProvider,
-                fit: BoxFit.cover,
-              )
-          ),
-        ),
-        placeholder: (context, url) => Center(
-          child: Loadings.basicPrimary,
-        ),
-        errorWidget: (context, url, error) => const Center(
-          child: Text('Image Error')
+    Widget widget = CachedNetworkImage(
+      imageUrl: media.url,
+      imageBuilder: (context, imageProvider) => Container(
+        decoration: BoxDecoration(
+            border: Border.all(color: Colors.indigoAccent),
+            borderRadius: BorderRadius.circular(10),
+            image: DecorationImage(
+              image: imageProvider,
+              fit: BoxFit.cover,
+            )
         ),
       ),
+      placeholder: (context, url) => Center(
+        child: Loadings.basicPrimary,
+      ),
+      errorWidget: (context, url, error) => const Center(
+          child: Text('Image Error')
+      ),
+    );
+
+    if (enableSelection) return widget;
+
+    return InkWell(
+      child: widget,
       onTap: () {
         int index = _mainController.mediaFiles.indexWhere((e) => e.id == media.id);
         Get.to(() => ImageViewer(images: _mainController.mediaFiles, initialPage: index,));
