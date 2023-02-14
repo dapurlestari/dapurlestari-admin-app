@@ -30,6 +30,14 @@ class MainController extends GetxController {
     }
   }
 
+  void deselectMedia() {
+    int index = mediaFiles.indexWhere((e) => e.selected);
+    if (index > -1) {
+      mediaFiles[index].selected = false;
+      mediaFiles.refresh();
+    }
+  }
+
   Future<void> _fetchMedia() async {
     isLoadingMediaLibrary.value = true;
     List<MediaFile>? media = await MediaFile.get();

@@ -21,6 +21,7 @@ class MediaLibraryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _mainController.deselectMedia();
     return Obx(() => CustomScaffold(
       title: 'Media Library',
       showBackButton: true,
