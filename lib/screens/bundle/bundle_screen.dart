@@ -1,4 +1,5 @@
 import 'package:admin/components/custom_scaffold.dart';
+import 'package:admin/components/loadings.dart';
 import 'package:admin/models/bundle/bundle.dart';
 import 'package:admin/screens/bundle/bundle_controller.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,10 @@ class BundleScreen extends StatelessWidget {
     return Obx(() => CustomScaffold(
         title: 'Bundle',
         showBackButton: true,
+        actions: [
+          if (_controller.isRefresh.value) Loadings.basicPrimary,
+          const SizedBox(width: 20,)
+        ],
         body: SmartRefresher(
           controller: _controller.refresher.value,
           onRefresh: _controller.onRefresh,
