@@ -30,7 +30,7 @@ class Bundle {
     createdAt: DateTime.parse(json["createdAt"]),
     updatedAt: DateTime.parse(json["updatedAt"]),
     publishedAt: DateTime.parse(json["publishedAt"]),
-    products: List<Product>.from(json["products"]["data"].map((x) => Product.fromJson(x))),
+    products: json["products"] == null ? [] : List<Product>.from(json["products"]["data"].map((x) => Product.fromJson(x))),
   );
 
   factory Bundle.dummy() => Bundle(
@@ -43,10 +43,10 @@ class Bundle {
   Map<String, dynamic> toJson() => {
     "name": name,
     "description": description,
-    "createdAt": createdAt.toIso8601String(),
-    "updatedAt": updatedAt.toIso8601String(),
-    "publishedAt": publishedAt.toIso8601String(),
-    "products": List<dynamic>.from(products.map((x) => x.toJson())),
+    // "createdAt": createdAt.toIso8601String(),
+    // "updatedAt": updatedAt.toIso8601String(),
+    // "publishedAt": publishedAt.toIso8601String(),
+    // "products": List<dynamic>.from(products.map((x) => x.toJson())),
   };
 
   static Future<List<Bundle>> get({
@@ -66,5 +66,19 @@ class Bundle {
     }
 
     return [];
+  }
+
+  Future<Bundle> save() async {
+    StrapiResponse response = await API.put(
+        page: 'bundles/$id',
+        data: toJson()
+        // showLog: true
+    );
+
+    if (response.isSuccess) {
+      return Bundle.fromJson(response.data[ConstLib.attributes], response.data[ConstLib.id]);
+    }
+
+    return Bundle.dummy();
   }
 }

@@ -5,6 +5,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class BundleController extends GetxController {
   final bundles = <Bundle>[].obs;
+  final bundle = Bundle.dummy().obs;
   final isRefresh = false.obs;
   final saving = false.obs;
   final refresher = RefreshController().obs;
@@ -34,12 +35,18 @@ class BundleController extends GetxController {
   }
 
   void initForm(Bundle bundle) {
+    this.bundle.value = bundle;
     titleField.value.text = bundle.name;
     descriptionField.value.text = bundle.description;
   }
 
-  void save() {
-
+  Future<void> save() async {
+    saving.value = true;
+    bundle.value.name = titleField.value.text;
+    bundle.value.description = descriptionField.value.text;
+    bundle.value = await bundle.value.save();
+    bundles.refresh();
+    saving.value = false;
   }
 
   @override
