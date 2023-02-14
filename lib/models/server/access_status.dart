@@ -6,6 +6,7 @@ import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class AccessStatus {
   final int id;
@@ -58,6 +59,7 @@ class AccessStatus {
     final response = await dio.get('https://layground.id/aapanel/demo.php');
     // logInfo(response.data);
     onComplete(response.statusCode == 200);
+    Fluttertoast.showToast(msg: 'Server Status Refreshed!');
   }
 
   static Future<void> checkAPIStatus({
@@ -70,6 +72,7 @@ class AccessStatus {
     final response = await dio.get('https://panel.dapurlestari.id/api/homepage');
     // logInfo(response.data);
     onComplete(response.statusCode == 200);
+    Fluttertoast.showToast(msg: 'API Status Refreshed!');
   }
 
   static Future<void> checkSiteStatus({
@@ -82,5 +85,6 @@ class AccessStatus {
     final response = await dio.get('https://dapurlestari.id');
     // logInfo(response.statusCode);
     onComplete(response.statusCode == 200);
+    Fluttertoast.showToast(msg: 'Site Status Refreshed!');
   }
 }
