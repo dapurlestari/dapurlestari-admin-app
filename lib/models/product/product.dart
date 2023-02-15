@@ -30,7 +30,7 @@ class Product {
   Category category;
   Bundle bundle;
   List<MediaFile>? images;
-  Seo? seo;
+  Seo seo;
 
   Product({
     this.id = 0,
@@ -53,7 +53,7 @@ class Product {
     required this.category,
     required this.bundle,
     this.images,
-    this.seo,
+    required this.seo,
   });
 
   factory Product.fromJson(Map<String, dynamic> json, int id) => Product(
@@ -74,7 +74,8 @@ class Product {
     updatedAt: DateTime.parse(json["updatedAt"]),
     publishedAt: DateTime.parse(json["publishedAt"]),
     bundle: Bundle.dummy(),
-    category: Category.dummy()
+    category: Category.dummy(),
+    seo: Seo.dummy()
   );
 
   factory Product.fromJsonDetail(Map<String, dynamic> json, int id) => Product(
@@ -109,7 +110,7 @@ class Product {
     images: !json.containsKey('images')
         ? null
         : (json['images']['data'] as List).map((e) => MediaFile.fromJson(e)).toList(),
-    seo: !json.containsKey('seo') ? null : json['seo'] == null ? null : Seo.fromJson(json['seo']),
+    seo: json['seo'] == null ? Seo.dummy() : Seo.fromJson(json['seo']),
   );
 
   factory Product.dummy() => Product(
@@ -117,7 +118,8 @@ class Product {
     updatedAt: DateTime.now(),
     publishedAt: DateTime.now(),
     category: Category.dummy(),
-    bundle: Bundle.dummy()
+    bundle: Bundle.dummy(),
+    seo: Seo.dummy()
   );
 
   Map<String, dynamic> toJson() {
@@ -139,6 +141,7 @@ class Product {
     // data['deleted_at'] = deletedAt.toIso8601String();
     data['category'] = category.id;
     data['bundle'] = bundle.id;
+    data['seo'] = seo.toJson();
     return data;
   }
 
@@ -169,7 +172,14 @@ class Product {
   Future<Product> view() async {
     StrapiResponse response = await API.get(
       page: 'products/$id',
-      populateMode: APIPopulate.all,
+      populateMode: APIPopulate.custom,
+      populateList: [
+        'bundle',
+        'category',
+        'images',
+        'seo.metaImage',
+        'seo.metaSocial.image'
+      ],
       // showLog: true
     );
 
@@ -187,27 +197,48 @@ class Product {
     StrapiResponse response = await API.post(
       page: 'products',
       data: toJson(),
+      populateMode: APIPopulate.custom,
+      populateList: [
+        'bundle',
+        'category',
+        'images',
+        'seo.metaImage',
+        'seo.metaSocial.image'
+      ],
       // showLog: true
     );
 
     if (response.isSuccess) {
-      Fluttertoast.showToast(msg: 'Success add product');
-      return Product.fromJson(response.data[ConstLib.attributes], response.data[ConstLib.id]);
+      return Product.fromJsonDetail(
+        response.data[ConstLib.attributes],
+        response.data[ConstLib.id]
+      );
     }
 
     return Product.dummy();
   }
 
-  Future<Product> save() async {
+  Future<Product> edit() async {
     // logInfo(toJson(), logLabel: 'product_edit');
     StrapiResponse response = await API.put(
       page: 'products/$id',
       data: toJson(),
+      populateMode: APIPopulate.custom,
+      populateList: [
+        'bundle',
+        'category',
+        'images',
+        'seo.metaImage',
+        'seo.metaSocial.image'
+      ],
       // showLog: true
     );
 
     if (response.isSuccess) {
-      return Product.fromJson(response.data[ConstLib.attributes], response.data[ConstLib.id]);
+      return Product.fromJsonDetail(
+        response.data[ConstLib.attributes],
+        response.data[ConstLib.id]
+      );
     }
 
     return Product.dummy();

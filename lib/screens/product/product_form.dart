@@ -10,6 +10,8 @@ import 'package:admin/screens/category/category_controller.dart';
 import 'package:admin/screens/components/date_time_info.dart';
 import 'package:admin/screens/components/grid_view_form.dart';
 import 'package:admin/screens/components/markdown_editor.dart';
+import 'package:admin/screens/components/seo_form.dart';
+import 'package:admin/services/constant_lib.dart';
 import 'package:admin/services/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
@@ -176,6 +178,11 @@ class ProductForm extends StatelessWidget {
                           ),
                         ],
                       )
+                  ),
+                  const SizedBox(height: 40),
+                  SeoForm(
+                    seo: _controller.product.value.seo,
+                    tag: ConstLib.product,
                   ),
                   if (product.isNotEmpty) const SizedBox(height: 40),
                   if (product.isNotEmpty) CustomField.fieldGroup(

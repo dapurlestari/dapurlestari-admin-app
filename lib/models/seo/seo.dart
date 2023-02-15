@@ -55,10 +55,13 @@ class Seo {
       "structuredData": structuredData,
       "metaViewport": metaViewport,
       "canonicalURL": canonicalUrl,
-      "metaImage": metaImage.id,
     };
 
-    if (metaSocial.first.description.isNotEmpty) { // only check first item
+    if (metaImage.hasURL) {
+      map['metaImage'] = metaImage.id;
+    }
+
+    if (metaSocial.isNotEmpty && metaSocial.first.description.isNotEmpty) { // only check first item
       map['metaSocial'] = List<dynamic>.from(metaSocial.map((x) => x.toJson()));
     }
 

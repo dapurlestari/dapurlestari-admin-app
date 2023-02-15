@@ -93,7 +93,7 @@ class API {
 
     final finalData = encodedData ? jsonEncode(defaultData) : FormData.fromMap(defaultData);
 
-    try {
+    // try {
       Response response;
       String successMessage = 'OK';
 
@@ -164,26 +164,29 @@ class API {
 
         if (showLog) {
           if (newData is List) {
-            logInfo((newData as List).first.toString(), logLabel: '${label}_response_data');
+            logInfo((newData as List).first.toString(), logLabel: '${label}_response_list');
           } else {
-            logInfo(newData.toString(), logLabel: '${label}_response_data');
+            logInfo(newData.toString(), logLabel: '${label}_response_map');
           }
         }
       }
 
       return strapiResponse;
-    } on DioError catch (e) {
-      logError(e.response?.data);
-      StrapiResponse response = StrapiResponse.errorDefault();
-      if (e.response != null) {
-        response = StrapiResponse.response(e.response!.data);
-        String msg = '${response.error!.status}. ${response.error!.name}, ${response.error!.message}';
-        Fluttertoast.showToast(msg: msg, gravity: ToastGravity.TOP);
-        // logError(response.error?.toJson(), logLabel: 'error');
-      }
-
-      return response;
-    }
+    // } on DioError catch (e) {
+    //   logError(e.response?.data);
+    //   StrapiResponse response = StrapiResponse.errorDefault();
+    //   if (e.response != null) {
+    //     response = StrapiResponse.response(e.response!.data);
+    //     String msg = '${response.error!.status}. ${response.error!.name}, ${response.error!.message}';
+    //     Fluttertoast.showToast(msg: msg, gravity: ToastGravity.TOP);
+    //     // logError(response.error?.toJson(), logLabel: 'error');
+    //   }
+    //
+    //   return response;
+    // } on Exception catch (e) {
+    //   logError(e, logLabel: 'exception');
+    //   return StrapiResponse.errorDefault();
+    // }
   }
 
   static Future<StrapiResponse> get({

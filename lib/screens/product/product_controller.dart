@@ -1,4 +1,9 @@
 import 'package:admin/models/product/product.dart';
+import 'package:admin/models/seo/meta_social.dart';
+import 'package:admin/models/seo/seo.dart';
+import 'package:admin/screens/components/media_file_picker.dart';
+import 'package:admin/screens/components/seo_form.dart';
+import 'package:admin/services/constant_lib.dart';
 import 'package:admin/services/logger.dart';
 import 'package:admin/services/soft_keyboard.dart';
 import 'package:flutter/material.dart';
@@ -62,11 +67,13 @@ class ProductController extends GetxController {
       categoryField.value.clear();
       product.view().then((result) {
         this.product.value = result;
-        // logInfo(result.category.name, logLabel: 'category_name');
+        logInfo(result.category.name, logLabel: 'category_name');
         bundleField.value.text = result.bundle.name;
         categoryField.value.text = result.category.name;
         saving.value = false;
       }).catchError((e) {
+        logError(e, logLabel: 'view_product');
+        Fluttertoast.showToast(msg: 'View Product Error!');
         saving.value = false;
       });
     }
@@ -101,6 +108,7 @@ class ProductController extends GetxController {
     product.active = active.value;
     product.bundle = this.product.value.bundle;
     product.category = this.product.value.category;
+    product.seo = _updateSEO();
     product = await product.add();
     if (product.isNotEmpty) {
       products.add(product);
@@ -111,24 +119,46 @@ class ProductController extends GetxController {
 
   Future<void> edit() async {
     saving.value = true;
-    Product updatedProduct = product.value;
-    updatedProduct.name = nameField.value.text;
-    updatedProduct.pirtCode = pirtField.value.text;
-    updatedProduct.price = int.tryParse(priceField.value.text) ?? 0;
-    updatedProduct.discountPrice = int.tryParse(discountPriceField.value.text) ?? 0;
-    updatedProduct.releaseYear = int.tryParse(releaseYearField.value.text) ?? 0;
-    updatedProduct.stock = int.tryParse(stockField.value.text) ?? 0;
-    updatedProduct.nett = int.tryParse(nettField.value.text) ?? 0;
-    updatedProduct.unit = unitField.value.text;
-    updatedProduct.description = descriptionField.value.text;
-    updatedProduct.descriptionRich = descriptionRichField.value.text;
-    updatedProduct.active = active.value;
-    updatedProduct = await product.value.save();
-    if (updatedProduct.isNotEmpty) {
-      product.value = updatedProduct;
-      products.refresh();
-    }
+    product.value.name = nameField.value.text;
+    product.value.pirtCode = pirtField.value.text;
+    product.value.price = int.tryParse(priceField.value.text) ?? 0;
+    product.value.discountPrice = int.tryParse(discountPriceField.value.text) ?? 0;
+    product.value.releaseYear = int.tryParse(releaseYearField.value.text) ?? 0;
+    product.value.stock = int.tryParse(stockField.value.text) ?? 0;
+    product.value.nett = int.tryParse(nettField.value.text) ?? 0;
+    product.value.unit = unitField.value.text;
+    product.value.description = descriptionField.value.text;
+    product.value.descriptionRich = descriptionRichField.value.text;
+    product.value.active = active.value;
+    product.value.seo = _updateSEO();
+    logInfo(product.value.toJson(), logLabel: 'product_edit');
+    product.value = await product.value.edit();
+    product.refresh();
     saving.value = false;
+  }
+
+  Seo _updateSEO() {
+    final SeoController seoC = Get.find(tag: '${ConstLib.product}.seo');
+    final MediaFilePickerController seoMediaC = Get.find(tag: '${ConstLib.product}.seo.media');
+
+    Seo seo = Seo(
+        metaTitle: seoC.metaTitleField.value.text,
+        metaDescription: seoC.metaDescriptionField.value.text,
+        keywords: seoC.metaKeywordsField.value.text,
+        canonicalUrl: seoC.canonicalURLField.value.text,
+        metaImage: seoMediaC.metaImage.value,
+        metaSocial: []
+    );
+
+    if (seoC.metaSocialDescriptionField.value.text.isNotEmpty) {
+      seo.metaSocial = MetaSocial.defaultSocials(
+          title: seoC.metaTitleField.value.text,
+          description: seoC.metaSocialDescriptionField.value.text,
+          mediaFile: seoMediaC.metaImage.value
+      );
+    }
+
+    return seo;
   }
 
   Future<void> save() async {
