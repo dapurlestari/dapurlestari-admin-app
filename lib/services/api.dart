@@ -34,6 +34,7 @@ class API {
     Map<String, dynamic>? files,
     APIPopulate populateMode = APIPopulate.none,
     List<String>? populateList,
+    List<String>? filterList,
     bool paginate = false,
     int paginationPage = 1,
     int paginationSize = ConstLib.defaultPageSize,
@@ -75,6 +76,28 @@ class API {
           });
         }
         break;
+    }
+
+
+    // filters[id][$in][0] = 1
+    // filters[id][$in][1] = 2
+    // input: id:in:1,2,3,4
+    String filtersKey = 'filters';
+    if (filterList != null) {
+      filterList.asMap().forEach((key, value) {
+        List<String> array = value.split(':');
+        String filterKey = array[0];
+        String filterCondition = array[1];
+        String filterValue = array[2];
+        if (filterValue.contains(',')) {
+          List<String> values = filterValue.split(',');
+          values.asMap().forEach((key, value) {
+            defaultParams['$filtersKey[$filterKey][\$$filterCondition][$key]'] = value;
+          });
+        } else {
+          defaultParams['$filtersKey[$filterKey][\$$filterCondition]'] = filterValue;
+        }
+      });
     }
 
     if (paginate) {
@@ -195,6 +218,7 @@ class API {
     Map<String, dynamic>? files,
     APIPopulate populateMode = APIPopulate.none,
     List<String>? populateList,
+    List<String>? filterList,
     bool paginate = false,
     int paginationPage = 1,
     int paginationSize = ConstLib.defaultPageSize,
@@ -209,6 +233,7 @@ class API {
       encodedData: encodedData,
       files: files,
       populateList: populateList,
+      filterList: filterList,
       populateMode: populateMode,
       paginate: paginate,
       paginationPage: paginationPage,
