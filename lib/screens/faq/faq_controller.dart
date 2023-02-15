@@ -9,7 +9,7 @@ class FaqController extends GetxController {
   final page = 1.obs;
 
   Future<void> _fetch() async {
-    final newFaqs = await Faq.get();
+    final newFaqs = await Faq.get(page: page.value);
     if (newFaqs.isNotEmpty) page.value++;
     faqs.addAll(newFaqs);
     isRefresh.value = false;
