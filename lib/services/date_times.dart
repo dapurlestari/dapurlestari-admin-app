@@ -42,10 +42,15 @@ class DateTimes {
     );
   }
 
-  static String formatDate(String value, {bool showDayName = true, bool showTime = false}) {
+  static String formatDate(dynamic value, {bool showDayName = true, bool showTime = false}) {
+    DateTime dateTime = value;
+    if (value is String) {
+      dateTime = DateTime.parse(value.contains(':') ? value : '$value 00:00:00');
+    }
+
     return DateFormat(
         "${showDayName ? 'EEEE, ' : ''}d MMMM yyyy${showTime ? ' HH:mm' : ''}","id_ID"
-    ).format(DateTime.parse(value.contains(':') ? value : '$value 00:00:00'));
+    ).format(dateTime);
   }
 
   static String formatTime(dynamic value, {bool showHours = false, bool showSec = true}) {

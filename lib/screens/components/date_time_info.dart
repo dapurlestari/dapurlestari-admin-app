@@ -1,4 +1,5 @@
 import 'package:admin/components/table/tables.dart';
+import 'package:admin/services/date_times.dart';
 import 'package:flutter/material.dart';
 
 class DateTimeInfo extends StatelessWidget {
@@ -25,9 +26,9 @@ class DateTimeInfo extends StatelessWidget {
         },
         defaultVerticalAlignment: TableCellVerticalAlignment.middle,
         children: [
-          Tables.rowItemDark(title: 'Created', value: created.toIso8601String()),
-          Tables.rowItemDark(title: 'Published', value: published.toIso8601String()),
-          Tables.rowItemDark(title: 'Last Edited', value: edited.toIso8601String()),
+          Tables.rowItemDark(title: 'Created', value: DateTimes.formatDate(created, showTime: true)),
+          Tables.rowItemDark(title: 'Published', value: DateTimes.formatDate(published, showTime: true)),
+          Tables.rowItemDark(title: 'Last Edited', value: DateTimes.formatDate(edited, showTime: true)),
         ],
       ),
     );
