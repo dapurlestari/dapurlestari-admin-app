@@ -63,17 +63,6 @@ class SeoForm extends StatelessWidget {
                 maxLines: 5
             ),
             MediaFilePicker(mediaFile: seo.metaImage, tag: '$tag.seo.media',),
-            Padding(
-              padding: const EdgeInsets.only(left: 2, top: 4),
-              child: Text(
-                "Note: 'Meta Image' is required if you fill 'Meta Social Description'",
-                style: Get.textTheme.bodySmall?.copyWith(
-                  color: Colors.orange,
-                  fontStyle: FontStyle.italic,
-                  fontWeight: FontWeight.w600
-                ),
-              ),
-            )
           ],
         )
     ));
