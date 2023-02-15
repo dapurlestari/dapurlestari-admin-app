@@ -93,7 +93,7 @@ class API {
 
     final finalData = encodedData ? jsonEncode(defaultData) : FormData.fromMap(defaultData);
 
-    // try {
+    try {
       Response response;
       String successMessage = 'OK';
 
@@ -172,21 +172,21 @@ class API {
       }
 
       return strapiResponse;
-    // } on DioError catch (e) {
-    //   logError(e.response?.data);
-    //   StrapiResponse response = StrapiResponse.errorDefault();
-    //   if (e.response != null) {
-    //     response = StrapiResponse.response(e.response!.data);
-    //     String msg = '${response.error!.status}. ${response.error!.name}, ${response.error!.message}';
-    //     Fluttertoast.showToast(msg: msg, gravity: ToastGravity.TOP);
-    //     // logError(response.error?.toJson(), logLabel: 'error');
-    //   }
-    //
-    //   return response;
-    // } on Exception catch (e) {
-    //   logError(e, logLabel: 'exception');
-    //   return StrapiResponse.errorDefault();
-    // }
+    } on DioError catch (e) {
+      logError(e.response?.data);
+      StrapiResponse response = StrapiResponse.errorDefault();
+      if (e.response != null) {
+        response = StrapiResponse.response(e.response!.data);
+        String msg = '${response.error!.status}. ${response.error!.name}, ${response.error!.message}';
+        Fluttertoast.showToast(msg: msg, gravity: ToastGravity.TOP);
+        // logError(response.error?.toJson(), logLabel: 'error');
+      }
+
+      return response;
+    } on Exception catch (e) {
+      logError(e, logLabel: 'exception');
+      return StrapiResponse.errorDefault();
+    }
   }
 
   static Future<StrapiResponse> get({
