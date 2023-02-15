@@ -1,4 +1,5 @@
 import 'package:admin/components/custom_scaffold.dart';
+import 'package:admin/components/loadings.dart';
 import 'package:admin/models/faq/faq.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
@@ -17,6 +18,10 @@ class FaqScreen extends StatelessWidget {
     return Obx(() => CustomScaffold(
         title: 'FAQ',
         showBackButton: true,
+        actions: [
+          if (_controller.isRefresh.value) Loadings.basicPrimary,
+          const SizedBox(width: 20,),
+        ],
         body: SmartRefresher(
           controller: _controller.refresher.value,
           onRefresh: _controller.onRefresh,

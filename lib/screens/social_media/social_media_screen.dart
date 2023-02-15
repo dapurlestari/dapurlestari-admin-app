@@ -1,4 +1,5 @@
 import 'package:admin/components/custom_scaffold.dart';
+import 'package:admin/components/loadings.dart';
 import 'package:admin/models/social/social_media.dart';
 import 'package:admin/screens/social_media/social_media_controller.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,10 @@ class SocialMediaScreen extends StatelessWidget {
     return Obx(() => CustomScaffold(
         title: 'Social Media',
         showBackButton: true,
+        actions: [
+          if (_controller.isRefresh.value) Loadings.basicPrimary,
+          const SizedBox(width: 20,),
+        ],
         body: SmartRefresher(
           controller: _controller.refresher.value,
           onRefresh: _controller.onRefresh,
