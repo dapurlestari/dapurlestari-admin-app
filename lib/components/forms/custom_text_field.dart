@@ -14,7 +14,8 @@ class CustomField {
     bool readOnly = false,
     bool? enabled,
     TextInputAction? action,
-    EdgeInsets? margin
+    EdgeInsets? margin,
+    GestureTapCallback? onTap
   }) {
     return Container(
       margin: margin ?? const EdgeInsets.only(bottom: 12),
@@ -50,6 +51,7 @@ class CustomField {
           fillColor: Colors.grey.shade100,
           contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
         ),
+        onTap: onTap,
       ),
     );
   }
