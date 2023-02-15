@@ -23,9 +23,45 @@ class MediaLibraryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _mainController.deselectMedia();
+    bool isHideSelectionCounter = !(enableSelection
+        && isMultiselect
+        && !_mainController.isLoadingMediaLibrary.value
+        && _mainController.hasSelectedItems
+    );
+
     return Obx(() => CustomScaffold(
       title: 'Media Library',
       showBackButton: true,
+      elevation: isHideSelectionCounter ? null : 0,
+      bottom: isHideSelectionCounter ? null : PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border(
+              top: BorderSide(
+                color: Colors.grey.shade300
+              )
+            )
+          ),
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            decoration: BoxDecoration(
+              color: Colors.indigoAccent,
+              borderRadius: BorderRadius.circular(8)
+            ),
+            child: Center(
+              child: Text('${_mainController.selectedCount} selected item(s)',
+                style: Get.textTheme.titleMedium?.copyWith(
+                  color: Colors.white
+                ),
+              )
+            ),
+          ),
+        ),
+      ),
       body: SmartRefresher(
         controller: _mainController.mediaLibraryRefresher.value,
         onRefresh: _mainController.refreshMediaLibrary,
@@ -54,10 +90,9 @@ class MediaLibraryScreen extends StatelessWidget {
             color: Colors.grey.shade800,
           ),
           onPressed: () {
-            MediaFile? media = _mainController.mediaFiles.firstWhereOrNull((e) => e.selected);
-            media?.selected = false;
+            List<MediaFile>? mediaFiles = _mainController.mediaFiles.where((e) => e.selected).toList();
             _mainController.mediaFiles.refresh();
-            Get.back(result: media);
+            Get.back(result: mediaFiles);
           },
         )
       ],
@@ -116,7 +151,7 @@ class MediaLibraryScreen extends StatelessWidget {
                           children: [
                             Icon(
                               isMultiselect
-                                  ? !media.selected ? LineIcons.checkSquare : LineIcons.square
+                                  ? !media.selected ? LineIcons.square : LineIcons.checkSquare
                                   : !media.selected ? LineIcons.circle : LineIcons.checkCircle,
                               size: 16,
                               color: media.selected ? Colors.white : Colors.grey.shade700,
