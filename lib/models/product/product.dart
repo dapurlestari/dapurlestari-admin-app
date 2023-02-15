@@ -161,11 +161,11 @@ class Product {
   }
 
   Future<Product> save() async {
-    logInfo(toJson(), logLabel: 'product_edit');
+    // logInfo(toJson(), logLabel: 'product_edit');
     StrapiResponse response = await API.put(
       page: 'products/$id',
       data: toJson(),
-      showLog: true
+      // showLog: true
     );
 
     if (response.isSuccess) {

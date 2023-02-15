@@ -65,19 +65,14 @@ class ProductForm extends StatelessWidget {
                               hint: 'Add category name or label',
                               label: 'Name'
                           ),
-                          CustomField.text(
-                              controller: _controller.pirtField.value,
-                              hint: '38429332983-33',
-                              label: 'PIRT Number'
-                          ),
                           GridViewForm(
                             padding: const EdgeInsets.only(bottom: 12),
                             children: [
                               CustomField.text(
-                                  controller: _controller.priceField.value,
-                                  hint: '20000',
-                                  label: 'Price',
-                                margin: EdgeInsets.zero
+                                  controller: _controller.pirtField.value,
+                                  hint: '38429332983-33',
+                                  label: 'PIRT Number',
+                                  margin: EdgeInsets.zero
                               ),
                               CustomField.chip(
                                   label: 'Active',
@@ -85,6 +80,11 @@ class ProductForm extends StatelessWidget {
                                   onTap: _controller.active.toggle
                               ),
                             ],
+                          ),
+                          CustomField.text(
+                            controller: _controller.priceField.value,
+                            hint: '20000',
+                            label: 'Price',
                           ),
                           CustomField.text(
                               controller: _controller.discountPriceField.value,
