@@ -27,4 +27,10 @@ class ConstLib {
   static const String configPage = 'config';
   static const String privacyPolicyPage = 'privacy-policy-page';
   static const String termsServicePage = 'terms-of-service-page';
+
+  /* Internationalization */
+  static const String localeID = 'id-ID';
+
+  /* Notification Messages */
+  static const String urlLauncherFailed = 'Failed to open link!';
 }
