@@ -1,9 +1,6 @@
-import 'package:admin/models/product/product.dart';
 import 'package:admin/services/api.dart';
 import 'package:admin/services/constant_lib.dart';
-import 'package:admin/services/logger.dart';
 import 'package:admin/services/strapi_response.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class Bundle {
   Bundle({
@@ -75,7 +72,6 @@ class Bundle {
     );
 
     if (response.isSuccess) {
-      Fluttertoast.showToast(msg: 'Success add category');
       return Bundle.fromJson(response.data[ConstLib.attributes], response.data[ConstLib.id]);
     }
 
@@ -90,7 +86,6 @@ class Bundle {
     );
 
     if (response.isSuccess) {
-      Fluttertoast.showToast(msg: 'Success edit category');
       return Bundle.fromJson(response.data[ConstLib.attributes], response.data[ConstLib.id]);
     }
 
