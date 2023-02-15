@@ -3,7 +3,6 @@ import 'package:admin/models/app/menu.dart';
 import 'package:admin/screens/collection/collection_screen.dart';
 import 'package:admin/screens/home/home_screen.dart';
 import 'package:admin/screens/index_controller.dart';
-import 'package:admin/screens/settings/settings_screen.dart';
 import 'package:admin/screens/single_type/single_type_screen.dart';
 import 'package:admin/services/constant_lib.dart';
 import 'package:admin/services/logger.dart';

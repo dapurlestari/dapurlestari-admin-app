@@ -3,10 +3,17 @@ import 'package:admin/components/forms/custom_text_field.dart';
 import 'package:admin/components/loadings.dart';
 import 'package:admin/models/product/product.dart';
 import 'package:admin/screens/components/date_time_info.dart';
+import 'package:admin/screens/components/markdown_editor.dart';
+import 'package:admin/services/clipboard_manager.dart';
+import 'package:admin/services/constant_lib.dart';
+import 'package:admin/services/link_launcher.dart';
+import 'package:admin/services/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:markdown_editable_textinput/markdown_text_input.dart';
 
 import 'product_controller.dart';
 
@@ -55,7 +62,7 @@ class ProductForm extends StatelessWidget {
                           CustomField.text(
                               controller: _controller.nameField.value,
                               hint: 'Add category name or label',
-                              label: 'Title'
+                              label: 'Name'
                           ),
                           CustomField.text(
                               controller: _controller.pirtField.value,
@@ -99,12 +106,9 @@ class ProductForm extends StatelessWidget {
                               minLines: 2,
                               maxLines: 3
                           ),
-                          CustomField.text(
-                              controller: _controller.descriptionRichField.value,
-                              hint: 'Add more detail about product',
-                              label: 'Description',
-                              minLines: 5,
-                              maxLines: 10
+                          MarkdownEditor(
+                            controller: _controller.descriptionRichField.value,
+                            label: 'Description Rich',
                           ),
                         ],
                       )

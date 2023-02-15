@@ -64,7 +64,7 @@ class Product {
     unit: json["unit"] ?? '',
     pirtCode: json["pirt_code"] ?? '',
     price: json["price"] ?? 0,
-    discountPrice: json["discount_price"] ?? 0,
+    discountPrice: int.tryParse(json["discount_price"].toString()) ?? 0,
     stock: json["stock"] ?? 0,
     status: json["status"] ?? 1,
     slug: json["slug"] ?? '',
@@ -95,15 +95,15 @@ class Product {
     data['netto'] = nett;
     data['unit'] = unit;
     data['pirt_code'] = pirtCode;
-    data['price'] = price;
-    data['discount_price'] = discountPrice;
+    if (price > 0) data['price'] = price;
+    if (discountPrice > 0) data['discount_price'] = discountPrice;
     data['stock'] = stock;
     data['status'] = status;
     // data['created_at'] = createdAt.toIso8601String();
     // data['updated_at'] = updatedAt.toIso8601String();
     // data['deleted_at'] = deletedAt.toIso8601String();
-    data['product_category_id'] = productCategoryId;
-    data['bundle_id'] = bundleId;
+    // data['product_category_id'] = productCategoryId;
+    // data['bundle_id'] = bundleId;
     return data;
   }
 
@@ -147,8 +147,8 @@ class Product {
 
   Future<Product> add() async {
     StrapiResponse response = await API.post(
-        page: 'products',
-        data: toJson()
+      page: 'products',
+      data: toJson(),
       // showLog: true
     );
 
@@ -162,9 +162,9 @@ class Product {
 
   Future<Product> save() async {
     StrapiResponse response = await API.put(
-        page: 'products/$id',
-        data: toJson()
-      // showLog: true
+      page: 'products/$id',
+      data: toJson(),
+      showLog: true
     );
 
     if (response.isSuccess) {

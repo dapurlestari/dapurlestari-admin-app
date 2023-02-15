@@ -25,6 +25,8 @@ class ProductController extends GetxController {
   final descriptionField = TextEditingController().obs;
   final descriptionRichField = TextEditingController().obs;
 
+  final editMarkdown = false.obs;
+
   Future<void> _fetch() async {
     final newProducts = await Product.get(page: page.value);
     if (newProducts.isNotEmpty) page.value++;
