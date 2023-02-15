@@ -1,6 +1,7 @@
 import 'package:admin/components/custom_scaffold.dart';
 import 'package:admin/components/loadings.dart';
 import 'package:admin/models/image/media_file.dart';
+import 'package:admin/screens/components/grid_view_form.dart';
 import 'package:admin/screens/components/media_file_picker.dart';
 import 'package:admin/screens/components/seo_form.dart';
 import 'package:admin/screens/media_library/media_library_screen.dart';
@@ -122,16 +123,7 @@ class SettingsScreen extends StatelessWidget {
                           hint: 'https://placehold.co/600x400@2x.jpg',
                           label: 'Placeholder Image URL',
                         ),
-                        GridView(
-                          shrinkWrap: true,
-                          padding: EdgeInsets.zero,
-                          physics: const NeverScrollableScrollPhysics(),
-                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              childAspectRatio: 9/2,
-                              mainAxisSpacing: 12,
-                              crossAxisSpacing: 12
-                          ),
+                        GridViewForm(
                           children: [
                             CustomField.chip(
                                 label: 'Draggable',
@@ -189,16 +181,7 @@ class SettingsScreen extends StatelessWidget {
                           hint: 'Insert some words',
                           label: 'Description',
                         ),
-                        GridView(
-                          shrinkWrap: true,
-                          padding: EdgeInsets.zero,
-                          physics: const NeverScrollableScrollPhysics(),
-                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            childAspectRatio: 9/2,
-                            mainAxisSpacing: 12,
-                            crossAxisSpacing: 12,
-                          ),
+                        GridViewForm(
                           children: [
                             CustomField.text(
                                 controller: settingsController.markerLatitudeField.value,
