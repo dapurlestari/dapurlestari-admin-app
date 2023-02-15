@@ -24,6 +24,7 @@ class ProductController extends GetxController {
   final unitField = TextEditingController().obs;
   final descriptionField = TextEditingController().obs;
   final descriptionRichField = TextEditingController().obs;
+  final active = false.obs;
 
   final editMarkdown = false.obs;
 
@@ -72,6 +73,7 @@ class ProductController extends GetxController {
     unitField.value.text = product.unit;
     descriptionField.value.text = product.description;
     descriptionRichField.value.text = product.descriptionRich;
+    active.value = product.active;
   }
 
   Future<void> add() async {
@@ -87,6 +89,7 @@ class ProductController extends GetxController {
     product.unit = unitField.value.text;
     product.description = descriptionField.value.text;
     product.descriptionRich = descriptionRichField.value.text;
+    product.active = active.value;
     product = await product.add();
     if (product.isNotEmpty) {
       products.add(product);
@@ -108,6 +111,7 @@ class ProductController extends GetxController {
     updatedProduct.unit = unitField.value.text;
     updatedProduct.description = descriptionField.value.text;
     updatedProduct.descriptionRich = descriptionRichField.value.text;
+    updatedProduct.active = active.value;
     updatedProduct = await product.value.save();
     if (updatedProduct.isNotEmpty) {
       product.value = updatedProduct;

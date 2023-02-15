@@ -19,7 +19,7 @@ class Product {
   int price = 0;
   int discountPrice = 0;
   int stock = 0;
-  int status = 0;
+  bool active = false;
   String slug;
   DateTime createdAt;
   DateTime updatedAt;
@@ -42,7 +42,7 @@ class Product {
     this.price = 0,
     this.discountPrice = 0,
     this.stock = 0,
-    this.status = 0,
+    this.active = false,
     this.slug = '',
     required this.createdAt,
     required this.updatedAt,
@@ -66,7 +66,7 @@ class Product {
     price: json["price"] ?? 0,
     discountPrice: int.tryParse(json["discount_price"].toString()) ?? 0,
     stock: json["stock"] ?? 0,
-    status: json["status"] ?? 1,
+    active: json["active"] ?? false,
     slug: json["slug"] ?? '',
     createdAt: DateTime.parse(json["createdAt"]),
     updatedAt: DateTime.parse(json["updatedAt"]),
@@ -98,7 +98,7 @@ class Product {
     if (price > 0) data['price'] = price;
     if (discountPrice > 0) data['discount_price'] = discountPrice;
     data['stock'] = stock;
-    data['status'] = status;
+    data['active'] = active;
     // data['created_at'] = createdAt.toIso8601String();
     // data['updated_at'] = updatedAt.toIso8601String();
     // data['deleted_at'] = deletedAt.toIso8601String();
@@ -161,6 +161,7 @@ class Product {
   }
 
   Future<Product> save() async {
+    logInfo(toJson(), logLabel: 'product_edit');
     StrapiResponse response = await API.put(
       page: 'products/$id',
       data: toJson(),

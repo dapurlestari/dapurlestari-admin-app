@@ -3,6 +3,7 @@ import 'package:admin/components/forms/custom_text_field.dart';
 import 'package:admin/components/loadings.dart';
 import 'package:admin/models/product/product.dart';
 import 'package:admin/screens/components/date_time_info.dart';
+import 'package:admin/screens/components/grid_view_form.dart';
 import 'package:admin/screens/components/markdown_editor.dart';
 import 'package:admin/services/clipboard_manager.dart';
 import 'package:admin/services/constant_lib.dart';
@@ -69,10 +70,21 @@ class ProductForm extends StatelessWidget {
                               hint: '38429332983-33',
                               label: 'PIRT Number'
                           ),
-                          CustomField.text(
-                              controller: _controller.priceField.value,
-                              hint: '20000',
-                              label: 'Price'
+                          GridViewForm(
+                            padding: const EdgeInsets.only(bottom: 12),
+                            children: [
+                              CustomField.text(
+                                  controller: _controller.priceField.value,
+                                  hint: '20000',
+                                  label: 'Price',
+                                margin: EdgeInsets.zero
+                              ),
+                              CustomField.chip(
+                                  label: 'Active',
+                                  enable: _controller.active.value,
+                                  onTap: _controller.active.toggle
+                              ),
+                            ],
                           ),
                           CustomField.text(
                               controller: _controller.discountPriceField.value,
