@@ -1,3 +1,4 @@
+import 'package:admin/services/soft_keyboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
@@ -12,6 +13,8 @@ class CustomScaffold extends StatelessWidget {
   final bool overrideOnBack;
   final bool enableWillPop;
   final String? title;
+  final double? elevation;
+  final PreferredSizeWidget? bottom;
   final List<Widget>? actions;
   final Function? onBack;
   const CustomScaffold({Key? key,
@@ -24,6 +27,8 @@ class CustomScaffold extends StatelessWidget {
     this.overrideOnBack = false,
     this.enableWillPop = true,
     this.title,
+    this.bottom,
+    this.elevation,
     this.actions,
     this.onBack,
   }) : super(key: key);
@@ -62,9 +67,10 @@ class CustomScaffold extends StatelessWidget {
     bottomNavigationBar: bottomNavigationBar,
     appBar: !useAppBar ? null : AppBar(
       automaticallyImplyLeading: false,
+      bottom: bottom,
       backgroundColor: Colors.white,
       shadowColor: Colors.grey.shade300,
-      elevation: 0.5,
+      elevation: elevation ?? 0.5,
       titleSpacing: showBackButton ? 8 : 20,
       actions: actions == null ? null : [
         ...actions!,
@@ -80,11 +86,14 @@ class CustomScaffold extends StatelessWidget {
             onPressed: Get.back,
           ),
           if (showBackButton) const SizedBox(width: 10,),
-          Text(title ?? '', style: Get.textTheme.titleLarge?.copyWith(
-              fontSize: 26,
-              fontWeight: FontWeight.w600,
-              color: Colors.indigoAccent
-          ))
+          InkWell(
+            onTap: SoftKeyboard.hide,
+            child: Text(title ?? '', style: Get.textTheme.titleLarge?.copyWith(
+                fontSize: 26,
+                fontWeight: FontWeight.w600,
+                color: Colors.indigoAccent
+            )),
+          )
         ],
       ),
     ),
