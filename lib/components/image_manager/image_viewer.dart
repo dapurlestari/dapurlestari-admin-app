@@ -127,7 +127,7 @@ class _ImageViewerState extends State<ImageViewer> {
         ),
         child: Table(
           columnWidths: const {
-            0: FixedColumnWidth(100),
+            0: FixedColumnWidth(110),
           },
           children: [
             Tables.rowItemLight(

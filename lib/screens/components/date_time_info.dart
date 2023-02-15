@@ -22,7 +22,7 @@ class DateTimeInfo extends StatelessWidget {
       ),
       child: Table(
         columnWidths: const {
-          0: FixedColumnWidth(100),
+          0: FixedColumnWidth(80),
         },
         defaultVerticalAlignment: TableCellVerticalAlignment.middle,
         children: [

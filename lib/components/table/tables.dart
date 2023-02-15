@@ -16,7 +16,7 @@ class Tables {
           )
       ),
       Text(
-        value.isEmpty ? '-' : value,
+        value.isEmpty ? ': -' : ': $value',
         style: Get.textTheme.titleSmall?.copyWith(
             color: textColor,
             fontWeight: FontWeight.w300
