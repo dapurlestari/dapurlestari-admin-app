@@ -42,9 +42,13 @@ class Faq {
     "publishedAt": publishedAt.toIso8601String(),
   };
 
-  static Future<List<Faq>> get() async {
+  static Future<List<Faq>> get({
+    int page = 1
+  }) async {
     StrapiResponse response = await API.get(
       page: 'faqs',
+      paginate: true,
+      paginationPage: page,
       populateMode: APIPopulate.all,
       // showLog: true
     );
