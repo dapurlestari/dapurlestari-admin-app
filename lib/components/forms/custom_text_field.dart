@@ -49,18 +49,6 @@ class CustomField {
           filled: readOnly,
           fillColor: Colors.grey.shade100,
           contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: Colors.grey.shade600),
-          ),
-          disabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: Colors.grey.shade600),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(color: Colors.indigoAccent),
-          ),
         ),
       ),
     );
