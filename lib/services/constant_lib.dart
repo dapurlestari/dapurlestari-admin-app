@@ -31,6 +31,9 @@ class ConstLib {
   /* Internationalization */
   static const String localeID = 'id-ID';
 
+  /* External Link */
+  static const String markdownStackEdit = 'https://stackedit.io/app';
+
   /* Notification Messages */
   static const String urlLauncherFailed = 'Failed to open link!';
   static const String appExitGesture = 'Double tap to exit app!';
