@@ -45,9 +45,16 @@ class ProductController extends GetxController {
     _fetch();
   }
 
-  void initForm(Product product) {
-    saving.value = false;
+  Future<void> initForm(Product product) async {
+    saving.value = true;
     this.product.value = product;
+    product.view().then((result) {
+      this.product.value = result;
+      saving.value = false;
+    }).catchError((e) {
+      saving.value = false;
+    });
+
     slugField.value.text = product.slug;
     nameField.value.text = product.name;
     pirtField.value.text = product.pirtCode;

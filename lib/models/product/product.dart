@@ -119,7 +119,6 @@ class Product {
       page: 'products',
       paginate: true,
       paginationPage: page,
-      populateMode: APIPopulate.deep,
       // showLog: true
     );
 
@@ -130,6 +129,20 @@ class Product {
     }
 
     return [];
+  }
+
+  Future<Product> view() async {
+    StrapiResponse response = await API.get(
+      page: 'products/$id',
+      populateMode: APIPopulate.all,
+      // showLog: true
+    );
+
+    if (response.isSuccess) {
+      return Product.fromJson(response.data[ConstLib.attributes], response.data[ConstLib.id]);
+    }
+
+    return Product.dummy();
   }
 
   Future<Product> add() async {
