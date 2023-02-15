@@ -24,6 +24,11 @@ class ConstLib {
   static const String testimonial = 'testimonial';
 
 /* API Route - Collection */
+  static const String aboutPage = 'about-page';
+  static const String faqPage = 'faq-page';
+  static const String galleryPage = 'gallery';
+  static const String homePage = 'homepage';
+  static const String productPage = 'product-page';
   static const String configPage = 'config';
   static const String privacyPolicyPage = 'privacy-policy-page';
   static const String termsServicePage = 'terms-of-service-page';
