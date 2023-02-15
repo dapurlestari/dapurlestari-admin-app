@@ -47,9 +47,15 @@ class ContentType {
   String get apiRoute => uid.split('.')[1]; //e.g. api::product.product => product
   bool get isComingSoon => _comingSoonMenu.contains(apiId);
   List<String> get _comingSoonMenu => [
-    ConstLib.experience,
+    ConstLib.experience, // collection
     ConstLib.team,
     ConstLib.testimonial,
+
+    ConstLib.aboutPage, // single type
+    ConstLib.faqPage,
+    ConstLib.galleryPage,
+    ConstLib.homePage,
+    ConstLib.productPage,
   ];
 
   void open() {
