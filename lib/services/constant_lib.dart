@@ -33,4 +33,5 @@ class ConstLib {
 
   /* Notification Messages */
   static const String urlLauncherFailed = 'Failed to open link!';
+  static const String appExitGesture = 'Double tap to exit app!';
 }
