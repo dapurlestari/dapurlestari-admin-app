@@ -91,7 +91,11 @@ class MediaFilesPicker extends StatelessWidget {
               onTap: _pickImages,
               child: Container(
                 color: Colors.white,
+                margin: const EdgeInsets.symmetric(horizontal: 14),
+                height: 300,
+                width: double.infinity,
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
                     Icon(FeatherIcons.uploadCloud),
                     SizedBox(height: 8),
