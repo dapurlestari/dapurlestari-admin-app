@@ -90,9 +90,16 @@ class MediaLibraryScreen extends StatelessWidget {
             color: Colors.grey.shade800,
           ),
           onPressed: () {
-            List<MediaFile>? mediaFiles = _mainController.mediaFiles.where((e) => e.selected).toList();
-            _mainController.mediaFiles.refresh();
-            Get.back(result: mediaFiles);
+            if (isMultiselect) {
+              List<MediaFile>? mediaFiles = _mainController.mediaFiles.where((e) => e.selected).toList();
+              _mainController.mediaFiles.refresh();
+              Get.back(result: mediaFiles);
+            } else {
+              MediaFile? media = _mainController.mediaFiles.firstWhereOrNull((e) => e.selected);
+              media?.selected = false;
+              _mainController.mediaFiles.refresh();
+              Get.back(result: media);
+            }
           },
         )
       ],
