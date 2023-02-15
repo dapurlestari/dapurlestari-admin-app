@@ -10,6 +10,7 @@ import 'package:admin/screens/category/category_controller.dart';
 import 'package:admin/screens/components/date_time_info.dart';
 import 'package:admin/screens/components/grid_view_form.dart';
 import 'package:admin/screens/components/markdown_editor.dart';
+import 'package:admin/screens/components/media_files_picker.dart';
 import 'package:admin/screens/components/seo_form.dart';
 import 'package:admin/services/constant_lib.dart';
 import 'package:admin/services/logger.dart';
@@ -177,6 +178,14 @@ class ProductForm extends StatelessWidget {
                             label: 'Description Rich',
                           ),
                         ],
+                      )
+                  ),
+                  const SizedBox(height: 40),
+                  CustomField.fieldGroup(
+                      label: 'Images',
+                      content: MediaFilesPicker(
+                        mediaFiles: _controller.product.value.images,
+                        tag: ConstLib.product,
                       )
                   ),
                   const SizedBox(height: 40),

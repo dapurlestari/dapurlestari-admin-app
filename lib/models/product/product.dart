@@ -29,7 +29,7 @@ class Product {
   String deletedAt = '';
   Category category;
   Bundle bundle;
-  List<MediaFile>? images;
+  List<MediaFile> images;
   Seo seo;
 
   Product({
@@ -52,7 +52,7 @@ class Product {
     this.deletedAt = '',
     required this.category,
     required this.bundle,
-    this.images,
+    required this.images,
     required this.seo,
   });
 
@@ -75,7 +75,8 @@ class Product {
     publishedAt: DateTime.parse(json["publishedAt"]),
     bundle: Bundle.dummy(),
     category: Category.dummy(),
-    seo: Seo.dummy()
+    seo: Seo.dummy(),
+    images: []
   );
 
   factory Product.fromJsonDetail(Map<String, dynamic> json, int id) => Product(
@@ -107,9 +108,7 @@ class Product {
         json["bundle"]["data"]['attributes'],
         json["bundle"]["data"]['id']
     ),
-    images: !json.containsKey('images')
-        ? null
-        : (json['images']['data'] as List).map((e) => MediaFile.fromJson(e)).toList(),
+    images: json['images']['data'] == null ? [] : (json['images']['data'] as List).map((e) => MediaFile.fromJson(e)).toList(),
     seo: json['seo'] == null ? Seo.dummy() : Seo.fromJson(json['seo']),
   );
 
@@ -119,7 +118,8 @@ class Product {
     publishedAt: DateTime.now(),
     category: Category.dummy(),
     bundle: Bundle.dummy(),
-    seo: Seo.dummy()
+    seo: Seo.dummy(),
+    images: []
   );
 
   Map<String, dynamic> toJson() {
@@ -139,6 +139,7 @@ class Product {
     // data['created_at'] = createdAt.toIso8601String();
     // data['updated_at'] = updatedAt.toIso8601String();
     // data['deleted_at'] = deletedAt.toIso8601String();
+    data['images'] = images.map((e) => e.id).toList();
     data['category'] = category.id;
     data['bundle'] = bundle.id;
     data['seo'] = seo.toJson();
@@ -146,9 +147,9 @@ class Product {
   }
 
   bool get isNotEmpty => id > 0;
-  bool get hasImages => images != null;
-  String get thumbnail => hasImages ? images!.first.formats!.thumbnail.url : '';
-  String get image => hasImages ? images!.first.url : '';
+  bool get hasImages => images.isNotEmpty;
+  String get thumbnail => hasImages ? images.first.formats!.thumbnail.url : '';
+  String get image => hasImages ? images.first.url : '';
 
   static Future<List<Product>> get({
     int page = 1
