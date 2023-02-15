@@ -115,11 +115,24 @@ class MediaFile {
   bool get isImage => mime.contains('image');
   bool get hasURL => url.isNotEmpty;
 
-  static Future<List<MediaFile>?> get() async {
+  static Future<List<MediaFile>?> get({
+    List<MediaFile>? excludeFiles
+  }) async {
+
+    String filterExc = '';
+
+    if (excludeFiles != null) {
+      filterExc = excludeFiles.map((e) => e.id).toList().join(',');
+      filterExc = 'id:notIn:$filterExc';
+    }
+
     StrapiResponse response = await API.get(
         page: 'upload/files',
+        filterList: [
+          filterExc
+        ],
         // populateMode: APIPopulate.all,
-        // showLog: true
+        showLog: true
     );
 
     if (response.isSuccess) {
