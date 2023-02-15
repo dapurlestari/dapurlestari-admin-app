@@ -45,6 +45,12 @@ class ContentType {
   bool get isConfig => apiId == 'config';
   bool get isNotConfig => !isConfig;
   String get apiRoute => uid.split('.')[1]; //e.g. api::product.product => product
+  bool get isComingSoon => _comingSoonMenu.contains(apiId);
+  List<String> get _comingSoonMenu => [
+    ConstLib.experience,
+    ConstLib.team,
+    ConstLib.testimonial,
+  ];
 
   void open() {
     switch (apiId) {
