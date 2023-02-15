@@ -20,6 +20,9 @@ class MainController extends GetxController {
   final mediaLibraryEnableGridView = false.obs;
   final mediaLibraryRefresher = RefreshController().obs;
 
+  int get selectedCount => mediaFiles.where((m) => m.selected).length;
+  bool get hasSelectedItems => selectedCount > 0;
+
   Future<void> _fetchContentTypes() async {
     isLoadingContentTypes.value = true;
     var contentTypes = await ContentType.get();
@@ -32,16 +35,12 @@ class MainController extends GetxController {
     }
   }
 
-  void deselectMedia() {
-    int index = mediaFiles.indexWhere((e) => e.selected);
-    if (index > -1) {
-      mediaFiles[index].selected = false;
-      mediaFiles.refresh();
-    }
-  }
-
-  Future<void> _fetchMedia() async {
-    List<MediaFile>? media = await MediaFile.get();
+  Future<void> _fetchMedia({
+    List<MediaFile> excludeFiles = const []
+  }) async {
+    List<MediaFile>? media = await MediaFile.get(
+      excludeFiles: excludeFiles
+    );
     if (media != null) {
       logInfo(media.first.name, logLabel: 'first_media');
       mediaFiles.value = media;
@@ -51,9 +50,25 @@ class MainController extends GetxController {
     mediaLibraryRefresher.value.loadComplete();
   }
 
-  void refreshMediaLibrary() {
+  void removeFromMedia(List<MediaFile> medias) {
+    for (var media in medias) {
+      mediaFiles.removeWhere((e) => e.id == media.id);
+    }
+  }
+
+  void deselectMedia() {
+    int index = mediaFiles.indexWhere((e) => e.selected);
+    if (index > -1) {
+      mediaFiles[index].selected = false;
+      mediaFiles.refresh();
+    }
+  }
+
+  void refreshMediaLibrary({
+    List<MediaFile> excludeFiles = const []
+  }) {
     isLoadingMediaLibrary.value = true;
-    _fetchMedia();
+    _fetchMedia(excludeFiles: excludeFiles);
   }
 
   Future<void> uploadToLibrary() async {
