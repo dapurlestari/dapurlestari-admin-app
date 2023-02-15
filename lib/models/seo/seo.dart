@@ -36,8 +36,8 @@ class Seo {
     structuredData: json["structuredData"],
     metaViewport: json["metaViewport"] ?? '',
     canonicalUrl: json["canonicalURL"] ?? '',
-    metaImage: json["metaImage"]["data"] != null ? MediaFile.fromJson(json["metaImage"]["data"]) : MediaFile.dummy(),
-    metaSocial: List<MetaSocial>.from(json["metaSocial"].map((x) => MetaSocial.fromJson(x))),
+    metaImage: json["metaImage"] == null || json["metaImage"]["data"] == null ? MediaFile.dummy() : MediaFile.fromJson(json["metaImage"]["data"]),
+    metaSocial: json["metaSocial"] == null ? [] : List<MetaSocial>.from(json["metaSocial"].map((x) => MetaSocial.fromJson(x))),
   );
 
   factory Seo.dummy() => Seo(
