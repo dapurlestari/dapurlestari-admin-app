@@ -45,15 +45,66 @@ class ProductForm extends StatelessWidget {
                       label: 'General',
                       content: Column(
                         children: [
+                          if (product.isNotEmpty) CustomField.text(
+                              controller: _controller.slugField.value,
+                              hint: '-',
+                              readOnly: true,
+                              enabled: false,
+                              label: 'Slug / URL Segment'
+                          ),
                           CustomField.text(
-                              controller: _controller.titleField.value,
+                              controller: _controller.nameField.value,
                               hint: 'Add category name or label',
                               label: 'Title'
                           ),
                           CustomField.text(
+                              controller: _controller.pirtField.value,
+                              hint: '38429332983-33',
+                              label: 'PIRT Number'
+                          ),
+                          CustomField.text(
+                              controller: _controller.priceField.value,
+                              hint: '20000',
+                              label: 'Price'
+                          ),
+                          CustomField.text(
+                              controller: _controller.discountPriceField.value,
+                              hint: '18000',
+                              label: 'Discount Price'
+                          ),
+                          CustomField.text(
+                              controller: _controller.releaseYearField.value,
+                              hint: '2008',
+                              label: 'Release Year'
+                          ),
+                          CustomField.text(
+                              controller: _controller.stockField.value,
+                              hint: '50',
+                              label: 'Stock'
+                          ),
+                          CustomField.text(
+                              controller: _controller.nettField.value,
+                              hint: '250',
+                              label: 'Nett'
+                          ),
+                          CustomField.text(
+                              controller: _controller.unitField.value,
+                              hint: 'g, kg',
+                              label: 'Unit'
+                          ),
+                          CustomField.text(
                               controller: _controller.descriptionField.value,
-                              hint: 'Add product description',
-                              label: 'Icon Name',
+                              hint: 'Add short product description',
+                              label: 'Description',
+                              minLines: 2,
+                              maxLines: 3
+                          ),
+                          CustomField.text(
+                              controller: _controller.descriptionRichField.value,
+                              hint: 'Add more detail about product',
+                              label: 'Description',
+                              minLines: 5,
+                              maxLines: 10
                           ),
                         ],
                       )

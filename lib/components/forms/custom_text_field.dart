@@ -11,6 +11,8 @@ class CustomField {
     int? minLines,
     int maxLines = 1,
     int? maxLength,
+    bool readOnly = false,
+    bool? enabled,
     TextInputAction? action,
     EdgeInsets? margin
   }) {
@@ -20,6 +22,8 @@ class CustomField {
         controller: controller,
         minLines: minLines,
         maxLines: maxLines,
+        readOnly: readOnly,
+        enabled: enabled,
         inputFormatters: maxLength != null ? [
           SoftKeyboard.limit(maxLength)
         ] : null,
@@ -27,7 +31,7 @@ class CustomField {
         style: Get.textTheme.bodyLarge?.copyWith(
             fontSize: 16,
             fontWeight: FontWeight.w400,
-            color: Colors.grey.shade900
+            color: readOnly ? Colors.grey.shade500 : Colors.grey.shade900
         ),
         decoration: InputDecoration(
           hintText: hint,
@@ -42,8 +46,14 @@ class CustomField {
               fontWeight: FontWeight.w300,
               color: Colors.grey.shade500
           ),
+          filled: readOnly,
+          fillColor: Colors.grey.shade100,
           contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
           enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide(color: Colors.grey.shade600),
+          ),
+          disabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
             borderSide: BorderSide(color: Colors.grey.shade600),
           ),

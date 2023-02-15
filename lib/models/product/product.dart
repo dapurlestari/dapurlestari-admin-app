@@ -9,14 +9,15 @@ import 'package:fluttertoast/fluttertoast.dart';
 class Product {
 
   int id = 0;
-  String code = '';
   String name = '';
   String description = '';
+  String descriptionRich = '';
   int releaseYear = 0;
   int nett = 0;
   String unit = 'g';
-  String pirtNumber = '';
+  String pirtCode = '';
   int price = 0;
+  int discountPrice = 0;
   int stock = 0;
   int status = 0;
   String slug;
@@ -31,14 +32,15 @@ class Product {
 
   Product({
     this.id = 0,
-    this.code = '',
     this.name = '',
     this.description = '',
+    this.descriptionRich = '',
     this.releaseYear = 0,
     this.nett = 0,
     this.unit = '',
-    this.pirtNumber = '',
+    this.pirtCode = '',
     this.price = 0,
+    this.discountPrice = 0,
     this.stock = 0,
     this.status = 0,
     this.slug = '',
@@ -54,14 +56,15 @@ class Product {
 
   factory Product.fromJson(Map<String, dynamic> json, int id) => Product(
     id: id,
-    code: json["code"] ?? '',
     name: json["name"] ?? '',
     description: json["description"] ?? '',
+    descriptionRich: json["description_rich"] ?? '',
     releaseYear: json["release_year"] ?? 2006,
     nett: json["netto"] ?? 0,
     unit: json["unit"] ?? '',
-    pirtNumber: json["pirt_number"] ?? '',
+    pirtCode: json["pirt_code"] ?? '',
     price: json["price"] ?? 0,
+    discountPrice: json["discount_price"] ?? 0,
     stock: json["stock"] ?? 0,
     status: json["status"] ?? 1,
     slug: json["slug"] ?? '',
@@ -85,14 +88,15 @@ class Product {
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
     // data['id'] = id;
-    data['code'] = code;
     data['name'] = name;
     data['description'] = description;
+    data['description_rich'] = descriptionRich;
     data['release_year'] = releaseYear;
     data['netto'] = nett;
     data['unit'] = unit;
-    data['pirt_number'] = pirtNumber;
+    data['pirt_code'] = pirtCode;
     data['price'] = price;
+    data['discount_price'] = discountPrice;
     data['stock'] = stock;
     data['status'] = status;
     // data['created_at'] = createdAt.toIso8601String();
