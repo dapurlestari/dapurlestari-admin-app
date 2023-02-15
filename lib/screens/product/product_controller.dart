@@ -1,4 +1,5 @@
 import 'package:admin/models/product/product.dart';
+import 'package:admin/services/logger.dart';
 import 'package:admin/services/soft_keyboard.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -13,6 +14,8 @@ class ProductController extends GetxController {
   final saving = false.obs;
   final page = 1.obs;
 
+  final bundleField = TextEditingController().obs;
+  final categoryField = TextEditingController().obs;
   final slugField = TextEditingController().obs;
   final nameField = TextEditingController().obs;
   final pirtField = TextEditingController().obs;
@@ -50,12 +53,18 @@ class ProductController extends GetxController {
 
   Future<void> initForm(Product product) async {
     this.product.value = product;
+    // logInfo(product.isNotEmpty, logLabel: 'product_not_empty');
 
     saving.value = false;
     if (product.isNotEmpty) {
       saving.value = true;
+      bundleField.value.clear();
+      categoryField.value.clear();
       product.view().then((result) {
         this.product.value = result;
+        // logInfo(result.category.name, logLabel: 'category_name');
+        bundleField.value.text = result.bundle.name;
+        categoryField.value.text = result.category.name;
         saving.value = false;
       }).catchError((e) {
         saving.value = false;
@@ -90,6 +99,8 @@ class ProductController extends GetxController {
     product.description = descriptionField.value.text;
     product.descriptionRich = descriptionRichField.value.text;
     product.active = active.value;
+    product.bundle = this.product.value.bundle;
+    product.category = this.product.value.category;
     product = await product.add();
     if (product.isNotEmpty) {
       products.add(product);

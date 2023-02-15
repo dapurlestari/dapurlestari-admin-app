@@ -1,20 +1,20 @@
+import 'package:admin/components/bottom_sheets/bottom_sheets.dart';
 import 'package:admin/components/custom_scaffold.dart';
 import 'package:admin/components/forms/custom_text_field.dart';
 import 'package:admin/components/loadings.dart';
+import 'package:admin/models/bundle/bundle.dart';
+import 'package:admin/models/category/category.dart';
 import 'package:admin/models/product/product.dart';
+import 'package:admin/screens/bundle/bundle_controller.dart';
+import 'package:admin/screens/category/category_controller.dart';
 import 'package:admin/screens/components/date_time_info.dart';
 import 'package:admin/screens/components/grid_view_form.dart';
 import 'package:admin/screens/components/markdown_editor.dart';
-import 'package:admin/services/clipboard_manager.dart';
-import 'package:admin/services/constant_lib.dart';
-import 'package:admin/services/link_launcher.dart';
 import 'package:admin/services/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:markdown_editable_textinput/markdown_text_input.dart';
 
 import 'product_controller.dart';
 
@@ -25,6 +25,36 @@ class ProductForm extends StatelessWidget {
   }) : super(key: key);
 
   final ProductController _controller = Get.find();
+  final String bundleTag = 'product.bundle';
+  final String categoryTag = 'product.category';
+
+  Future<void> _openBundleSheet() async {
+    final bundleC = Get.put(BundleController(), tag: bundleTag);
+    Bundle? bundle = await BottomSheets.open(
+      child: _bundleList,
+      isLoading: bundleC.isRefresh,
+      header: 'Bundle'
+    );
+    logInfo(bundle?.toJson(), logLabel: 'selected_bundle');
+    if (bundle != null) {
+      _controller.product.value.bundle = bundle;
+      _controller.bundleField.value.text = bundle.name;
+    }
+  }
+
+  Future<void> _openCategorySheet() async {
+    final categoryC =  Get.put(CategoryController(), tag: categoryTag);
+    Category? category = await BottomSheets.open(
+      child: _categoryList,
+      isLoading: categoryC.isRefresh,
+      header: 'Categories'
+    );
+    logInfo(category?.toJson(), logLabel: 'selected_category');
+    if (category != null) {
+      _controller.product.value.category = category;
+      _controller.categoryField.value.text = category.name;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +79,28 @@ class ProductForm extends StatelessWidget {
               child: ListView(
                 padding: const EdgeInsets.fromLTRB(20, 22, 15, 150),
                 children: [
+                  CustomField.fieldGroup(
+                      label: 'Relation',
+                      content: Column(
+                        children: [
+                          CustomField.text(
+                              controller: _controller.bundleField.value,
+                              hint: 'Paket A',
+                              readOnly: true,
+                              label: 'Product Bundle',
+                              onTap: _openBundleSheet
+                          ),
+                          CustomField.text(
+                              controller: _controller.categoryField.value,
+                              hint: 'Cookies',
+                              readOnly: true,
+                              label: 'Product Category',
+                              onTap: _openCategorySheet
+                          ),
+                        ],
+                      )
+                  ),
+                  const SizedBox(height: 40),
                   CustomField.fieldGroup(
                       label: 'General',
                       content: Column(
@@ -137,6 +189,78 @@ class ProductForm extends StatelessWidget {
                 ],
               ),
             )
+        )
+    ));
+  }
+
+  Widget get _bundleList {
+    final BundleController bundleC = Get.find(tag: bundleTag);
+
+    return Obx(() => Scrollbar(
+        radius: const Radius.circular(10),
+        child: ListView.separated(
+          padding: const EdgeInsets.only(bottom: 120),
+          shrinkWrap: true,
+          itemCount: bundleC.bundles.length,
+          itemBuilder: (_, i) {
+            Bundle bundle = bundleC.bundles[i];
+            return InkWell(
+              child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.grey.shade50
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(bundle.name, style: Get.textTheme.titleMedium,),
+                      Icon(FeatherIcons.circle, size: 16, color: Colors.grey.shade400,)
+                    ],
+                  )
+              ),
+              onTap: () {
+                Get.back(result: bundle);
+              },
+            );
+          },
+          separatorBuilder: (_, i) => const SizedBox(height: 10),
+        )
+    ));
+  }
+
+  Widget get _categoryList {
+    final CategoryController categoryC = Get.find(tag: categoryTag);
+
+    return Obx(() => Scrollbar(
+        radius: const Radius.circular(10),
+        child: ListView.separated(
+          padding: const EdgeInsets.only(bottom: 120),
+          shrinkWrap: true,
+          itemCount: categoryC.categories.length,
+          itemBuilder: (_, i) {
+            Category category = categoryC.categories[i];
+            return InkWell(
+              child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.grey.shade50
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(category.name, style: Get.textTheme.titleMedium,),
+                      Icon(FeatherIcons.circle, size: 16, color: Colors.grey.shade400,)
+                    ],
+                  )
+              ),
+              onTap: () {
+                Get.back(result: category);
+              },
+            );
+          },
+          separatorBuilder: (_, i) => const SizedBox(height: 10),
         )
     ));
   }

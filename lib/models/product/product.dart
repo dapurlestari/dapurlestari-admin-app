@@ -1,3 +1,5 @@
+import 'package:admin/models/bundle/bundle.dart';
+import 'package:admin/models/category/category.dart';
 import 'package:admin/models/image/media_file.dart';
 import 'package:admin/models/seo/seo.dart';
 import 'package:admin/services/api.dart';
@@ -25,8 +27,8 @@ class Product {
   DateTime updatedAt;
   DateTime publishedAt;
   String deletedAt = '';
-  int productCategoryId = 0;
-  int bundleId = 0;
+  Category category;
+  Bundle bundle;
   List<MediaFile>? images;
   Seo? seo;
 
@@ -48,8 +50,8 @@ class Product {
     required this.updatedAt,
     required this.publishedAt,
     this.deletedAt = '',
-    this.productCategoryId = 0,
-    this.bundleId = 0,
+    required this.category,
+    required this.bundle,
     this.images,
     this.seo,
   });
@@ -71,8 +73,39 @@ class Product {
     createdAt: DateTime.parse(json["createdAt"]),
     updatedAt: DateTime.parse(json["updatedAt"]),
     publishedAt: DateTime.parse(json["publishedAt"]),
-    productCategoryId: json["product_category_id"] ?? 0,
-    bundleId: json["bundle_id"] ?? 0,
+    bundle: Bundle.dummy(),
+    category: Category.dummy()
+  );
+
+  factory Product.fromJsonDetail(Map<String, dynamic> json, int id) => Product(
+    id: id,
+    name: json["name"] ?? '',
+    description: json["description"] ?? '',
+    descriptionRich: json["description_rich"] ?? '',
+    releaseYear: json["release_year"] ?? 2006,
+    nett: json["netto"] ?? 0,
+    unit: json["unit"] ?? '',
+    pirtCode: json["pirt_code"] ?? '',
+    price: json["price"] ?? 0,
+    discountPrice: int.tryParse(json["discount_price"].toString()) ?? 0,
+    stock: json["stock"] ?? 0,
+    active: json["active"] ?? false,
+    slug: json["slug"] ?? '',
+    createdAt: DateTime.parse(json["createdAt"]),
+    updatedAt: DateTime.parse(json["updatedAt"]),
+    publishedAt: DateTime.parse(json["publishedAt"]),
+    category: json["category"]['data'] == null
+        ? Category.dummy()
+        : Category.fromJson(
+          json["category"]["data"]['attributes'],
+          json["category"]["data"]['id']
+    ),
+    bundle: json["bundle"]['data'] == null
+        ? Bundle.dummy()
+        : Bundle.fromJson(
+        json["bundle"]["data"]['attributes'],
+        json["bundle"]["data"]['id']
+    ),
     images: !json.containsKey('images')
         ? null
         : (json['images']['data'] as List).map((e) => MediaFile.fromJson(e)).toList(),
@@ -82,7 +115,9 @@ class Product {
   factory Product.dummy() => Product(
     createdAt: DateTime.now(),
     updatedAt: DateTime.now(),
-    publishedAt: DateTime.now()
+    publishedAt: DateTime.now(),
+    category: Category.dummy(),
+    bundle: Bundle.dummy()
   );
 
   Map<String, dynamic> toJson() {
@@ -102,8 +137,8 @@ class Product {
     // data['created_at'] = createdAt.toIso8601String();
     // data['updated_at'] = updatedAt.toIso8601String();
     // data['deleted_at'] = deletedAt.toIso8601String();
-    // data['product_category_id'] = productCategoryId;
-    // data['bundle_id'] = bundleId;
+    data['category'] = category.id;
+    data['bundle'] = bundle.id;
     return data;
   }
 
@@ -139,7 +174,10 @@ class Product {
     );
 
     if (response.isSuccess) {
-      return Product.fromJson(response.data[ConstLib.attributes], response.data[ConstLib.id]);
+      return Product.fromJsonDetail(
+        response.data[ConstLib.attributes],
+        response.data[ConstLib.id]
+      );
     }
 
     return Product.dummy();
