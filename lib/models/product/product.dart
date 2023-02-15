@@ -146,6 +146,7 @@ class Product {
     return data;
   }
 
+  bool get isEmpty => id == 0;
   bool get isNotEmpty => id > 0;
   bool get hasImages => images.isNotEmpty;
   String get thumbnail => hasImages ? images.first.formats!.thumbnail.url : '';
@@ -186,6 +187,22 @@ class Product {
 
     if (response.isSuccess) {
       return Product.fromJsonDetail(
+        response.data[ConstLib.attributes],
+        response.data[ConstLib.id]
+      );
+    }
+
+    return Product.dummy();
+  }
+
+  Future<Product> getBySlug() async {
+    StrapiResponse response = await API.get(
+      page: 'slugify/slugs/product/$slug',
+      showLog: true
+    );
+
+    if (response.isSuccess) {
+      return Product.fromJson(
         response.data[ConstLib.attributes],
         response.data[ConstLib.id]
       );

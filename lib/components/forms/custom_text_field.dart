@@ -14,6 +14,7 @@ class CustomField {
     bool readOnly = false,
     bool? enabled,
     TextInputAction? action,
+    TextInputType? keyboardType,
     EdgeInsets? margin,
     GestureTapCallback? onTap
   }) {
@@ -25,6 +26,7 @@ class CustomField {
         maxLines: maxLines,
         readOnly: readOnly,
         enabled: enabled,
+        keyboardType: keyboardType,
         inputFormatters: maxLength != null ? [
           SoftKeyboard.limit(maxLength)
         ] : null,

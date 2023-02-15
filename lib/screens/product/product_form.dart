@@ -108,12 +108,21 @@ class ProductForm extends StatelessWidget {
                       label: 'General',
                       content: Column(
                         children: [
-                          if (product.isNotEmpty) CustomField.text(
-                              controller: _controller.slugField.value,
-                              hint: '-',
-                              readOnly: true,
-                              enabled: false,
-                              label: 'Slug / URL Segment'
+                          CustomField.text(
+                            controller: _controller.slugField.value,
+                            hint: '-',
+                            readOnly: true,
+                            label: 'Slug / URL Segment',
+                            onTap: () async {
+                              String slug = _controller.nameField.value.text.toLowerCase().replaceAll(' ', '-');
+                              _controller.product.value.slug = slug;
+                              Product product = await _controller.product.value.getBySlug();
+                              logInfo(product.slug, logLabel: 'slug');
+                              _controller.slugField.value.clear();
+                              if (product.isEmpty) {
+                                _controller.slugField.value.text = slug;
+                              }
+                            }
                           ),
                           CustomField.text(
                               controller: _controller.nameField.value,
@@ -140,26 +149,31 @@ class ProductForm extends StatelessWidget {
                             controller: _controller.priceField.value,
                             hint: '20000',
                             label: 'Price',
+                            keyboardType: TextInputType.number
                           ),
                           CustomField.text(
                               controller: _controller.discountPriceField.value,
                               hint: '18000',
-                              label: 'Discount Price'
+                              label: 'Discount Price',
+                              keyboardType: TextInputType.number
                           ),
                           CustomField.text(
                               controller: _controller.releaseYearField.value,
                               hint: '2008',
-                              label: 'Release Year'
+                              label: 'Release Year',
+                              keyboardType: TextInputType.number
                           ),
                           CustomField.text(
                               controller: _controller.stockField.value,
                               hint: '50',
-                              label: 'Stock'
+                              label: 'Stock',
+                              keyboardType: TextInputType.number
                           ),
                           CustomField.text(
                               controller: _controller.nettField.value,
                               hint: '250',
-                              label: 'Nett'
+                              label: 'Nett',
+                              keyboardType: TextInputType.number
                           ),
                           CustomField.text(
                               controller: _controller.unitField.value,
