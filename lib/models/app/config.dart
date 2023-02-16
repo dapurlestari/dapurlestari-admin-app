@@ -2,7 +2,6 @@ import 'package:admin/models/map/map_object.dart';
 import 'package:admin/services/api.dart';
 import 'package:admin/services/constant_lib.dart';
 import 'package:admin/services/strapi_response.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import '../seo/seo.dart';
 

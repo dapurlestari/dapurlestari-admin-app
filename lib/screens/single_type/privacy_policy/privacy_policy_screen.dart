@@ -1,13 +1,11 @@
 import 'package:admin/components/buttons/buttons.dart';
 import 'package:admin/components/custom_scaffold.dart';
-import 'package:admin/components/loadings.dart';
 import 'package:admin/screens/components/contentful_form.dart';
 import 'package:admin/screens/components/seo_form.dart';
 import 'package:admin/screens/single_type/privacy_policy/privacy_policy_controller.dart';
 import 'package:admin/services/constant_lib.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:line_icons/line_icons.dart';
 
 class PrivacyPolicyScreen extends StatelessWidget {
   PrivacyPolicyScreen({Key? key}) : super(key: key);
