@@ -105,8 +105,11 @@ class MediaFilePicker extends StatelessWidget {
                 children: [
                   Text('Meta Image', style: Get.textTheme.titleMedium),
                   OutlinedButton(
-                      onPressed: _pickImage,
-                      child: Text('Choose', style: Get.textTheme.titleMedium,)
+                    onPressed: _pickImage,
+                    style: const ButtonStyle(
+                      padding: MaterialStatePropertyAll<EdgeInsets>(EdgeInsets.all(8))
+                    ),
+                    child: Text('Choose', style: Get.textTheme.titleMedium,)
                   )
                 ],
               ),
