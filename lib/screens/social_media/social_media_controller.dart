@@ -1,4 +1,3 @@
-import 'package:admin/models/bundle/bundle.dart';
 import 'package:admin/models/social/social_media.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';

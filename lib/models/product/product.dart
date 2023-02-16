@@ -4,9 +4,7 @@ import 'package:admin/models/image/media_file.dart';
 import 'package:admin/models/seo/seo.dart';
 import 'package:admin/services/api.dart';
 import 'package:admin/services/constant_lib.dart';
-import 'package:admin/services/logger.dart';
 import 'package:admin/services/strapi_response.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class Product {
 

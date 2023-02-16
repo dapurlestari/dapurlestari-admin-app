@@ -1,6 +1,5 @@
 import 'package:admin/models/map/map_object.dart';
 import 'package:admin/services/api.dart';
-import 'package:admin/services/logger.dart';
 import 'package:admin/services/strapi_response.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 

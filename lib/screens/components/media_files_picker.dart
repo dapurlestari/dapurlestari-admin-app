@@ -2,7 +2,6 @@ import 'package:admin/components/image_manager/image_viewer.dart';
 import 'package:admin/models/image/media_file.dart';
 import 'package:admin/screens/main_controller.dart';
 import 'package:admin/screens/media_library/media_library_screen.dart';
-import 'package:admin/services/logger.dart';
 import 'package:admin/services/soft_keyboard.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';

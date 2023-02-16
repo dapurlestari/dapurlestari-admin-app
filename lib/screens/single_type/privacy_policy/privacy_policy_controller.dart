@@ -6,7 +6,6 @@ import 'package:admin/screens/components/contentful_form.dart';
 import 'package:admin/screens/components/media_file_picker.dart';
 import 'package:admin/screens/components/seo_form.dart';
 import 'package:admin/services/constant_lib.dart';
-import 'package:admin/services/logger.dart';
 import 'package:admin/services/soft_keyboard.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';

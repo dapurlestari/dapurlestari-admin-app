@@ -2,7 +2,6 @@ import 'package:admin/components/custom_scaffold.dart';
 import 'package:admin/components/loadings.dart';
 import 'package:admin/screens/components/contentful_form.dart';
 import 'package:admin/screens/components/seo_form.dart';
-import 'package:admin/screens/single_type/privacy_policy/privacy_policy_controller.dart';
 import 'package:admin/screens/single_type/terms_services/terms_services_controller.dart';
 import 'package:admin/services/constant_lib.dart';
 import 'package:flutter/material.dart';
