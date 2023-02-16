@@ -64,7 +64,6 @@ class PrivacyPolicy {
     );
 
     if (response.isSuccess) {
-      Fluttertoast.showToast(msg: 'Privacy Policy Updated!');
       return PrivacyPolicy.fromJson(response.data[ConstLib.attributes]);
     }
 
