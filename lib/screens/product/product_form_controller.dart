@@ -18,6 +18,8 @@ class ProductFormController extends GetxController {
   final product = Product.dummy().obs;
   final saving = false.obs;
   final loading = false.obs;
+  final loadingUnits = false.obs;
+  final availableUnits = <String>[].obs;
 
   final bundleField = TextEditingController().obs;
   final categoryField = TextEditingController().obs;
@@ -55,6 +57,7 @@ class ProductFormController extends GetxController {
     bundleField.value.clear();
     categoryField.value.clear();
     loading.value = false;
+    loadingUnits.value = true;
 
     if (product.isNotEmpty) {
       loading.value = true;
@@ -73,6 +76,11 @@ class ProductFormController extends GetxController {
         logError(e, logLabel: 'view_product');
         Fluttertoast.showToast(msg: 'View Product Error!');
         loading.value = false;
+      });
+
+      product.getUnits().then((values) {
+        availableUnits.value = values;
+        loadingUnits.value = false;
       });
     }
 

@@ -47,6 +47,19 @@ class ProductForm extends StatelessWidget {
     }
   }
 
+  Future<void> _openUnitSheet() async {
+    String? unit = await BottomSheets.open(
+      child: _unitList,
+      isLoading: _controller.loadingUnits,
+      header: 'Units'
+    );
+    logInfo(unit, logLabel: 'selected_unit');
+    if (unit != null) {
+      _controller.product.value.unit = unit;
+      _controller.unitField.value.text = unit;
+    }
+  }
+
   Future<void> _openCategorySheet() async {
     final categoryC =  Get.put(CategoryController(), tag: categoryTag);
     Category? category = await BottomSheets.open(
@@ -202,8 +215,11 @@ class ProductForm extends StatelessWidget {
                               ),
                               CustomField.text(
                                   controller: _controller.unitField.value,
-                                  hint: 'g, kg',
-                                  label: 'Unit'
+                                  hint: 'Unit',
+                                  readOnly: true,
+                                  label: 'Unit',
+                                  suffixIcon: const Icon(FeatherIcons.chevronDown, size: 18),
+                                  onTap: _openUnitSheet
                               ),
                               CustomField.text(
                                   controller: _controller.descriptionField.value,
@@ -319,6 +335,39 @@ class ProductForm extends StatelessWidget {
               ),
               onTap: () {
                 Get.back(result: category);
+              },
+            );
+          },
+          separatorBuilder: (_, i) => const SizedBox(height: 10),
+        )
+    ));
+  }
+
+  Widget get _unitList {
+    return Obx(() => Scrollbar(
+        radius: const Radius.circular(10),
+        child: ListView.separated(
+          padding: const EdgeInsets.only(bottom: 120),
+          shrinkWrap: true,
+          itemCount: _controller.availableUnits.length,
+          itemBuilder: (_, i) {
+            return InkWell(
+              child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.grey.shade50
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(_controller.availableUnits[i], style: Get.textTheme.titleMedium,),
+                      Icon(FeatherIcons.circle, size: 16, color: Colors.grey.shade400,)
+                    ],
+                  )
+              ),
+              onTap: () {
+                Get.back(result: _controller.availableUnits[i]);
               },
             );
           },

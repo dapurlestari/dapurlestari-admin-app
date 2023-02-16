@@ -6,6 +6,7 @@ class ConstLib {
 
   // API Structure Keys
   static const String id = 'id';
+  static const String schema = 'schema';
   static const String attributes = 'attributes';
   static const int defaultPageSize = 10;
 

@@ -248,6 +248,20 @@ class Product {
     return Product.dummy();
   }
 
+  Future<List<String>> getUnits() async {
+    StrapiResponse response = await API.get(
+      page: 'content-type-builder/content-types/api::product.product',
+      showLog: true
+    );
+
+    if (response.isSuccess) {
+      List<dynamic> units = response.data[ConstLib.schema][ConstLib.attributes]['unit']['enum'];
+      return units.map((e) => '$e').toList();
+    }
+
+    return [];
+  }
+
   Future<Product> add() async {
     StrapiResponse response = await API.post(
       page: 'products',
