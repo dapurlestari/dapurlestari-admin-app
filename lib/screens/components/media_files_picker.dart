@@ -110,6 +110,9 @@ class MediaFilesPicker extends StatelessWidget {
                     children: [
                       OutlinedButton(
                         onPressed: controller.prev,
+                        style: const ButtonStyle(
+                            padding: MaterialStatePropertyAll<EdgeInsets>(EdgeInsets.all(8))
+                        ),
                         child: Text('Prev', style: Get.textTheme.titleMedium),
                       ),
                       const SizedBox(width: 10),
@@ -119,12 +122,18 @@ class MediaFilesPicker extends StatelessWidget {
                       const SizedBox(width: 10),
                       OutlinedButton(
                         onPressed: controller.next,
+                        style: const ButtonStyle(
+                            padding: MaterialStatePropertyAll<EdgeInsets>(EdgeInsets.all(8))
+                        ),
                         child: Text('Next', style: Get.textTheme.titleMedium),
                       ),
                     ],
                   ),
                   OutlinedButton(
                     onPressed: _pickImages,
+                    style: const ButtonStyle(
+                        padding: MaterialStatePropertyAll<EdgeInsets>(EdgeInsets.all(8))
+                    ),
                     child: Text('Add', style: Get.textTheme.titleMedium),
                   ),
                 ],
