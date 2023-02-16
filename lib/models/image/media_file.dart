@@ -132,7 +132,7 @@ class MediaFile {
           filterExc
         ],
         // populateMode: APIPopulate.all,
-        showLog: true
+        // showLog: true
     );
 
     if (response.isSuccess) {

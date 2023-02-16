@@ -1,3 +1,4 @@
+import 'package:admin/components/badges.dart';
 import 'package:admin/models/app/menu.dart';
 import 'package:admin/services/constant_lib.dart';
 import 'package:flutter/material.dart';
@@ -25,10 +26,16 @@ class MenuButton extends StatelessWidget {
             Expanded(child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(menu.title, style: Get.textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: Colors.indigoAccent
-                )),
+                Row(
+                  children: [
+                    Text(menu.title, style: Get.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w600,
+                        color: Colors.indigoAccent
+                    )),
+                    const SizedBox(width: 10),
+                    if (menu.onTap == null) Badges.comingSoon,
+                  ],
+                ),
                 Text(menu.subtitle,
                   style: Get.textTheme.bodyMedium?.copyWith(
                       fontFamily: ConstLib.secondaryFont,
