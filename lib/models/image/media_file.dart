@@ -116,7 +116,8 @@ class MediaFile {
   bool get hasURL => url.isNotEmpty;
 
   static Future<List<MediaFile>?> get({
-    List<MediaFile>? excludeFiles
+    List<MediaFile>? excludeFiles,
+    int start = 0
   }) async {
 
     String filterExc = '';
@@ -128,6 +129,8 @@ class MediaFile {
 
     StrapiResponse response = await API.get(
         page: 'upload/files',
+        paginateAlt: true,
+        start: start,
         filterList: [
           filterExc
         ],
