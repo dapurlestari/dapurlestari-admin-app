@@ -137,7 +137,7 @@ class MediaLibraryScreen extends StatelessWidget {
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                         decoration: BoxDecoration(
-                          color: Colors.black38,
+                          color: Colors.black54,
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Text(media.mimeExtOnly, style: Get.textTheme.bodySmall?.copyWith(
