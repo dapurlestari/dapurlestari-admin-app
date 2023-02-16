@@ -80,6 +80,7 @@ class ProductForm extends StatelessWidget {
             child: Scrollbar(
               radius: const Radius.circular(20),
               child: ListView(
+                cacheExtent: Get.height * 2, // fix re-render list item
                 padding: const EdgeInsets.fromLTRB(20, 22, 15, 150),
                 children: [
                   CustomField.fieldGroup(
