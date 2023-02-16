@@ -51,17 +51,13 @@ class API {
     String label = '${page}_api';
     String path = '${Env.apiURL}/$page';
 
-    Map<String, dynamic> header = {};
+    Map<String, dynamic> headers = {};
     Map<String, dynamic> defaultParams = {};
     Map<String, dynamic> defaultData = {};
 
     if (useToken) {
-      header[HttpHeaders.authorizationHeader] = 'Bearer ${Env.apiSecret}';
+      headers[HttpHeaders.authorizationHeader] = 'Bearer ${Env.apiSecret}';
     }
-
-    Options options = Options(
-        headers: header
-    );
 
     String populateKey = 'populate';
     switch (populateMode) {
@@ -140,7 +136,7 @@ class API {
     if (data != null) defaultData['data'] = data;
 
     logInfo(path, logLabel: '${label}_url');
-    if (showLog) logInfo(header, logLabel: '${label}_header');
+    if (showLog) logInfo(headers, logLabel: '${label}_header');
     if (showLog) logInfo(defaultParams, logLabel: '${label}_params');
     if (showLog) logInfo(defaultData, logLabel: '${label}_data');
 
@@ -149,48 +145,43 @@ class API {
     try {
       Response response;
       String successMessage = 'OK';
+      final dio = Dio(BaseOptions(
+        baseUrl: '${Env.apiURL}/$page',
+        headers: headers,
+        queryParameters: defaultParams,
+      ));
 
       switch (method) {
         case APIPostMethod.get:
-          response = await Dio().get(
+          response = await dio.get(
               path,
-              queryParameters: defaultParams,
-              options: options
           );
           break;
         case APIPostMethod.post:
           successMessage = 'Success add to $page';
-          response = await Dio().post(
+          response = await dio.post(
               path,
-              queryParameters: defaultParams,
               data: finalData,
-              options: options
           );
           break;
         case APIPostMethod.put:
           successMessage = 'Success update from ${page.split('/')[0]}';
-          response = await Dio().put(
+          response = await dio.put(
               path,
-              queryParameters: defaultParams,
               data: finalData,
-              options: options
           );
           break;
         case APIPostMethod.patch:
-          response = await Dio().patch(
+          response = await dio.patch(
               path,
-              queryParameters: defaultParams,
               data: finalData,
-              options: options
           );
           break;
         case APIPostMethod.delete:
           successMessage = 'Success delete from ${page.split('/')[0]}';
-          response = await Dio().delete(
+          response = await dio.delete(
               path,
-              queryParameters: defaultParams,
               data: finalData,
-              options: options
           );
           break;
       }
@@ -212,7 +203,7 @@ class API {
             method == APIPostMethod.put ||
             method == APIPostMethod.delete
         ) {
-          Fluttertoast.showToast(msg: successMessage, gravity: ToastGravity.TOP);
+          Fluttertoast.showToast(msg: successMessage, gravity: ToastGravity.TOP_RIGHT);
         }
 
         if (showLog) {
