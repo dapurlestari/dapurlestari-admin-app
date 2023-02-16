@@ -4,6 +4,7 @@ import 'package:admin/models/image/media_file.dart';
 import 'package:admin/models/seo/seo.dart';
 import 'package:admin/services/api.dart';
 import 'package:admin/services/constant_lib.dart';
+import 'package:admin/services/logger.dart';
 import 'package:admin/services/strapi_response.dart';
 
 class Product {
@@ -123,6 +124,7 @@ class Product {
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
     // data['id'] = id;
+    data['slug'] = slug;
     data['name'] = name;
     data['description'] = description;
     data['description_rich'] = descriptionRich;
@@ -130,17 +132,17 @@ class Product {
     data['netto'] = nett;
     data['unit'] = unit;
     data['pirt_code'] = pirtCode;
-    if (price > 0) data['price'] = price;
-    if (discountPrice > 0) data['discount_price'] = discountPrice;
+    data['price'] = price;
+    data['discount_price'] = discountPrice;
     data['stock'] = stock;
     data['active'] = active;
     // data['created_at'] = createdAt.toIso8601String();
     // data['updated_at'] = updatedAt.toIso8601String();
     // data['deleted_at'] = deletedAt.toIso8601String();
-    data['images'] = images.map((e) => e.id).toList();
-    data['category'] = category.id;
-    data['bundle'] = bundle.id;
-    data['seo'] = seo.toJson();
+    if (images.isNotEmpty) data['images'] = images.map((e) => e.id).toList();
+    if (category.id > 0) data['category'] = category.id;
+    if (bundle.id > 0) data['bundle'] = bundle.id;
+    if (seo.metaTitle.isNotEmpty) data['seo'] = seo.toJson();
     return data;
   }
 
@@ -251,6 +253,11 @@ class Product {
     );
 
     if (response.isSuccess) {
+      logInfo(Product.fromJson(
+          response.data[ConstLib.attributes],
+          response.data[ConstLib.id]
+      ).toJson(), logLabel: 'product_edit');
+
       return Product.fromJsonDetail(
         response.data[ConstLib.attributes],
         response.data[ConstLib.id]
