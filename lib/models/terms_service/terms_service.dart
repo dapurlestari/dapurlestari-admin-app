@@ -74,7 +74,6 @@ class TermsService {
     );
 
     if (response.isSuccess) {
-      Fluttertoast.showToast(msg: 'Terms od Services Updated!');
       return TermsService.fromJson(response.data[ConstLib.attributes]);
     }
 

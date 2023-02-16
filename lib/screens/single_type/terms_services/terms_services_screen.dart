@@ -1,3 +1,4 @@
+import 'package:admin/components/buttons/buttons.dart';
 import 'package:admin/components/custom_scaffold.dart';
 import 'package:admin/components/loadings.dart';
 import 'package:admin/screens/components/contentful_form.dart';
@@ -12,11 +13,12 @@ class TermsServicesScreen extends StatelessWidget {
   TermsServicesScreen({Key? key}) : super(key: key);
 
   final TermsServicesController _controller = Get.put(TermsServicesController());
+  final String pageTitle = 'Terms of Services';
 
   @override
   Widget build(BuildContext context) {
     return Obx(() => CustomScaffold(
-        title: 'Terms of Services',
+        title: pageTitle,
         showBackButton: true,
         actions: [
           IconButton(
@@ -28,17 +30,26 @@ class TermsServicesScreen extends StatelessWidget {
             onPressed: _controller.save,
           )
         ],
-        body: ListView(
-          padding: const EdgeInsets.fromLTRB(20, 22, 15, 150),
+        body: Stack(
           children: [
-            ContentfulForm(
-              contentful: _controller.termsService.value.contentful,
-              tag: ConstLib.termsServicePage,
+            ListView(
+              padding: const EdgeInsets.fromLTRB(20, 22, 15, 150),
+              children: [
+                ContentfulForm(
+                  contentful: _controller.termsService.value.contentful,
+                  tag: ConstLib.termsServicePage,
+                ),
+                const SizedBox(height: 40),
+                SeoForm(
+                  seo: _controller.termsService.value.seo,
+                  tag: ConstLib.termsServicePage,
+                )
+              ],
             ),
-            const SizedBox(height: 40),
-            SeoForm(
-              seo: _controller.termsService.value.seo,
-              tag: ConstLib.termsServicePage,
+            Buttons.floatingBottomButton(
+                label: 'Save $pageTitle',
+                isLoading: _controller.saving.value,
+                onPressed: _controller.save
             )
           ],
         )
