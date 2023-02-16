@@ -169,11 +169,7 @@ class MediaFile {
     );
 
     if (response.isSuccess) {
-      Fluttertoast.showToast(msg: 'Success upload media!');
-      logInfo(response.data, logLabel: 'upload_response');
       return MediaFile.fromJson(response.data[0]); // response is a list
-    } else {
-      Fluttertoast.showToast(msg: 'Failed upload media!');
     }
 
     return null;
