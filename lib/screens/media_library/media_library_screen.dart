@@ -86,7 +86,7 @@ class MediaLibraryScreen extends StatelessWidget {
           onPressed: _mainController.uploadToLibrary,
         ),
         if (enableSelection) IconButton(
-          icon: Icon(FeatherIcons.save,
+          icon: Icon(isMultiselect ? FeatherIcons.checkSquare : FeatherIcons.checkCircle,
             color: Colors.grey.shade800,
           ),
           onPressed: () {
