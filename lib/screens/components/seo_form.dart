@@ -66,7 +66,7 @@ class SeoForm extends StatelessWidget {
                 minLines: 1,
                 maxLines: 5
             ),
-            MediaFilePicker(mediaFile: seo.metaImage, tag: '$tag.seo.media',),
+            MediaFilePicker(mediaFile: seo.metaImage, tag: '$tag.seo',),
           ],
         )
     ));
