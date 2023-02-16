@@ -3,6 +3,7 @@ import 'package:admin/models/seo/seo.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../services/soft_keyboard.dart';
 import 'media_file_picker.dart';
 
 class SeoForm extends StatelessWidget {
@@ -48,7 +49,10 @@ class SeoForm extends StatelessWidget {
                 label: 'Meta Social Description (Max. 65)',
                 minLines: 1,
                 maxLines: 2,
-                maxLength: 65
+                maxLength: 65,
+                inputFormatter: [
+                  SoftKeyboard.limit(65)
+                ]
             ),
             CustomField.text(
               controller: controller.canonicalURLField.value,
