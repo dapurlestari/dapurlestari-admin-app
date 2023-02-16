@@ -34,6 +34,7 @@ class API {
     Map<String, dynamic>? files,
     APIPopulate populateMode = APIPopulate.none,
     List<String>? populateList,
+    List<String>? sortList,
     List<String>? filterList,
     bool paginate = false,
     bool paginateAlt = false,
@@ -82,10 +83,15 @@ class API {
         break;
     }
 
-
-    // filters[id][$in][0] = 1
-    // filters[id][$in][1] = 2
-    // input: id:in:1,2,3,4
+    /* ============= Filters
+    * Example:
+    * filters[id][$in][0] = 1
+    * filters[id][$in][1] = 2
+    *
+    * Input
+    * id:in:1,2,3,4
+    *
+    *  */
     String filtersKey = 'filters';
     if (filterList != null) {
       filterList.asMap().forEach((key, value) {
@@ -101,6 +107,23 @@ class API {
         } else {
           defaultParams['$filtersKey[$filterKey][\$$filterCondition]'] = filterValue;
         }
+      });
+    }
+
+    /* ============= Sorts
+    * Example:
+    * sort[0] = field1:asc
+    * sort[1] = field1:desc
+    *
+    * Input
+    * field1:asc
+    * field2:asc
+    *
+    *  */
+    String sortsKey = 'sort';
+    if (sortList != null) {
+      sortList.asMap().forEach((key, value) {
+        defaultParams['$sortsKey[$key]'] = value;
       });
     }
 
@@ -225,6 +248,7 @@ class API {
     Map<String, dynamic>? files,
     APIPopulate populateMode = APIPopulate.none,
     List<String>? populateList,
+    List<String>? sortList,
     List<String>? filterList,
     bool paginate = false,
     bool paginateAlt = false,
@@ -244,6 +268,7 @@ class API {
       encodedData: encodedData,
       files: files,
       populateList: populateList,
+      sortList: sortList,
       filterList: filterList,
       populateMode: populateMode,
       paginate: paginate,
