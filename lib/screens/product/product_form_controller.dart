@@ -197,11 +197,14 @@ class ProductFormController extends GetxController {
       title: 'Delete Product',
       contentText: 'Are you sure want to delete this product \n'
           '#${product.value.id} "${product.value.name}"',
-      onConfirm: () {
-
+      onConfirm: () async {
+        _controller.products.removeWhere((e) => e.id == product.value.id);
+        Get.back(); // close dialog
+        Get.back(); // close form
+        await product.value.delete();
+        _controller.onRefresh();
       }
     );
-    // bool success = await product.value.delete();
   }
 
   void listenSlug() {
