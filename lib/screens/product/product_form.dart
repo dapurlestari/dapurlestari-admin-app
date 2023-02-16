@@ -14,12 +14,13 @@ import 'package:admin/screens/components/media_files_picker.dart';
 import 'package:admin/screens/components/seo_form.dart';
 import 'package:admin/services/constant_lib.dart';
 import 'package:admin/services/logger.dart';
+import 'package:admin/services/soft_keyboard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 
-import 'product_controller.dart';
+import 'product_form_controller.dart';
 
 class ProductForm extends StatelessWidget {
   final Product product;
@@ -27,7 +28,7 @@ class ProductForm extends StatelessWidget {
     required this.product
   }) : super(key: key);
 
-  final ProductController _controller = Get.find();
+  final ProductFormController _controller = Get.put(ProductFormController());
   final String bundleTag = 'product.bundle';
   final String categoryTag = 'product.category';
 
@@ -92,6 +93,7 @@ class ProductForm extends StatelessWidget {
                               hint: 'Paket A',
                               readOnly: true,
                               label: 'Product Bundle',
+                              suffixIcon: const Icon(FeatherIcons.chevronDown, size: 18),
                               onTap: _openBundleSheet
                           ),
                           CustomField.text(
@@ -99,6 +101,7 @@ class ProductForm extends StatelessWidget {
                               hint: 'Cookies',
                               readOnly: true,
                               label: 'Product Category',
+                              suffixIcon: const Icon(FeatherIcons.chevronDown, size: 18),
                               onTap: _openCategorySheet
                           ),
                         ],
@@ -114,30 +117,38 @@ class ProductForm extends StatelessWidget {
                             hint: '-',
                             readOnly: true,
                             label: 'Slug / URL Segment',
-                            onTap: () async {
-                              String slug = _controller.nameField.value.text.toLowerCase().replaceAll(' ', '-');
-                              _controller.product.value.slug = slug;
-                              Product product = await _controller.product.value.getBySlug();
-                              logInfo(product.slug, logLabel: 'slug');
-                              _controller.slugField.value.clear();
-                              if (product.isEmpty) {
-                                _controller.slugField.value.text = slug;
-                              }
-                            }
+                            suffixIcon: Icon(
+                                _controller.slugField.value.text.isEmpty || _controller.slugLoading.value
+                                ? FeatherIcons.refreshCw : _controller.slugAvailable.value
+                                  ? FeatherIcons.check
+                                  : FeatherIcons.x,
+                                color: _controller.slugField.value.text.isEmpty || _controller.slugLoading.value
+                                    ? null : _controller.slugAvailable.value
+                                    ? Colors.green
+                                    : Colors.red,
+                                size: 16
+                            ),
                           ),
                           CustomField.text(
-                              controller: _controller.nameField.value,
-                              hint: 'Add category name or label',
-                              label: 'Name'
+                            controller: _controller.nameField.value,
+                            hint: 'Add category name or label',
+                            label: 'Name',
+                            onChanged: (value) async {
+                              _controller.slugAvailable.value = false;
+                              String slug = value.toLowerCase().trim().replaceAll(' ', '-');
+                              _controller.slugField.value.text = slug;
+                              _controller.slug.value = slug;
+                            }
                           ),
                           GridViewForm(
                             padding: const EdgeInsets.only(bottom: 12),
                             children: [
                               CustomField.text(
-                                  controller: _controller.pirtField.value,
-                                  hint: '38429332983-33',
-                                  label: 'PIRT Number',
-                                  margin: EdgeInsets.zero
+                                controller: _controller.pirtField.value,
+                                hint: '38429332983-33',
+                                label: 'PIRT Number',
+                                margin: EdgeInsets.zero,
+                                keyboardType: TextInputType.number
                               ),
                               CustomField.chip(
                                   label: 'Active',
@@ -150,7 +161,10 @@ class ProductForm extends StatelessWidget {
                             controller: _controller.priceField.value,
                             hint: '20000',
                             label: 'Price',
-                            keyboardType: TextInputType.number
+                            keyboardType: TextInputType.number,
+                            inputFormatter: [
+                              SoftKeyboard.digitsOnly
+                            ]
                           ),
                           CustomField.text(
                               controller: _controller.discountPriceField.value,
