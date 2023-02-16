@@ -42,6 +42,7 @@ class API {
     bool encodedData = true,
     bool showLog = false,
     bool showPostToast = true,
+    bool showErrorToast = true,
   }) async {
     String label = '${page}_api';
     String path = '${Env.apiURL}/$page';
@@ -201,7 +202,7 @@ class API {
       if (e.response != null) {
         response = StrapiResponse.response(e.response!.data);
         String msg = '${response.error!.status}. ${response.error!.name}, ${response.error!.message}';
-        Fluttertoast.showToast(msg: msg, gravity: ToastGravity.TOP);
+        if (showErrorToast) Fluttertoast.showToast(msg: msg, gravity: ToastGravity.TOP);
         // logError(response.error?.toJson(), logLabel: 'error');
       }
 
@@ -225,6 +226,7 @@ class API {
     bool useToken = true,
     bool encodedData = true,
     bool showLog = false,
+    bool showErrorToast = false,
   }) async {
     return await request(
       page: page,
@@ -239,6 +241,7 @@ class API {
       paginationPage: paginationPage,
       paginationSize: paginationSize,
       showLog: showLog,
+      showErrorToast: showErrorToast,
       useToken: useToken
     );
   }
