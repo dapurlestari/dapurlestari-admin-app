@@ -1,4 +1,5 @@
 import 'package:admin/components/bottom_sheets/bottom_sheets.dart';
+import 'package:admin/components/buttons/buttons.dart';
 import 'package:admin/components/custom_scaffold.dart';
 import 'package:admin/components/forms/custom_text_field.dart';
 import 'package:admin/components/loadings.dart';
@@ -244,30 +245,10 @@ class ProductForm extends StatelessWidget {
                   ),
                 )
             ),
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: Container(
-                padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-                color: Colors.white,
-                child: FilledButton(
-                  onPressed: _controller.save,
-                  style: const ButtonStyle(
-                    padding: MaterialStatePropertyAll<EdgeInsets>(EdgeInsets.symmetric(vertical: 15))
-                  ),
-                  child: _controller.saving.value ? Loadings.basic(
-                    size: const Size(23, 23),
-                    color: Colors.white
-                  ) : Text(
-                    'Save Product',
-                    style: Get.textTheme.titleLarge?.copyWith(
-                      fontSize: 18,
-                      color: Colors.white
-                    )
-                  ),
-                ),
-              )
+            Buttons.floatingBottomButton(
+              label: 'Save Product',
+              isLoading: _controller.saving.value,
+              onPressed: _controller.save
             )
           ],
         )
