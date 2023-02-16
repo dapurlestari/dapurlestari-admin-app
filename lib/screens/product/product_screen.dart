@@ -3,6 +3,7 @@ import 'package:admin/components/loadings.dart';
 import 'package:admin/models/product/product.dart';
 import 'package:admin/screens/product/product_controller.dart';
 import 'package:admin/screens/product/product_form.dart';
+import 'package:admin/services/text_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
@@ -53,7 +54,8 @@ class ProductScreen extends StatelessWidget {
 
   Widget item(Product product) {
     return ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 14),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+      // isThreeLine: true,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
         side: const BorderSide(color: Colors.indigoAccent)
@@ -63,10 +65,24 @@ class ProductScreen extends StatelessWidget {
       )),
       subtitle: Padding(
         padding: const EdgeInsets.only(left: 0.5),
-        child: Text('${product.price}',
-          style: Get.textTheme.bodyMedium?.copyWith(
-            color: Colors.blueGrey.shade500,
-          )
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(product.pirtCode,
+                style: Get.textTheme.bodyMedium?.copyWith(
+                    color: Colors.blueGrey.shade500,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500
+                )
+            ),
+            Text('Rp. ${TextFormatter.formatPrice(product.price)}',
+                style: Get.textTheme.bodyMedium?.copyWith(
+                  color: Colors.blueGrey.shade500,
+                  fontWeight: FontWeight.w300
+                )
+            ),
+
+          ],
         ),
       ),
       trailing: Container(
