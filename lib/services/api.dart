@@ -36,8 +36,11 @@ class API {
     List<String>? populateList,
     List<String>? filterList,
     bool paginate = false,
+    bool paginateAlt = false,
     int paginationPage = 1,
     int paginationSize = ConstLib.defaultPageSize,
+    int start = 0,
+    int limit = ConstLib.defaultPageSize,
     bool useToken = true,
     bool encodedData = true,
     bool showLog = false,
@@ -104,6 +107,9 @@ class API {
     if (paginate) {
       defaultParams['pagination[page]'] = paginationPage;
       defaultParams['pagination[pageSize]'] = paginationSize;
+    } else if (paginateAlt) {
+      defaultParams['start'] = start;
+      defaultParams['limit'] = limit;
     }
 
     if (params != null) defaultParams.addAll(params);
@@ -221,8 +227,11 @@ class API {
     List<String>? populateList,
     List<String>? filterList,
     bool paginate = false,
+    bool paginateAlt = false,
     int paginationPage = 1,
     int paginationSize = ConstLib.defaultPageSize,
+    int start = 0,
+    int limit = ConstLib.defaultPageSize,
     bool useToken = true,
     bool encodedData = true,
     bool showLog = false,
@@ -238,8 +247,11 @@ class API {
       filterList: filterList,
       populateMode: populateMode,
       paginate: paginate,
+      paginateAlt: paginateAlt,
       paginationPage: paginationPage,
       paginationSize: paginationSize,
+      start: start,
+      limit: limit,
       showLog: showLog,
       showErrorToast: showErrorToast,
       useToken: useToken
