@@ -1,3 +1,4 @@
+import 'package:admin/components/dialogs.dart';
 import 'package:admin/models/product/product.dart';
 import 'package:admin/models/seo/meta_social.dart';
 import 'package:admin/models/seo/seo.dart';
@@ -16,6 +17,7 @@ class ProductFormController extends GetxController {
   final ProductController _controller = Get.find();
   final product = Product.dummy().obs;
   final saving = false.obs;
+  final loading = false.obs;
 
   final bundleField = TextEditingController().obs;
   final categoryField = TextEditingController().obs;
@@ -52,10 +54,10 @@ class ProductFormController extends GetxController {
     slugField.value.clear();
     bundleField.value.clear();
     categoryField.value.clear();
-    saving.value = false;
+    loading.value = false;
 
     if (product.isNotEmpty) {
-      saving.value = true;
+      loading.value = true;
 
       product.view().then((result) {
         this.product.value = result;
@@ -66,11 +68,11 @@ class ProductFormController extends GetxController {
         controller.index.value = 0;
         controller.images.value = product.images;
 
-        saving.value = false;
+        loading.value = false;
       }).catchError((e) {
         logError(e, logLabel: 'view_product');
         Fluttertoast.showToast(msg: 'View Product Error!');
-        saving.value = false;
+        loading.value = false;
       });
     }
 
@@ -187,6 +189,19 @@ class ProductFormController extends GetxController {
     } else {
       add();
     }
+  }
+
+  Future<void> delete() async {
+    SoftKeyboard.hide();
+    Dialogs.general(
+      title: 'Delete Product',
+      contentText: 'Are you sure want to delete this product \n'
+          '#${product.value.id} "${product.value.name}"',
+      onConfirm: () {
+
+      }
+    );
+    // bool success = await product.value.delete();
   }
 
   void listenSlug() {

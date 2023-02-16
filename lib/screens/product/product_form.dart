@@ -65,175 +65,211 @@ class ProductForm extends StatelessWidget {
     _controller.initForm(product);
 
     return Obx(() => CustomScaffold(
-        title: _controller.product.value.isNotEmpty ? 'Edit Product' : 'Add Product',
+        title: product.isNotEmpty ? 'Edit Product' : 'Add Product',
         actions: [
-          IconButton(
-            icon: _controller.saving.value
-                ? Loadings.basicPrimary
-                : const Icon(LineIcons.checkCircle,
-                color: Colors.indigoAccent
+          if (_controller.loading.value) Loadings.basicPrimary,
+          if (product.isNotEmpty) IconButton(
+            icon: Icon(
+              LineIcons.alternateTrash,
+              color: Colors.red.shade800
             ),
-            onPressed: _controller.save,
+            onPressed: _controller.delete,
           )
         ],
-        body: Container(
-            padding: const EdgeInsets.only(right: 5),
-            child: Scrollbar(
-              radius: const Radius.circular(20),
-              child: ListView(
-                cacheExtent: Get.height * 2, // fix re-render list item
-                padding: const EdgeInsets.fromLTRB(20, 22, 15, 150),
-                children: [
-                  CustomField.fieldGroup(
-                      label: 'Relation',
-                      content: Column(
-                        children: [
-                          CustomField.text(
-                              controller: _controller.bundleField.value,
-                              hint: 'Product Bundle',
-                              readOnly: true,
-                              label: 'Product Bundle',
-                              suffixIcon: const Icon(FeatherIcons.chevronDown, size: 18),
-                              onTap: _openBundleSheet
-                          ),
-                          CustomField.text(
-                              controller: _controller.categoryField.value,
-                              hint: 'Product Category',
-                              readOnly: true,
-                              label: 'Product Category',
-                              suffixIcon: const Icon(FeatherIcons.chevronDown, size: 18),
-                              onTap: _openCategorySheet
-                          ),
-                        ],
-                      )
-                  ),
-                  const SizedBox(height: 40),
-                  CustomField.fieldGroup(
-                      label: 'General',
-                      content: Column(
-                        children: [
-                          CustomField.text(
-                            controller: _controller.slugField.value,
-                            hint: '-',
-                            readOnly: true,
-                            label: 'Slug / URL Segment',
-                            suffixIcon: Icon(
-                                _controller.slugField.value.text.isEmpty || _controller.slugLoading.value
-                                ? FeatherIcons.refreshCw : _controller.slugAvailable.value
-                                  ? FeatherIcons.check
-                                  : FeatherIcons.x,
-                                color: _controller.slugField.value.text.isEmpty || _controller.slugLoading.value
-                                    ? null : _controller.slugAvailable.value
-                                    ? Colors.green
-                                    : Colors.red,
-                                size: 16
-                            ),
-                          ),
-                          CustomField.text(
-                            controller: _controller.nameField.value,
-                            hint: 'Add category name or label',
-                            label: 'Name',
-                            onChanged: (value) async {
-                              _controller.slugAvailable.value = false;
-                              String slug = value.toLowerCase().trim().replaceAll(' ', '-');
-                              _controller.slugField.value.text = slug;
-                              _controller.slug.value = slug;
-                            }
-                          ),
-                          GridViewForm(
-                            padding: const EdgeInsets.only(bottom: 12),
+        body: Stack(
+          children: [
+            Container(
+                padding: const EdgeInsets.only(right: 5),
+                child: Scrollbar(
+                  radius: const Radius.circular(20),
+                  child: ListView(
+                    cacheExtent: Get.height * 2, // fix re-render list item
+                    padding: const EdgeInsets.fromLTRB(20, 22, 15, 150),
+                    children: [
+                      CustomField.fieldGroup(
+                          label: 'Relation',
+                          content: Column(
                             children: [
                               CustomField.text(
-                                controller: _controller.pirtField.value,
-                                hint: '38429332983-33',
-                                label: 'PIRT Number',
-                                margin: EdgeInsets.zero,
-                                keyboardType: TextInputType.number
+                                  controller: _controller.bundleField.value,
+                                  hint: 'Product Bundle',
+                                  readOnly: true,
+                                  label: 'Product Bundle',
+                                  suffixIcon: const Icon(FeatherIcons.chevronDown, size: 18),
+                                  onTap: _openBundleSheet
                               ),
-                              CustomField.chip(
-                                  label: 'Active',
-                                  enable: _controller.active.value,
-                                  onTap: _controller.active.toggle
+                              CustomField.text(
+                                  controller: _controller.categoryField.value,
+                                  hint: 'Product Category',
+                                  readOnly: true,
+                                  label: 'Product Category',
+                                  suffixIcon: const Icon(FeatherIcons.chevronDown, size: 18),
+                                  onTap: _openCategorySheet
                               ),
                             ],
-                          ),
-                          CustomField.text(
-                            controller: _controller.priceField.value,
-                            hint: '20000',
-                            label: 'Price',
-                            keyboardType: TextInputType.number,
-                            inputFormatter: [
-                              SoftKeyboard.digitsOnly
-                            ]
-                          ),
-                          CustomField.text(
-                              controller: _controller.discountPriceField.value,
-                              hint: '18000',
-                              label: 'Discount Price',
-                              keyboardType: TextInputType.number
-                          ),
-                          CustomField.text(
-                              controller: _controller.releaseYearField.value,
-                              hint: '2008',
-                              label: 'Release Year',
-                              keyboardType: TextInputType.number
-                          ),
-                          CustomField.text(
-                              controller: _controller.stockField.value,
-                              hint: '50',
-                              label: 'Stock',
-                              keyboardType: TextInputType.number
-                          ),
-                          CustomField.text(
-                              controller: _controller.nettField.value,
-                              hint: '250',
-                              label: 'Nett',
-                              keyboardType: TextInputType.number
-                          ),
-                          CustomField.text(
-                              controller: _controller.unitField.value,
-                              hint: 'g, kg',
-                              label: 'Unit'
-                          ),
-                          CustomField.text(
-                              controller: _controller.descriptionField.value,
-                              hint: 'Add short product description',
-                              label: 'Description',
-                              minLines: 2,
-                              maxLines: 3
-                          ),
-                          MarkdownEditor(
-                            controller: _controller.descriptionRichField.value,
-                            label: 'Description Rich',
-                          ),
-                        ],
-                      )
-                  ),
-                  const SizedBox(height: 40),
-                  CustomField.fieldGroup(
-                      label: 'Images',
-                      content: MediaFilesPicker(
-                        mediaFiles: _controller.product.value.images,
+                          )
+                      ),
+                      const SizedBox(height: 40),
+                      CustomField.fieldGroup(
+                          label: 'General',
+                          content: Column(
+                            children: [
+                              CustomField.text(
+                                controller: _controller.slugField.value,
+                                hint: '-',
+                                readOnly: true,
+                                label: 'Slug / URL Segment',
+                                suffixConstraint: const BoxConstraints(),
+                                suffixIcon: Padding(
+                                  padding: const EdgeInsets.only(right: 15),
+                                  child: _controller.slugLoading.value
+                                      ? Loadings.basic(size: const Size(14, 14), color: Colors.grey.shade500, centered: false, width: 1)
+                                      : Icon(_controller.slugField.value.text.isEmpty
+                                        ? FeatherIcons.refreshCw
+                                        : _controller.slugAvailable.value
+                                          ? FeatherIcons.check
+                                          : FeatherIcons.x,
+                                      color: _controller.slugField.value.text.isEmpty
+                                          ? null
+                                          : _controller.slugAvailable.value
+                                        ? Colors.green
+                                        : Colors.red,
+                                      size: 16
+                                  ),
+                                ),
+                              ),
+                              CustomField.text(
+                                controller: _controller.nameField.value,
+                                hint: 'Add category name or label',
+                                label: 'Name',
+                                onChanged: (value) async {
+                                  _controller.slugAvailable.value = false;
+                                  String slug = value.toLowerCase().trim().replaceAll(' ', '-');
+                                  _controller.slugField.value.text = slug;
+                                  _controller.slug.value = slug;
+                                }
+                              ),
+                              GridViewForm(
+                                padding: const EdgeInsets.only(bottom: 12),
+                                children: [
+                                  CustomField.text(
+                                    controller: _controller.pirtField.value,
+                                    hint: '38429332983-33',
+                                    label: 'PIRT Number',
+                                    margin: EdgeInsets.zero,
+                                    keyboardType: TextInputType.number
+                                  ),
+                                  CustomField.chip(
+                                      label: 'Active',
+                                      enable: _controller.active.value,
+                                      onTap: _controller.active.toggle
+                                  ),
+                                ],
+                              ),
+                              CustomField.text(
+                                controller: _controller.priceField.value,
+                                hint: '20000',
+                                label: 'Price',
+                                keyboardType: TextInputType.number,
+                                inputFormatter: [
+                                  SoftKeyboard.digitsOnly
+                                ]
+                              ),
+                              CustomField.text(
+                                  controller: _controller.discountPriceField.value,
+                                  hint: '18000',
+                                  label: 'Discount Price',
+                                  keyboardType: TextInputType.number
+                              ),
+                              CustomField.text(
+                                  controller: _controller.releaseYearField.value,
+                                  hint: '2008',
+                                  label: 'Release Year',
+                                  keyboardType: TextInputType.number
+                              ),
+                              CustomField.text(
+                                  controller: _controller.stockField.value,
+                                  hint: '50',
+                                  label: 'Stock',
+                                  keyboardType: TextInputType.number
+                              ),
+                              CustomField.text(
+                                  controller: _controller.nettField.value,
+                                  hint: '250',
+                                  label: 'Nett',
+                                  keyboardType: TextInputType.number
+                              ),
+                              CustomField.text(
+                                  controller: _controller.unitField.value,
+                                  hint: 'g, kg',
+                                  label: 'Unit'
+                              ),
+                              CustomField.text(
+                                  controller: _controller.descriptionField.value,
+                                  hint: 'Add short product description',
+                                  label: 'Description',
+                                  minLines: 2,
+                                  maxLines: 3
+                              ),
+                              MarkdownEditor(
+                                controller: _controller.descriptionRichField.value,
+                                label: 'Description Rich',
+                              ),
+                            ],
+                          )
+                      ),
+                      const SizedBox(height: 40),
+                      CustomField.fieldGroup(
+                          label: 'Images',
+                          content: MediaFilesPicker(
+                            mediaFiles: _controller.product.value.images,
+                            tag: ConstLib.product,
+                          )
+                      ),
+                      const SizedBox(height: 40),
+                      SeoForm(
+                        seo: _controller.product.value.seo,
                         tag: ConstLib.product,
-                      )
+                      ),
+                      if (product.isNotEmpty) const SizedBox(height: 40),
+                      if (product.isNotEmpty) CustomField.fieldGroup(
+                        label: 'Info',
+                        content: DateTimeInfo(
+                            created: product.createdAt,
+                            published: product.publishedAt,
+                            edited: product.updatedAt
+                        )
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 40),
-                  SeoForm(
-                    seo: _controller.product.value.seo,
-                    tag: ConstLib.product,
+                )
+            ),
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+                color: Colors.white,
+                child: FilledButton(
+                  onPressed: _controller.save,
+                  style: const ButtonStyle(
+                    padding: MaterialStatePropertyAll<EdgeInsets>(EdgeInsets.symmetric(vertical: 15))
                   ),
-                  if (product.isNotEmpty) const SizedBox(height: 40),
-                  if (product.isNotEmpty) CustomField.fieldGroup(
-                    label: 'Info',
-                    content: DateTimeInfo(
-                        created: product.createdAt,
-                        published: product.publishedAt,
-                        edited: product.updatedAt
+                  child: _controller.saving.value ? Loadings.basic(
+                    size: const Size(23, 23),
+                    color: Colors.white
+                  ) : Text(
+                    'Save Product',
+                    style: Get.textTheme.titleLarge?.copyWith(
+                      fontSize: 18,
+                      color: Colors.white
                     )
                   ),
-                ],
-              ),
+                ),
+              )
             )
+          ],
         )
     ));
   }
