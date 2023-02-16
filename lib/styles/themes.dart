@@ -11,10 +11,19 @@ class Themes {
     filledButtonTheme: FilledButtonThemeData(
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all<Color>(Colors.indigoAccent),
+        padding: const MaterialStatePropertyAll<EdgeInsets>(EdgeInsets.symmetric(horizontal: 12, vertical: 12)),
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8)
         ))
       )
+    ),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+        style: ButtonStyle(
+          padding: const MaterialStatePropertyAll<EdgeInsets>(EdgeInsets.symmetric(horizontal: 12, vertical: 12)),
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8)
+          ))
+        )
     ),
     inputDecorationTheme: InputDecorationTheme(
       border: OutlineInputBorder(
