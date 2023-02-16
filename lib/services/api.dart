@@ -151,6 +151,11 @@ class API {
         queryParameters: defaultParams,
       ));
 
+      List<String> pages = page.split('/');
+      if (pages.isNotEmpty) {
+        successMessage = pages[0].replaceAll('-', ' ');
+      }
+
       switch (method) {
         case APIPostMethod.get:
           response = await dio.get(
@@ -158,14 +163,14 @@ class API {
           );
           break;
         case APIPostMethod.post:
-          successMessage = 'Success add to $page';
+          successMessage = 'Success add to $successMessage';
           response = await dio.post(
               path,
               data: finalData,
           );
           break;
         case APIPostMethod.put:
-          successMessage = 'Success update from ${page.split('/')[0]}';
+          successMessage = 'Success update from $successMessage';
           response = await dio.put(
               path,
               data: finalData,
@@ -178,7 +183,7 @@ class API {
           );
           break;
         case APIPostMethod.delete:
-          successMessage = 'Success delete from ${page.split('/')[0]}';
+          successMessage = 'Success delete from $successMessage';
           response = await dio.delete(
               path,
               data: finalData,
