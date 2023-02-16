@@ -19,7 +19,7 @@ class MediaFilePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MediaFilePickerController controller = Get.put(MediaFilePickerController(), tag: tag);
+    final MediaFilePickerController controller = Get.put(MediaFilePickerController(), tag: '$tag.media');
     controller.metaImage.value = mediaFile;
 
     return Obx(() => AspectRatio(
@@ -32,6 +32,7 @@ class MediaFilePicker extends StatelessWidget {
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             controller.metaImage.value.hasURL ? Stack(
               children: [
@@ -80,12 +81,22 @@ class MediaFilePicker extends StatelessWidget {
                   ),
                 )
               ],
-            ) : Column(
-              children: const [
-                Icon(FeatherIcons.uploadCloud),
-                SizedBox(height: 8),
-                Text('Upload image or choose from library'),
-              ],
+            ) : InkWell(
+              onTap: _pickImage,
+              child: Container(
+                color: Colors.white,
+                margin: const EdgeInsets.symmetric(horizontal: 14),
+                height: 180,
+                width: double.infinity,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Icon(FeatherIcons.uploadCloud),
+                    SizedBox(height: 8),
+                    Text('Upload image or choose from library'),
+                  ],
+                ),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 18),
@@ -107,7 +118,7 @@ class MediaFilePicker extends StatelessWidget {
   }
 
   void _pickImage() async {
-    final MediaFilePickerController controller = Get.find(tag: tag);
+    final MediaFilePickerController controller = Get.find(tag: '$tag.media');
     final MainController mainController = Get.find();
     mainController.refreshMediaLibrary(selectedFiles: [controller.metaImage.value]);
     SoftKeyboard.hide();
