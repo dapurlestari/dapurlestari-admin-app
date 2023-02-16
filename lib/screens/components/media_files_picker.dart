@@ -18,9 +18,7 @@ class MediaFilesPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MediaFilesPickerController controller = Get.put(MediaFilesPickerController(), tag: tag);
-    controller.index.value = 0;
-    controller.images.value = mediaFiles;
+    final MediaFilesPickerController controller = Get.find(tag: '$tag.medias');
 
     return Obx(() => AspectRatio(
       aspectRatio: 8/7,
@@ -139,7 +137,7 @@ class MediaFilesPicker extends StatelessWidget {
   }
 
   void _pickImages() async {
-    final MediaFilesPickerController controller = Get.find(tag: tag);
+    final MediaFilesPickerController controller = Get.find(tag: '$tag.medias');
     final MainController mainController = Get.find();
     mainController.refreshMediaLibrary(selectedFiles: controller.images);
     SoftKeyboard.hide();
