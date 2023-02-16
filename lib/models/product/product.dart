@@ -150,9 +150,9 @@ class Product {
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
     // data['id'] = id;
-    data['slug'] = slug;
-    data['name'] = name;
-    data['description'] = description;
+    data['slug'] = slug.trim();
+    data['name'] = name.trim();
+    data['description'] = description.trim();
     data['description_rich'] = descriptionRich;
     data['release_year'] = releaseYear;
     data['netto'] = nett;
@@ -307,5 +307,15 @@ class Product {
     }
 
     return Product.dummy();
+  }
+
+  Future<bool> delete() async {
+    // logInfo(toJson(), logLabel: 'product_edit');
+    StrapiResponse response = await API.delete(
+      page: 'products/$id',
+      // showLog: true
+    );
+
+    return response.isSuccess;
   }
 }

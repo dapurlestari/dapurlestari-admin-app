@@ -40,8 +40,8 @@ class Category {
   );
 
   Map<String, dynamic> toJson() => {
-    "name": name,
-    "icon_name": iconName,
+    "name": name.trim(),
+    "icon_name": iconName.trim(),
     // "createdAt": createdAt.toIso8601String(),
     // "updatedAt": updatedAt.toIso8601String(),
     // "publishedAt": publishedAt.toIso8601String(),

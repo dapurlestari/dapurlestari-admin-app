@@ -48,9 +48,9 @@ class Seo {
   Map<String, dynamic> toJson() {
     final map = {
       // "id": id,
-      "metaTitle": metaTitle,
-      "metaDescription": metaDescription,
-      "keywords": keywords,
+      "metaTitle": metaTitle.trim(),
+      "metaDescription": metaDescription.trim(),
+      "keywords": keywords.trim(),
       "metaRobots": metaRobots,
       "structuredData": structuredData,
       "metaViewport": metaViewport,

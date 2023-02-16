@@ -69,7 +69,7 @@ class Dialogs {
             child: Container(
               width: Get.width * 0.83,
               decoration: BoxDecoration(
-                  color: Get.theme.colorScheme.secondaryContainer,
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(15)
               ),
               padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
@@ -93,8 +93,11 @@ class Dialogs {
                       ),
                       const SizedBox(width: 10,),
                       Expanded(
-                        child: OutlinedButton(
+                        child: FilledButton(
                             onPressed: () => onConfirm(),
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStatePropertyAll<Color>(confirmBgColor)
+                            ),
                             child: Text(confirmText)
                         ),
                       ),

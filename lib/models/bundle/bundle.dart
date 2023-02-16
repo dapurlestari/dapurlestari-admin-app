@@ -35,8 +35,8 @@ class Bundle {
   );
 
   Map<String, dynamic> toJson() => {
-    "name": name,
-    "description": description,
+    "name": name.trim(),
+    "description": description.trim(),
     // "createdAt": createdAt.toIso8601String(),
     // "updatedAt": updatedAt.toIso8601String(),
     // "publishedAt": publishedAt.toIso8601String(),

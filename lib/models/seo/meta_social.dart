@@ -50,7 +50,7 @@ class MetaSocial {
       // "id": id,
       "socialNetwork": socialNetwork,
       "title": title,
-      "description": description,
+      "description": description.trim(),
     };
 
     if (image.hasURL) map['image'] = image.id;

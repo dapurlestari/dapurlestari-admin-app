@@ -17,6 +17,7 @@ class CustomField {
     TextInputType? keyboardType,
     EdgeInsets? margin,
     Widget? suffixIcon,
+    BoxConstraints? suffixConstraint,
     List<TextInputFormatter>? inputFormatter,
     GestureTapCallback? onTap,
     ValueChanged<String>? onChanged
@@ -54,6 +55,7 @@ class CustomField {
           filled: readOnly,
           fillColor: Colors.grey.shade100,
           suffixIcon: suffixIcon,
+          suffixIconConstraints: suffixConstraint
         ),
         onTap: onTap,
         onChanged: onChanged,
