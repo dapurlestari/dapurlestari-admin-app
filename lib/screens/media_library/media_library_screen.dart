@@ -151,18 +151,29 @@ class MediaLibraryScreen extends StatelessWidget {
                       left: 6,
                       child: Container(
                         padding: const EdgeInsets.fromLTRB(4, 4, 8, 4),
-                        decoration: !media.selected ? null : BoxDecoration(
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        decoration: !media.selected ? BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.25),
+                                blurRadius: 20,
+                                spreadRadius: 3,
+                                offset: const Offset(2, 4),
+                              )
+                            ]
+                        ) : BoxDecoration(
                           color: Colors.indigoAccent,
-                          borderRadius: BorderRadius.circular(15)
+                          borderRadius: BorderRadius.circular(4),
                         ),
                         child: Row(
                           children: [
                             Icon(
                               isMultiselect
-                                  ? !media.selected ? LineIcons.square : LineIcons.checkSquare
-                                  : !media.selected ? LineIcons.circle : LineIcons.checkCircle,
-                              size: 16,
-                              color: media.selected ? Colors.white : Colors.grey.shade700,
+                                  ? !media.selected ? FeatherIcons.square : FeatherIcons.checkSquare
+                                  : !media.selected ? FeatherIcons.circle : FeatherIcons.checkCircle,
+                              size: 14,
+                              color: Colors.white,
                             ),
                             if (media.selected) const SizedBox(width: 6,),
                             if (media.selected) Text('Selected', style: Get.textTheme.titleSmall?.copyWith(
