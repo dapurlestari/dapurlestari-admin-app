@@ -4,6 +4,8 @@ import 'package:admin/screens/components/media_file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'markdown_editor.dart';
+
 class ContentfulForm extends StatelessWidget {
   final Contentful contentful;
   final String tag;
@@ -35,13 +37,11 @@ class ContentfulForm extends StatelessWidget {
                 minLines: 3,
                 maxLines: 5
             ),
-            CustomField.text(
+            MarkdownEditor(
               controller: controller.contentField.value,
-              hint: 'Describe privacy policy',
               label: 'Content',
-              minLines: 5,
-              maxLines: 10,
             ),
+            const SizedBox(height: 12),
             MediaFilePicker(
               mediaFile: contentful.featuredImage,
               tag: '$tag.contentful',
