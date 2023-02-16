@@ -22,7 +22,6 @@ class MediaLibraryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _mainController.deselectMedia();
     bool isHideSelectionCounter = !(enableSelection
         && isMultiselect
         && !_mainController.isLoadingMediaLibrary.value
@@ -65,6 +64,8 @@ class MediaLibraryScreen extends StatelessWidget {
       body: SmartRefresher(
         controller: _mainController.mediaLibraryRefresher.value,
         onRefresh: _mainController.refreshMediaLibrary,
+        onLoading: _mainController.loadMoreMediaLibrary,
+        enablePullUp: !_mainController.isLoadingMediaLibrary.value,
         child: _body,
       ),
       actions: [
