@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class CsutomButton extends StatelessWidget {
+class CustomButton extends StatelessWidget {
   final String label;
   final IconData? icon;
   final GestureTapCallback? onTap;
-  const CsutomButton({Key? key,
+  const CustomButton({Key? key,
     required this.label,
     this.icon,
     this.onTap
