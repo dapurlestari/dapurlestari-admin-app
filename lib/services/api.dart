@@ -323,4 +323,19 @@ class API {
       useToken: useToken
     );
   }
+
+  static Future<StrapiResponse> delete({
+    required String page,
+    Map<String, dynamic>? params,
+    bool useToken = true,
+    bool showLog = false,
+  }) async {
+    return await request(
+      page: page,
+      method: APIPostMethod.delete,
+      params: params,
+      showLog: showLog,
+      useToken: useToken
+    );
+  }
 }
