@@ -7,11 +7,12 @@ class SoftKeyboard {
   }
 
   static FilteringTextInputFormatter noWhitespaceFormat = FilteringTextInputFormatter.deny(RegExp(r"\s\b|\b\s"));
-  static FilteringTextInputFormatter urlSymbols = FilteringTextInputFormatter.allow(RegExp(r"[a-z0-9_\-]+"));
-  static FilteringTextInputFormatter emailSymbols = FilteringTextInputFormatter.allow(RegExp(r"[a-z0-9@_.]+"));
+  static FilteringTextInputFormatter urlSymbols = FilteringTextInputFormatter.allow(RegExp(r"[a-z\d_\-]+"));
+  static FilteringTextInputFormatter emailSymbols = FilteringTextInputFormatter.allow(RegExp(r"[a-z\d@_.]+"));
   static FilteringTextInputFormatter letterOnly = FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]"));
   static FilteringTextInputFormatter whitespaceFormat = FilteringTextInputFormatter.allow(RegExp(r"\s\b|\b\s"));
   static LengthLimitingTextInputFormatter limit(int maxLength) => LengthLimitingTextInputFormatter(maxLength);
+  static TextInputFormatter digitsOnly = FilteringTextInputFormatter.digitsOnly;
 
   static List<FilteringTextInputFormatter> letters = [
     letterOnly,
