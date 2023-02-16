@@ -1,5 +1,6 @@
 import 'package:admin/components/custom_scaffold.dart';
 import 'package:admin/components/loadings.dart';
+import 'package:admin/components/shimmers.dart';
 import 'package:admin/models/product/product.dart';
 import 'package:admin/screens/product/product_controller.dart';
 import 'package:admin/screens/product/product_form.dart';
@@ -41,7 +42,7 @@ class ProductScreen extends StatelessWidget {
 
   Widget get _body {
     if (_controller.isRefresh.value) {
-      return Container();
+      return shimmers;
     }
 
     return ListView.separated(
@@ -121,6 +122,61 @@ class ProductScreen extends StatelessWidget {
         ),
       ),
       onTap: () => Get.to(() => ProductForm(product: product)),
+    );
+  }
+
+  Widget get shimmer {
+    return AspectRatio(
+      aspectRatio: 6/2,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.indigoAccent),
+          borderRadius: BorderRadius.circular(10)
+        ),
+        child: Row(
+          children: [
+            AspectRatio(
+              aspectRatio: 1,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade300,
+                  borderRadius: BorderRadius.circular(10)
+                ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Loadings.basicPrimary,
+                ),
+              ),
+            ),
+            const SizedBox(width: 15),
+            Expanded(child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Shimmers.text(height: 10, width: 40),
+                const SizedBox(height: 12),
+                Shimmers.text(width: 200),
+                const SizedBox(height: 8),
+                Shimmers.text(height: 10),
+                const SizedBox(height: 14),
+                Shimmers.text(height: 10),
+              ],
+            )),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget get shimmers {
+    return ListView.separated(
+      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+      itemCount: 10,
+      itemBuilder: (_, i) => shimmer,
+      separatorBuilder: (_, i) => const SizedBox(height: 20),
     );
   }
 }

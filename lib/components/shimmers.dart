@@ -48,7 +48,7 @@ class Shimmers {
 
   static Widget text({
     double width = 100,
-    double height = 16,
+    double height = 14,
     Color? color,
     bool accent = false
   }) {
