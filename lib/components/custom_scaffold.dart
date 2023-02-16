@@ -86,13 +86,15 @@ class CustomScaffold extends StatelessWidget {
             onPressed: Get.back,
           ),
           if (showBackButton) const SizedBox(width: 10,),
-          InkWell(
-            onTap: SoftKeyboard.hide,
-            child: Text(title ?? '', style: Get.textTheme.titleLarge?.copyWith(
-                fontSize: 26,
-                fontWeight: FontWeight.w600,
-                color: Colors.indigoAccent
-            )),
+          Expanded(
+            child: InkWell(
+              onTap: SoftKeyboard.hide,
+              child: Text(title ?? '', style: Get.textTheme.titleLarge?.copyWith(
+                  fontSize: 26,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.indigoAccent
+              ), overflow: TextOverflow.ellipsis),
+            ),
           )
         ],
       ),
