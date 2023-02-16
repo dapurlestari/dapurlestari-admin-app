@@ -9,6 +9,17 @@ class ConstLib {
   static const String attributes = 'attributes';
   static const int defaultPageSize = 10;
 
+  /* API - Sorts */
+  static const String sortLatest = 'id:desc';
+  static const String sortOldest = 'id:asc';
+  static const String sortNameAtoZ = 'name:asc';
+  static const String sortNameZtoA = 'name:desc';
+  static const String sortTitleAtoZ = 'title:asc';
+  static const String sortTitleZtoA = 'title:desc';
+
+  /* API - Filters */
+  static const String filtersMediaImage = 'mime:contains:image/';
+
   /* SEO */
   static const String metaFacebook = 'Facebook';
   static const String metaTwitter = 'Twitter';
@@ -23,7 +34,7 @@ class ConstLib {
   static const String team = 'team';
   static const String testimonial = 'testimonial';
 
-/* API Route - Collection */
+/* API Route - Single Type */
   static const String aboutPage = 'about-page';
   static const String faqPage = 'faq-page';
   static const String galleryPage = 'gallery';
