@@ -159,6 +159,9 @@ class Product {
       page: 'products',
       paginate: true,
       paginationPage: page,
+      sortList: [
+        ConstLib.sortLatest
+      ],
       // showLog: true
     );
 
