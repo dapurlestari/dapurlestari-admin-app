@@ -44,7 +44,7 @@ class ContentfulForm extends StatelessWidget {
             ),
             MediaFilePicker(
               mediaFile: contentful.featuredImage,
-              tag: '$tag.contentful.media',
+              tag: '$tag.contentful',
             )
           ],
         )
