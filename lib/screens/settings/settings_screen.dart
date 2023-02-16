@@ -10,8 +10,7 @@ import '../../components/forms/custom_text_field.dart';
 import 'settings_controller.dart';
 
 class SettingsScreen extends StatelessWidget {
-  final bool showBackButton;
-  SettingsScreen({Key? key, this.showBackButton = false}) : super(key: key);
+  SettingsScreen({Key? key}) : super(key: key);
 
   final settingsController = Get.put(SettingsController());
 
@@ -19,7 +18,6 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Obx(() => CustomScaffold(
         title: 'Settings',
-        showBackButton: showBackButton,
         body: Stack(
           children: [
             Padding(
