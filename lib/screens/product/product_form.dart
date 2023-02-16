@@ -65,7 +65,7 @@ class ProductForm extends StatelessWidget {
     _controller.initForm(product);
 
     return Obx(() => CustomScaffold(
-        title: product.isNotEmpty ? 'Product #${product.id}' : 'Product',
+        title: product.isNotEmpty ? product.name : 'Product',
         actions: [
           IconButton(
             icon: _controller.saving.value

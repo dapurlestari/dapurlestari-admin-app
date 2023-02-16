@@ -141,14 +141,14 @@ class MediaFilesPicker extends StatelessWidget {
   void _pickImages() async {
     final MediaFilesPickerController controller = Get.find(tag: tag);
     final MainController mainController = Get.find();
-    mainController.refreshMediaLibrary(excludeFiles: controller.images);
+    mainController.refreshMediaLibrary(selectedFiles: controller.images);
     SoftKeyboard.hide();
     List<MediaFile>? mediaFiles = await Get.to(() => MediaLibraryScreen(
       enableSelection: true,
       isMultiselect: true,
     ));
     if (mediaFiles != null) {
-      controller.images.insertAll(0, mediaFiles);
+      controller.images.value = mediaFiles;
     }
   }
 }

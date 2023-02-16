@@ -1,4 +1,6 @@
+import 'package:admin/components/image_manager/image_viewer.dart';
 import 'package:admin/models/image/media_file.dart';
+import 'package:admin/screens/main_controller.dart';
 import 'package:admin/screens/media_library/media_library_screen.dart';
 import 'package:admin/services/logger.dart';
 import 'package:admin/services/soft_keyboard.dart';
@@ -22,19 +24,19 @@ class MediaFilePicker extends StatelessWidget {
 
     return Obx(() => AspectRatio(
       aspectRatio: 7/4,
-      child: InkWell(
-        child: Container(
-          width: double.infinity,
-          decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey.shade600),
-              borderRadius: BorderRadius.circular(8)
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              controller.metaImage.value.hasURL ? Stack(
-                children: [
-                  Container(
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey.shade600),
+            borderRadius: BorderRadius.circular(8)
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            controller.metaImage.value.hasURL ? Stack(
+              children: [
+                InkWell(
+                  child: Container(
                     margin: const EdgeInsets.symmetric(horizontal: 14),
                     height: 180,
                     width: double.infinity,
@@ -48,58 +50,74 @@ class MediaFilePicker extends StatelessWidget {
                         )
                     ),
                   ),
-                  Positioned(
-                    top: 10,
-                    right: 25,
-                    child: InkWell(
-                      child: Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                            color: Colors.red,
-                            borderRadius: BorderRadius.circular(30),
-                            boxShadow: const [
-                              BoxShadow(
-                                  color: Colors.black45,
-                                  spreadRadius: 0,
-                                  blurRadius: 10
-                              )
-                            ]
-                        ),
-                        child: const Icon(FeatherIcons.trash2,
-                          size: 18,
-                          color: Colors.white,
-                        ),
+                  onTap: () => Get.to(() => ImageViewer(images: [controller.metaImage.value])),
+                ),
+                Positioned(
+                  top: 10,
+                  right: 25,
+                  child: InkWell(
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(30),
+                          boxShadow: const [
+                            BoxShadow(
+                                color: Colors.black45,
+                                spreadRadius: 0,
+                                blurRadius: 10
+                            )
+                          ]
                       ),
-                      onTap: () {
-                        controller.metaImage.value = MediaFile.dummy();
-                      },
+                      child: const Icon(FeatherIcons.trash2,
+                        size: 18,
+                        color: Colors.white,
+                      ),
                     ),
+                    onTap: () {
+                      controller.metaImage.value = MediaFile.dummy();
+                    },
+                  ),
+                )
+              ],
+            ) : Column(
+              children: const [
+                Icon(FeatherIcons.uploadCloud),
+                SizedBox(height: 8),
+                Text('Upload image or choose from library'),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 18),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Meta Image', style: Get.textTheme.titleMedium),
+                  OutlinedButton(
+                      onPressed: _pickImage,
+                      child: Text('Choose', style: Get.textTheme.titleMedium,)
                   )
                 ],
-              ) : Column(
-                children: const [
-                  Icon(FeatherIcons.uploadCloud),
-                  SizedBox(height: 8),
-                  Text('Upload image or choose from library'),
-                ],
               ),
-              const SizedBox(height: 20),
-              Text('Meta Image', style: Get.textTheme.titleMedium),
-            ],
-          ),
+            ),
+          ],
         ),
-        onTap: () async {
-          SoftKeyboard.hide();
-          MediaFile? media = await Get.to(() => MediaLibraryScreen(
-            enableSelection: true,
-          ));
-          if (media != null) {
-            controller.metaImage.value = media;
-            logInfo(controller.metaImage.value.id, logLabel: 'media_id');
-          }
-        },
       ),
     ));
+  }
+
+  void _pickImage() async {
+    final MediaFilePickerController controller = Get.find(tag: tag);
+    final MainController mainController = Get.find();
+    mainController.refreshMediaLibrary(selectedFiles: [controller.metaImage.value]);
+    SoftKeyboard.hide();
+    MediaFile? media = await Get.to(() => MediaLibraryScreen(
+      enableSelection: true,
+    ));
+    if (media != null) {
+      controller.metaImage.value = media;
+      logInfo(controller.metaImage.value.id, logLabel: 'media_id');
+    }
   }
 }
 
