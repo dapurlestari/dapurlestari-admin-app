@@ -111,7 +111,6 @@ class Config {
     );
 
     if (response.isSuccess) {
-      Fluttertoast.showToast(msg: 'Settings Updated!');
       return Config.fromJson(response.data['attributes']);
     }
 
