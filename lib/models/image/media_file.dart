@@ -2,6 +2,7 @@
 import 'dart:io';
 
 import 'package:admin/services/api.dart';
+import 'package:admin/services/constant_lib.dart';
 import 'package:admin/services/logger.dart';
 import 'package:admin/services/strapi_response.dart';
 import 'package:dio/dio.dart';
@@ -132,8 +133,12 @@ class MediaFile {
         paginateAlt: true,
         start: start,
         filterList: [
-          filterExc
+          ConstLib.filtersMediaImage,
+          filterExc,
         ],
+        sortList: [
+          ConstLib.sortLatest
+        ]
         // populateMode: APIPopulate.all,
         // showLog: true
     );
