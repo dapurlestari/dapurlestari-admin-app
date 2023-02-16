@@ -1,5 +1,6 @@
 import 'package:admin/services/soft_keyboard.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
 
@@ -16,7 +17,10 @@ class CustomField {
     TextInputAction? action,
     TextInputType? keyboardType,
     EdgeInsets? margin,
-    GestureTapCallback? onTap
+    Widget? suffixIcon,
+    List<TextInputFormatter>? inputFormatter,
+    GestureTapCallback? onTap,
+    ValueChanged<String>? onChanged
   }) {
     return Container(
       margin: margin ?? const EdgeInsets.only(bottom: 12),
@@ -27,9 +31,7 @@ class CustomField {
         readOnly: readOnly,
         enabled: enabled,
         keyboardType: keyboardType,
-        inputFormatters: maxLength != null ? [
-          SoftKeyboard.limit(maxLength)
-        ] : null,
+        inputFormatters: inputFormatter,
         textInputAction: action ?? (maxLines > 1 ? TextInputAction.newline : TextInputAction.next),
         style: Get.textTheme.bodyLarge?.copyWith(
             fontSize: 16,
@@ -38,6 +40,7 @@ class CustomField {
         ),
         decoration: InputDecoration(
           hintText: hint,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
           label: label.isNotEmpty ? Text(label) : null,
           labelStyle: Get.textTheme.bodyLarge?.copyWith(
               fontSize: 16,
@@ -51,9 +54,10 @@ class CustomField {
           ),
           filled: readOnly,
           fillColor: Colors.grey.shade100,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+          suffixIcon: suffixIcon,
         ),
         onTap: onTap,
+        onChanged: onChanged,
       ),
     );
   }
