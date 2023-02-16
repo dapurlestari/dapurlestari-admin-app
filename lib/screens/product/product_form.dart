@@ -65,7 +65,7 @@ class ProductForm extends StatelessWidget {
     _controller.initForm(product);
 
     return Obx(() => CustomScaffold(
-        title: product.isNotEmpty ? product.name : 'Product',
+        title: _controller.product.value.isNotEmpty ? 'Edit Product' : 'Add Product',
         actions: [
           IconButton(
             icon: _controller.saving.value
@@ -90,7 +90,7 @@ class ProductForm extends StatelessWidget {
                         children: [
                           CustomField.text(
                               controller: _controller.bundleField.value,
-                              hint: 'Paket A',
+                              hint: 'Product Bundle',
                               readOnly: true,
                               label: 'Product Bundle',
                               suffixIcon: const Icon(FeatherIcons.chevronDown, size: 18),
@@ -98,7 +98,7 @@ class ProductForm extends StatelessWidget {
                           ),
                           CustomField.text(
                               controller: _controller.categoryField.value,
-                              hint: 'Cookies',
+                              hint: 'Product Category',
                               readOnly: true,
                               label: 'Product Category',
                               suffixIcon: const Icon(FeatherIcons.chevronDown, size: 18),

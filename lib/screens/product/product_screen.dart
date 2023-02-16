@@ -4,6 +4,7 @@ import 'package:admin/models/product/product.dart';
 import 'package:admin/screens/product/product_controller.dart';
 import 'package:admin/screens/product/product_form.dart';
 import 'package:admin/services/text_formatter.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
@@ -48,55 +49,76 @@ class ProductScreen extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
       itemCount: _controller.products.length,
       itemBuilder: (_, i) => item(_controller.products[i]),
-      separatorBuilder: (_, i) => const Divider(height: 30, indent: 5, endIndent: 5),
+      separatorBuilder: (_, i) => const SizedBox(height: 20),
     );
   }
 
   Widget item(Product product) {
-    return ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-      // isThreeLine: true,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-        side: const BorderSide(color: Colors.indigoAccent)
-      ),
-      title: Text(product.name, style: Get.textTheme.titleLarge?.copyWith(
-        color: Colors.indigoAccent
-      )),
-      subtitle: Padding(
-        padding: const EdgeInsets.only(left: 0.5),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(product.pirtCode,
-                style: Get.textTheme.bodyMedium?.copyWith(
-                    color: Colors.blueGrey.shade500,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500
-                )
-            ),
-            Text('Rp. ${TextFormatter.formatPrice(product.price)}',
-                style: Get.textTheme.bodyMedium?.copyWith(
-                  color: Colors.blueGrey.shade500,
-                  fontWeight: FontWeight.w300
-                )
-            ),
-
-          ],
-        ),
-      ),
-      trailing: Container(
-        padding: const EdgeInsets.all(8.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-              color: const Color(0xFF4120A9)
+    return InkWell(
+      child: AspectRatio(
+        aspectRatio: 6/2,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.indigoAccent),
+            borderRadius: BorderRadius.circular(10)
           ),
-        ),
-        child: const Icon(
-          FeatherIcons.edit2,
-          size: 14,
-          color: Color(0xFF4120A9),
+          child: Row(
+            children: [
+              AspectRatio(
+                aspectRatio: 1,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade100,
+                    borderRadius: BorderRadius.circular(10)
+                  ),
+                  child: CachedNetworkImage(
+                    imageUrl: product.image,
+                    imageBuilder: (context, imageProvider) => Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        image: DecorationImage(
+                          image: imageProvider,
+                          fit: BoxFit.cover
+                        )
+                      ),
+                    ),
+                    placeholder: (context, url) => Loadings.basicPrimary,
+                    errorWidget: (context, url, error) => const Text('Image Error'),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 15),
+              Expanded(child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('#${product.id}', style: Get.textTheme.titleLarge?.copyWith(
+                      color: Colors.indigo.shade600,
+                      fontSize: 16
+                  )),
+                  Text(product.name, style: Get.textTheme.titleLarge?.copyWith(
+                      color: Colors.indigoAccent
+                  ), maxLines: 1, overflow: TextOverflow.ellipsis),
+                  Text(product.pirtCode,
+                      style: Get.textTheme.bodyMedium?.copyWith(
+                          color: Colors.grey.shade700,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500
+                      )
+                  ),
+                  const SizedBox(height: 10),
+                  Text('Rp. ${TextFormatter.formatPrice(product.price)}',
+                      style: Get.textTheme.bodyMedium?.copyWith(
+                          color: Colors.grey.shade500,
+                          fontWeight: FontWeight.w300
+                      )
+                  ),
+
+                ],
+              )),
+            ],
+          ),
         ),
       ),
       onTap: () => Get.to(() => ProductForm(product: product)),

@@ -2,6 +2,7 @@ import 'package:admin/models/product/product.dart';
 import 'package:admin/models/seo/meta_social.dart';
 import 'package:admin/models/seo/seo.dart';
 import 'package:admin/screens/components/media_file_picker.dart';
+import 'package:admin/screens/components/media_files_picker.dart';
 import 'package:admin/screens/components/seo_form.dart';
 import 'package:admin/screens/product/product_controller.dart';
 import 'package:admin/services/constant_lib.dart';
@@ -37,6 +38,12 @@ class ProductFormController extends GetxController {
   final slugLoading = false.obs;
 
   Future<void> initForm(Product product) async {
+
+    final MediaFilesPickerController controller = Get.put(
+      MediaFilesPickerController(),
+      tag: '${ConstLib.product}.medias',
+    );
+
     this.product.value = Product.dummy();
     this.product.value = product;
     // logInfo(product.isNotEmpty, logLabel: 'product_not_empty');
@@ -49,11 +56,16 @@ class ProductFormController extends GetxController {
 
     if (product.isNotEmpty) {
       saving.value = true;
+
       product.view().then((result) {
         this.product.value = result;
         logInfo(result.category.name, logLabel: 'category_name');
         bundleField.value.text = result.bundle.name;
         categoryField.value.text = result.category.name;
+
+        controller.index.value = 0;
+        controller.images.value = product.images;
+
         saving.value = false;
       }).catchError((e) {
         logError(e, logLabel: 'view_product');
@@ -82,6 +94,7 @@ class ProductFormController extends GetxController {
       return;
     }
 
+    final MediaFilesPickerController seoMediaC = Get.find(tag: '${ConstLib.product}.medias');
     final SeoController seoC = Get.find(tag: '${ConstLib.product}.seo');
     saving.value = true;
     Product product = Product.dummy();
@@ -96,6 +109,7 @@ class ProductFormController extends GetxController {
     product.description = descriptionField.value.text;
     product.descriptionRich = descriptionRichField.value.text;
     product.active = active.value;
+    product.images = seoMediaC.images;
     product.bundle = this.product.value.bundle;
     product.category = this.product.value.category;
     if (seoC.metaTitleField.value.text.isNotEmpty) product.seo = _updateSEO();
@@ -109,6 +123,8 @@ class ProductFormController extends GetxController {
   }
 
   Future<void> edit() async {
+    final MediaFilesPickerController seoMediaC = Get.find(tag: '${ConstLib.product}.medias');
+
     saving.value = true;
     product.value.name = nameField.value.text;
     product.value.pirtCode = pirtField.value.text;
@@ -122,9 +138,11 @@ class ProductFormController extends GetxController {
     product.value.descriptionRich = descriptionRichField.value.text;
     product.value.active = active.value;
     product.value.seo = _updateSEO();
+    product.value.images = seoMediaC.images;
     logInfo(product.value.toJson(), logLabel: 'product_edit');
     product.value = await product.value.edit();
-    product.refresh();
+    Get.back();
+    // product.refresh();
 
     int index = _controller.products.indexWhere((e) => e.id == product.value.id);
     _controller.products[index] = product.value;
@@ -158,7 +176,7 @@ class ProductFormController extends GetxController {
 
   Future<void> save() async {
     SoftKeyboard.hide();
-    bool valid = nameField.value.text.isNotEmpty && descriptionField.value.text.isNotEmpty;
+    bool valid = nameField.value.text.isNotEmpty;
     if (!valid) {
       Fluttertoast.showToast(msg: 'All fields are required!');
       return;

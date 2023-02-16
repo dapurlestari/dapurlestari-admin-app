@@ -78,6 +78,32 @@ class Product {
     images: []
   );
 
+  factory Product.fromJsonWithImages(Map<String, dynamic> json, int id) => Product(
+    id: id,
+    name: json["name"] ?? '',
+    description: json["description"] ?? '',
+    descriptionRich: json["description_rich"] ?? '',
+    releaseYear: json["release_year"] ?? 2006,
+    nett: json["netto"] ?? 0,
+    unit: json["unit"] ?? '',
+    pirtCode: json["pirt_code"] ?? '',
+    price: json["price"] ?? 0,
+    discountPrice: int.tryParse(json["discount_price"].toString()) ?? 0,
+    stock: json["stock"] ?? 0,
+    active: json["active"] ?? false,
+    slug: json["slug"] ?? '',
+    createdAt: DateTime.parse(json["createdAt"]),
+    updatedAt: DateTime.parse(json["updatedAt"]),
+    publishedAt: DateTime.parse(json["publishedAt"]),
+    bundle: Bundle.dummy(),
+    category: Category.dummy(),
+    seo: Seo.dummy(),
+    images: json['images']['data'] == null
+        ? []
+        : (json['images']['data'] as List).map((e)
+    => MediaFile.fromJson(e)).toList(),
+  );
+
   factory Product.fromJsonDetail(Map<String, dynamic> json, int id) => Product(
     id: id,
     name: json["name"] ?? '',
@@ -149,8 +175,12 @@ class Product {
   bool get isEmpty => id == 0;
   bool get isNotEmpty => id > 0;
   bool get hasImages => images.isNotEmpty;
-  String get thumbnail => hasImages ? images.first.formats!.thumbnail.url : '';
-  String get image => hasImages ? images.first.url : '';
+  String get thumbnail => hasImages
+      ? images.first.formats!.thumbnail.url
+      : MediaFile.dummyImage();
+  String get image => hasImages
+      ? images.first.url
+      : MediaFile.dummyImage();
 
   static Future<List<Product>> get({
     int page = 1
@@ -159,6 +189,10 @@ class Product {
       page: 'products',
       paginate: true,
       paginationPage: page,
+      populateMode: APIPopulate.custom,
+      populateList: [
+        'images'
+      ],
       sortList: [
         ConstLib.sortLatest
       ],
@@ -167,7 +201,7 @@ class Product {
 
     if (response.isSuccess) {
       return (response.data as List).map((e)
-        => Product.fromJson(e[ConstLib.attributes], e[ConstLib.id])
+        => Product.fromJsonWithImages(e[ConstLib.attributes], e[ConstLib.id])
       ).toList();
     }
 
@@ -230,6 +264,11 @@ class Product {
     );
 
     if (response.isSuccess) {
+      logInfo(Product.fromJsonWithImages(
+          response.data[ConstLib.attributes],
+          response.data[ConstLib.id]
+      ).toJson(), logLabel: 'product_edit');
+
       return Product.fromJsonDetail(
         response.data[ConstLib.attributes],
         response.data[ConstLib.id]
@@ -256,7 +295,7 @@ class Product {
     );
 
     if (response.isSuccess) {
-      logInfo(Product.fromJson(
+      logInfo(Product.fromJsonWithImages(
           response.data[ConstLib.attributes],
           response.data[ConstLib.id]
       ).toJson(), logLabel: 'product_edit');
