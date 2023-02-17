@@ -80,6 +80,7 @@ class ProductFormController extends GetxController {
 
       product.getUnits().then((values) {
         availableUnits.value = values;
+        availableUnits.insert(0, '');
         loadingUnits.value = false;
       });
     }
@@ -155,7 +156,7 @@ class ProductFormController extends GetxController {
     Get.back();
 
     int index = _controller.products.indexWhere((e) => e.id == product.value.id);
-    _controller.products[index] = product.value;
+    if (index >= 0) _controller.products[index] = product.value;
     _controller.products.refresh();
     saving.value = false;
   }

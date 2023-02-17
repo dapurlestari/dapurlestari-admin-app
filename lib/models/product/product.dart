@@ -156,7 +156,7 @@ class Product {
     data['description_rich'] = descriptionRich;
     data['release_year'] = releaseYear;
     data['netto'] = nett;
-    data['unit'] = unit;
+    data['unit'] = unit.isNotEmpty ? unit : null;
     data['pirt_code'] = pirtCode;
     data['price'] = price;
     data['discount_price'] = discountPrice;
@@ -166,8 +166,8 @@ class Product {
     // data['updated_at'] = updatedAt.toIso8601String();
     // data['deleted_at'] = deletedAt.toIso8601String();
     if (images.isNotEmpty) data['images'] = images.map((e) => e.id).toList();
-    if (category.id > 0) data['category'] = category.id;
-    if (bundle.id > 0) data['bundle'] = bundle.id;
+    data['category'] = category.id > 0 ? category.id : null;
+    data['bundle'] = bundle.id > 0 ? bundle.id : null;
     if (seo.metaTitle.isNotEmpty) data['seo'] = seo.toJson();
     return data;
   }

@@ -48,6 +48,7 @@ class Category {
     // "seo": seo.toJson(),
   };
 
+  String get nameAlt => name.isEmpty ? 'None' : name;
   bool get isNotEmpty => id > 0;
 
   static Future<List<Category>> get({

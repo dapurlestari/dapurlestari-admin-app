@@ -43,6 +43,7 @@ class Bundle {
     // "products": List<dynamic>.from(products.map((x) => x.toJson())),
   };
 
+  String get nameAlt => name.isEmpty ? 'None' : name;
   bool get isNotEmpty => id > 0;
 
   static Future<List<Bundle>> get({

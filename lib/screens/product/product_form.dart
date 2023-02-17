@@ -154,7 +154,7 @@ class ProductForm extends StatelessWidget {
                               ),
                               CustomField.text(
                                 controller: _controller.nameField.value,
-                                hint: 'Add category name or label',
+                                hint: 'Add product name or label',
                                 label: 'Name',
                                 onChanged: (value) async {
                                   _controller.slugAvailable.value = false;
@@ -292,7 +292,7 @@ class ProductForm extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(bundle.name, style: Get.textTheme.titleMedium,),
+                      Text(bundle.nameAlt, style: Get.textTheme.titleMedium,),
                       Icon(FeatherIcons.circle, size: 16, color: Colors.grey.shade400,)
                     ],
                   )
@@ -328,7 +328,7 @@ class ProductForm extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(category.name, style: Get.textTheme.titleMedium,),
+                      Text(category.nameAlt, style: Get.textTheme.titleMedium,),
                       Icon(FeatherIcons.circle, size: 16, color: Colors.grey.shade400,)
                     ],
                   )
@@ -351,6 +351,8 @@ class ProductForm extends StatelessWidget {
           shrinkWrap: true,
           itemCount: _controller.availableUnits.length,
           itemBuilder: (_, i) {
+            String name = _controller.availableUnits[i];
+            name = name.isEmpty ? 'None' : name;
             return InkWell(
               child: Container(
                   padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
@@ -361,7 +363,7 @@ class ProductForm extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(_controller.availableUnits[i], style: Get.textTheme.titleMedium,),
+                      Text(name, style: Get.textTheme.titleMedium,),
                       Icon(FeatherIcons.circle, size: 16, color: Colors.grey.shade400,)
                     ],
                   )
