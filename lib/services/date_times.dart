@@ -49,7 +49,7 @@ class DateTimes {
     }
 
     return DateFormat(
-        "${showDayName ? 'EEEE, ' : ''}d MMMM yyyy${showTime ? ' HH:mm' : ''}","id_ID"
+        "${showDayName ? 'EEEE, ' : ''}d MMMM yyyy${showTime ? ' HH:mm:ss' : ''}","id_ID"
     ).format(dateTime.toLocal());
   }
 
