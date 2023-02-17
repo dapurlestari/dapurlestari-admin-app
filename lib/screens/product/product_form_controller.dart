@@ -151,8 +151,8 @@ class ProductFormController extends GetxController {
     product.value.images = seoMediaC.images;
     logInfo(product.value.toJson(), logLabel: 'product_edit');
     product.value = await product.value.edit();
+    product.refresh();
     Get.back();
-    // product.refresh();
 
     int index = _controller.products.indexWhere((e) => e.id == product.value.id);
     _controller.products[index] = product.value;
