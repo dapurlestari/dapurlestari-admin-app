@@ -10,10 +10,12 @@ import 'markdown_editor.dart';
 class ContentfulForm extends StatelessWidget {
   final Contentful contentful;
   final String tag;
+  final String label;
   final String imageLabel;
   const ContentfulForm({Key? key,
     required this.contentful,
     this.tag = '',
+    this.label = 'Contentful',
     this.imageLabel = 'Image',
   }) : super(key: key);
 
@@ -23,9 +25,10 @@ class ContentfulForm extends StatelessWidget {
     controller.titleField.value.text = contentful.title;
     controller.subtitleField.value.text = contentful.subtitle;
     controller.contentField.value.text = contentful.content;
+    controller.featuredImage.value = contentful.featuredImage;
 
     return Obx(() => CustomField.fieldGroup(
-        label: 'Contentful',
+        label: label,
         content: Column(
           children: [
             CustomField.text(
