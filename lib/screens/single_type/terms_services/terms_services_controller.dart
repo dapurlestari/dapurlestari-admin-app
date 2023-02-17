@@ -31,15 +31,13 @@ class TermsServicesController extends GetxController {
     SoftKeyboard.hide();
     saving.value = true;
     final ContentfulController contentfulC = Get.find(tag: '${ConstLib.termsServicePage}.contentful');
-    final MediaFilePickerController featuredImageC = Get.find(tag: '${ConstLib.termsServicePage}.contentful.media');
     final SeoController seoC = Get.find(tag: '${ConstLib.termsServicePage}.seo');
-    final MediaFilePickerController seoMediaC = Get.find(tag: '${ConstLib.termsServicePage}.seo.media');
 
     termsService.value.contentful = Contentful(
       title: contentfulC.titleField.value.text,
       subtitle: contentfulC.subtitleField.value.text,
       content: contentfulC.contentField.value.text,
-      featuredImage: featuredImageC.metaImage.value
+      featuredImage: contentfulC.featuredImage.value
     );
 
     termsService.value.seo = Seo(
@@ -47,11 +45,11 @@ class TermsServicesController extends GetxController {
       metaDescription: seoC.metaDescriptionField.value.text,
       keywords: seoC.metaKeywordsField.value.text,
       canonicalUrl: seoC.canonicalURLField.value.text,
-      metaImage: seoMediaC.metaImage.value,
+      metaImage: seoC.metaImage.value,
       metaSocial: MetaSocial.defaultSocials(
         title: seoC.metaTitleField.value.text,
         description: seoC.metaSocialDescriptionField.value.text,
-        mediaFile: seoMediaC.metaImage.value
+        mediaFile: seoC.metaImage.value
       )
     );
 

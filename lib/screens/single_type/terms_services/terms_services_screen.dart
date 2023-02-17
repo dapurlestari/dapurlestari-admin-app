@@ -38,6 +38,7 @@ class TermsServicesScreen extends StatelessWidget {
                 ContentfulForm(
                   contentful: _controller.termsService.value.contentful,
                   tag: ConstLib.termsServicePage,
+                  imageLabel: 'Featured Image',
                 ),
                 const SizedBox(height: 40),
                 SeoForm(
