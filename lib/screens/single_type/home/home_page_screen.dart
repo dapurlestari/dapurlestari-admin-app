@@ -2,6 +2,7 @@ import 'package:admin/components/buttons/buttons.dart';
 import 'package:admin/components/custom_scaffold.dart';
 import 'package:admin/components/forms/custom_text_field.dart';
 import 'package:admin/components/loadings.dart';
+import 'package:admin/screens/components/galleryfuls_form.dart';
 import 'package:admin/screens/components/seo_form.dart';
 import 'package:admin/screens/single_type/home/home_page_controller.dart';
 import 'package:admin/services/constant_lib.dart';
@@ -11,7 +12,8 @@ import 'package:get/get.dart';
 class HomePageScreen extends StatelessWidget {
   HomePageScreen({Key? key}) : super(key: key);
 
-  final HomePageController _controller = Get.put(HomePageController());
+  final _controller = Get.put(HomePageController());
+  final galleryfulsController = Get.put(GalleryfulsController(), tag: '${ConstLib.homePage}.galleryfuls');
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +45,11 @@ class HomePageScreen extends StatelessWidget {
                               ),
                             ],
                           )
+                      ),
+                      const SizedBox(height: 40),
+                      GalleryfulsForm(
+                        galleryfuls: _controller.slideshows,
+                        tag: ConstLib.homePage,
                       ),
                       const SizedBox(height: 40),
                       SeoForm(
