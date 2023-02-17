@@ -25,6 +25,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 ContentfulForm(
                   contentful: _controller.privacyPolicy.value.contentful,
                   tag: ConstLib.privacyPolicyPage,
+                  imageLabel: 'Featured Image',
                 ),
                 const SizedBox(height: 40),
                 SeoForm(
