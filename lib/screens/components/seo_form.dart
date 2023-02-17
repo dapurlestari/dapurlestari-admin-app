@@ -1,4 +1,5 @@
 import 'package:admin/components/forms/custom_text_field.dart';
+import 'package:admin/models/image/media_file.dart';
 import 'package:admin/models/seo/seo.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -25,6 +26,7 @@ class SeoForm extends StatelessWidget {
     }
     controller.canonicalURLField.value.text = seo.canonicalUrl;
     controller.metaKeywordsField.value.text = seo.keywords;
+    controller.metaImage.value = seo.metaImage;
 
     return Obx(() => CustomField.fieldGroup(
         label: 'SEO',
@@ -66,7 +68,11 @@ class SeoForm extends StatelessWidget {
                 minLines: 1,
                 maxLines: 5
             ),
-            MediaFilePicker(mediaFile: seo.metaImage, tag: '$tag.seo',),
+            MediaFilePicker(
+              mediaFile: controller.metaImage,
+              tag: '$tag.seo',
+              label: 'Meta Image',
+            ),
           ],
         )
     ));
@@ -74,6 +80,7 @@ class SeoForm extends StatelessWidget {
 }
 
 class SeoController extends GetxController {
+  final metaImage = MediaFile.dummy().obs;
   final metaTitleField = TextEditingController().obs;
   final metaDescriptionField = TextEditingController().obs;
   final metaSocialDescriptionField = TextEditingController().obs;
