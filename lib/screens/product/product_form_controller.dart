@@ -162,14 +162,13 @@ class ProductFormController extends GetxController {
 
   Seo _updateSEO() {
     final SeoController seoC = Get.find(tag: '${ConstLib.product}.seo');
-    final MediaFilePickerController seoMediaC = Get.find(tag: '${ConstLib.product}.seo.media');
 
     Seo seo = Seo(
         metaTitle: seoC.metaTitleField.value.text,
         metaDescription: seoC.metaDescriptionField.value.text,
         keywords: seoC.metaKeywordsField.value.text,
         canonicalUrl: seoC.canonicalURLField.value.text,
-        metaImage: seoMediaC.metaImage.value,
+        metaImage: seoC.metaImage.value,
         metaSocial: []
     );
 
@@ -177,7 +176,7 @@ class ProductFormController extends GetxController {
       seo.metaSocial = MetaSocial.defaultSocials(
           title: seoC.metaTitleField.value.text,
           description: seoC.metaSocialDescriptionField.value.text,
-          mediaFile: seoMediaC.metaImage.value
+          mediaFile: seoC.metaImage.value
       );
     }
 
