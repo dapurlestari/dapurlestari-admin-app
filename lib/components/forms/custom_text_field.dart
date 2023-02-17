@@ -98,11 +98,13 @@ class CustomField {
 
   static Widget fieldGroup({
     required String label,
-    required Widget content
+    required Widget content,
+    bool useLabel = true,
+    Widget? action,
   }) {
     return Container(
       color: Colors.white,
-      child: Column(
+      child: !useLabel ? content : Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
@@ -117,7 +119,8 @@ class CustomField {
             )),
           ),
           const SizedBox(height: 14),
-          content
+          content,
+          if (action != null) action
         ],
       ),
     );
