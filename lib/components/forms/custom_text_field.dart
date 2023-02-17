@@ -83,7 +83,7 @@ class CustomField {
           children: [
             Text(label, style: Get.textTheme.bodyLarge?.copyWith(
                 fontSize: 16,
-                fontWeight: FontWeight.w300,
+                fontWeight: FontWeight.w400,
                 color: Colors.grey.shade900
             )),
             const SizedBox(width: 12),
