@@ -222,9 +222,10 @@ class API {
 
       return strapiResponse;
     } on DioError catch (e) {
-      logError(e.response?.data);
+      logError(e, logLabel: 'dio');
       StrapiResponse response = StrapiResponse.errorDefault();
-      if (e.response != null) {
+      if (e.response != null && (e.response!.data is Map<String, dynamic>)) {
+        // logError(e.response!.data, logLabel: 'dio');
         response = StrapiResponse.response(e.response!.data);
         String msg = '${response.error!.status}. ${response.error!.name}, ${response.error!.message}';
         if (showErrorToast) Fluttertoast.showToast(msg: msg, gravity: ToastGravity.TOP);

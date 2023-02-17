@@ -2,6 +2,12 @@ import 'package:envied/envied.dart';
 
 part 'env.g.dart';
 
+/*
+* run
+* > flutter pub run build_runner build
+* after changing env values
+* */
+
 @Envied(path: '.env')
 abstract class Env {
   @EnviedField(varName: 'API_SECRET')
