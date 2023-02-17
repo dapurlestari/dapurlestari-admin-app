@@ -18,7 +18,7 @@ class HomePageScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() => CustomScaffold(
-        title: 'Settings',
+        title: 'Home Page',
         actions: [
           if (_controller.isRefresh.value) Loadings.basicPrimary,
           const SizedBox(width: 15,)
@@ -50,6 +50,7 @@ class HomePageScreen extends StatelessWidget {
                       GalleryfulsForm(
                         galleryfuls: _controller.slideshows,
                         tag: ConstLib.homePage,
+                        label: 'Slideshows',
                       ),
                       const SizedBox(height: 40),
                       SeoForm(
