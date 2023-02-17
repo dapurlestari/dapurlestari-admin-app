@@ -4,6 +4,7 @@ import 'package:admin/models/app/menu.dart';
 import 'package:admin/models/server/access_status.dart';
 import 'package:admin/screens/home/home_controller.dart';
 import 'package:admin/services/constant_lib.dart';
+import 'package:admin/services/date_times.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -41,7 +42,7 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(height: 20),
                   Image.asset('assets/images/logo.png', height: 80,),
                   const SizedBox(height: 40),
-                  Text('Good morning, Admin!', style: Get.textTheme.titleLarge?.copyWith(
+                  Text('Good ${DateTimes.hourName}, Admin!', style: Get.textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.w400,
                       fontFamily: ConstLib.secondaryFont,
                       letterSpacing: 0.5,
