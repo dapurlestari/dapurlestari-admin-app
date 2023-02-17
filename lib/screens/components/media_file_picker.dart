@@ -10,18 +10,17 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
 
 class MediaFilePicker extends StatelessWidget {
-  final MediaFile mediaFile;
+  final Rx<MediaFile> mediaFile;
   final String tag;
+  final String label;
   const MediaFilePicker({Key? key,
     required this.mediaFile,
     this.tag = '',
+    this.label = 'Image',
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final MediaFilePickerController controller = Get.put(MediaFilePickerController(), tag: '$tag.media');
-    controller.metaImage.value = mediaFile;
-
     return Obx(() => AspectRatio(
       aspectRatio: 7/4,
       child: Container(
@@ -34,7 +33,7 @@ class MediaFilePicker extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            controller.metaImage.value.hasURL ? Stack(
+            mediaFile.value.hasURL ? Stack(
               children: [
                 InkWell(
                   child: Container(
@@ -45,13 +44,13 @@ class MediaFilePicker extends StatelessWidget {
                         borderRadius: BorderRadius.circular(10),
                         image: DecorationImage(
                             image: CachedNetworkImageProvider(
-                                controller.metaImage.value.url
+                                mediaFile.value.url
                             ),
                             fit: BoxFit.cover
                         )
                     ),
                   ),
-                  onTap: () => Get.to(() => ImageViewer(images: [controller.metaImage.value])),
+                  onTap: () => Get.to(() => ImageViewer(images: [mediaFile.value])),
                 ),
                 Positioned(
                   top: 10,
@@ -76,7 +75,7 @@ class MediaFilePicker extends StatelessWidget {
                       ),
                     ),
                     onTap: () {
-                      controller.metaImage.value = MediaFile.dummy();
+                      mediaFile.value = MediaFile.dummy();
                     },
                   ),
                 )
@@ -103,7 +102,7 @@ class MediaFilePicker extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Meta Image', style: Get.textTheme.titleMedium),
+                  Text(label, style: Get.textTheme.titleMedium),
                   OutlinedButton(
                     onPressed: _pickImage,
                     style: const ButtonStyle(
@@ -121,20 +120,16 @@ class MediaFilePicker extends StatelessWidget {
   }
 
   void _pickImage() async {
-    final MediaFilePickerController controller = Get.find(tag: '$tag.media');
+    // final MediaFilePickerController controller = Get.find(tag: '$tag.media');
     final MainController mainController = Get.find();
-    mainController.refreshMediaLibrary(selectedFiles: [controller.metaImage.value]);
+    mainController.refreshMediaLibrary(selectedFiles: [mediaFile.value]);
     SoftKeyboard.hide();
     MediaFile? media = await Get.to(() => MediaLibraryScreen(
       enableSelection: true,
     ));
     if (media != null) {
-      controller.metaImage.value = media;
-      logInfo(controller.metaImage.value.id, logLabel: 'media_id');
+      mediaFile.value = media;
+      logInfo(mediaFile.value.id, logLabel: 'media_id');
     }
   }
-}
-
-class MediaFilePickerController extends GetxController {
-  final metaImage = MediaFile.dummy().obs;
 }
