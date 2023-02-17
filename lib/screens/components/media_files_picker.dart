@@ -79,7 +79,8 @@ class MediaFilesPicker extends StatelessWidget {
                       ),
                     ),
                     onTap: () {
-                      controller.images.removeAt(controller.index.value);
+                      controller.prev();
+                      controller.images.removeAt(controller.index.value+1);
                     },
                   ),
                 )
@@ -153,9 +154,16 @@ class MediaFilesPicker extends StatelessWidget {
     List<MediaFile>? mediaFiles = await Get.to(() => MediaLibraryScreen(
       enableSelection: true,
       isMultiselect: true,
+      selectedFiles: controller.images,
     ));
+
     if (mediaFiles != null) {
-      controller.images.value = mediaFiles;
+      for (var media in mediaFiles) {
+        bool exists = controller.images.indexWhere((e) => e.id == media.id) >= 0;
+        if (!exists) {
+          controller.images.add(media);
+        }
+      }
     }
   }
 }

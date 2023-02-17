@@ -92,12 +92,16 @@ class MainController extends GetxController {
     mediaStart.value = 0;
     isLoadingMediaLibrary.value = true;
     mediaFiles.clear();
+    // logInfo(selectedFiles.map((e) => e.id), logLabel: 'selected_files');
     _fetchMedia(excludeFiles: excludeFiles, selectedFiles: selectedFiles);
   }
 
-  void loadMoreMediaLibrary() {
+  void loadMoreMediaLibrary({
+    List<MediaFile> selectedFiles = const [],
+  }) {
     mediaStart.value = mediaFiles.length;
-    _fetchMedia();
+    // logInfo(selectedFiles.map((e) => e.id), logLabel: 'selected_files');
+    _fetchMedia(selectedFiles: selectedFiles);
   }
 
   Future<void> uploadToLibrary() async {

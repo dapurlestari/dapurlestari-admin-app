@@ -12,98 +12,102 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 class MediaLibraryScreen extends StatelessWidget {
   final bool enableSelection;
   final bool isMultiselect;
+  final List<MediaFile> selectedFiles;
   MediaLibraryScreen({Key? key,
     this.enableSelection = false,
     this.isMultiselect = false,
+    this.selectedFiles = const []
   }) : super(key: key);
 
   final MainController _mainController = Get.find();
 
   @override
   Widget build(BuildContext context) {
-    bool isHideSelectionCounter = !(enableSelection
-        && isMultiselect
-        && !_mainController.isLoadingMediaLibrary.value
-        && _mainController.hasSelectedItems
-    );
+    return Obx(() {
+      bool isHideSelectionCounter = !(enableSelection
+          && isMultiselect
+          && !_mainController.isLoadingMediaLibrary.value
+          && _mainController.hasSelectedItems
+      );
 
-    return Obx(() => CustomScaffold(
-      title: 'Media Library',
-      showBackButton: true,
-      elevation: isHideSelectionCounter ? null : 0,
-      bottom: isHideSelectionCounter ? null : PreferredSize(
-        preferredSize: const Size.fromHeight(60),
-        child: Container(
-          width: double.infinity,
-          padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border(
-              top: BorderSide(
-                color: Colors.grey.shade300
-              )
-            )
-          ),
+      return CustomScaffold(
+        title: 'Media Library',
+        showBackButton: true,
+        elevation: isHideSelectionCounter ? null : 0,
+        bottom: isHideSelectionCounter ? null : PreferredSize(
+          preferredSize: const Size.fromHeight(60),
           child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 8),
+            width: double.infinity,
+            padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
             decoration: BoxDecoration(
-              color: Colors.indigoAccent,
-              borderRadius: BorderRadius.circular(8)
+                color: Colors.white,
+                border: Border(
+                    top: BorderSide(
+                        color: Colors.grey.shade300
+                    )
+                )
             ),
-            child: Center(
-              child: Text('${_mainController.selectedCount} selected item(s)',
-                style: Get.textTheme.titleMedium?.copyWith(
-                  color: Colors.white
-                ),
-              )
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              decoration: BoxDecoration(
+                  color: Colors.indigoAccent,
+                  borderRadius: BorderRadius.circular(8)
+              ),
+              child: Center(
+                  child: Text('${_mainController.selectedCount} selected item(s)',
+                    style: Get.textTheme.titleMedium?.copyWith(
+                        color: Colors.white
+                    ),
+                  )
+              ),
             ),
           ),
         ),
-      ),
-      body: SmartRefresher(
-        controller: _mainController.mediaLibraryRefresher.value,
-        onRefresh: _mainController.refreshMediaLibrary,
-        onLoading: _mainController.loadMoreMediaLibrary,
-        enablePullUp: !_mainController.isLoadingMediaLibrary.value,
-        child: _body,
-      ),
-      actions: [
-        if (_mainController.isLoadingMediaLibrary.value) Loadings.basicPrimary,
-        const SizedBox(width: 10),
-        IconButton(
-          icon: Icon(
-            _mainController.mediaLibraryEnableGridView.value
-              ? FeatherIcons.columns
-              : FeatherIcons.grid,
-            color: Colors.grey.shade800
-          ),
-          onPressed: _mainController.mediaLibraryEnableGridView.toggle,
+        body: SmartRefresher(
+          controller: _mainController.mediaLibraryRefresher.value,
+          onRefresh: () => _mainController.refreshMediaLibrary(selectedFiles: selectedFiles),
+          onLoading: () => _mainController.loadMoreMediaLibrary(selectedFiles: selectedFiles),
+          enablePullUp: !_mainController.isLoadingMediaLibrary.value,
+          child: _body,
         ),
-        IconButton(
-          icon: Icon(FeatherIcons.upload,
-            color: Colors.grey.shade800
+        actions: [
+          if (_mainController.isLoadingMediaLibrary.value) Loadings.basicPrimary,
+          const SizedBox(width: 10),
+          IconButton(
+            icon: Icon(
+                _mainController.mediaLibraryEnableGridView.value
+                    ? FeatherIcons.columns
+                    : FeatherIcons.grid,
+                color: Colors.grey.shade800
+            ),
+            onPressed: _mainController.mediaLibraryEnableGridView.toggle,
           ),
-          onPressed: _mainController.uploadToLibrary,
-        ),
-        if (enableSelection) IconButton(
-          icon: Icon(isMultiselect ? FeatherIcons.checkSquare : FeatherIcons.checkCircle,
-            color: Colors.grey.shade800,
+          IconButton(
+            icon: Icon(FeatherIcons.upload,
+                color: Colors.grey.shade800
+            ),
+            onPressed: _mainController.uploadToLibrary,
           ),
-          onPressed: () {
-            if (isMultiselect) {
-              List<MediaFile>? mediaFiles = _mainController.mediaFiles.where((e) => e.selected).toList();
-              _mainController.mediaFiles.refresh();
-              Get.back(result: mediaFiles);
-            } else {
-              MediaFile? media = _mainController.mediaFiles.firstWhereOrNull((e) => e.selected);
-              media?.selected = false;
-              _mainController.mediaFiles.refresh();
-              Get.back(result: media);
-            }
-          },
-        )
-      ],
-    ));
+          if (enableSelection) IconButton(
+            icon: Icon(isMultiselect ? FeatherIcons.checkSquare : FeatherIcons.checkCircle,
+              color: Colors.grey.shade800,
+            ),
+            onPressed: () {
+              if (isMultiselect) {
+                List<MediaFile>? mediaFiles = _mainController.mediaFiles.where((e) => e.selected).toList();
+                _mainController.mediaFiles.refresh();
+                Get.back(result: mediaFiles);
+              } else {
+                MediaFile? media = _mainController.mediaFiles.firstWhereOrNull((e) => e.selected);
+                media?.selected = false;
+                _mainController.mediaFiles.refresh();
+                Get.back(result: media);
+              }
+            },
+          )
+        ],
+      );
+    });
   }
 
   Widget get _body {
