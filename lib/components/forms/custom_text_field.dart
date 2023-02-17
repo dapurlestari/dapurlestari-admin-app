@@ -12,7 +12,7 @@ class CustomField {
     int maxLines = 1,
     int? maxLength,
     bool readOnly = false,
-    bool? enabled,
+    bool enabled = true,
     TextInputAction? action,
     TextInputType? keyboardType,
     EdgeInsets? margin,
@@ -36,7 +36,7 @@ class CustomField {
         style: Get.textTheme.bodyLarge?.copyWith(
             fontSize: 16,
             fontWeight: FontWeight.w400,
-            color: readOnly ? Colors.grey.shade500 : Colors.grey.shade900
+            color: !enabled ? Colors.grey.shade500 : Colors.grey.shade900
         ),
         decoration: InputDecoration(
           hintText: hint,
