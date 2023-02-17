@@ -45,12 +45,12 @@ class DateTimes {
   static String formatDate(dynamic value, {bool showDayName = true, bool showTime = false}) {
     DateTime dateTime = value;
     if (value is String) {
-      dateTime = DateTime.parse(value.contains(':') ? value : '$value 00:00:00');
+      dateTime = DateTime.parse(value.contains(':') ? value : '$value 00:00:00').toLocal();
     }
 
     return DateFormat(
         "${showDayName ? 'EEEE, ' : ''}d MMMM yyyy${showTime ? ' HH:mm' : ''}","id_ID"
-    ).format(dateTime);
+    ).format(dateTime.toLocal());
   }
 
   static String formatTime(dynamic value, {bool showHours = false, bool showSec = true}) {
@@ -76,7 +76,7 @@ class DateTimes {
       }
     }
 
-    return DateFormat(format,"id_ID").format(dateTime);
+    return DateFormat(format,"id_ID").format(dateTime.toLocal());
   }
 
   static String zeroLeadTime(int time) {
@@ -84,15 +84,15 @@ class DateTimes {
   }
 
   static String get hourName {
-    TimeOfDay dayName = TimeOfDay.fromDateTime(DateTime.now());
+    TimeOfDay dayName = TimeOfDay.fromDateTime(DateTime.now().toLocal());
     if (dayName.hour > 0 && dayName.hour <= 11) {
-      return 'pagi';
+      return 'morning';
     } else if (dayName.hour > 11 && dayName.hour <= 14) {
-      return 'siang';
+      return 'evening';
     } else if (dayName.hour > 14 && dayName.hour <= 18) {
-      return 'sore';
+      return 'afternoon';
     } else if (dayName.hour > 18 && dayName.hour <= 24) {
-      return 'malam';
+      return 'night';
     } else {
       return '';
     }
