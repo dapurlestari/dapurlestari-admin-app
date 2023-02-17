@@ -1,3 +1,4 @@
+import 'package:admin/models/components/galleryful.dart';
 import 'package:admin/models/pages/slideshow.dart';
 import 'package:admin/models/seo/seo.dart';
 import 'package:admin/services/api.dart';
@@ -18,7 +19,7 @@ class HomePage {
   DateTime createdAt;
   DateTime updatedAt;
   DateTime publishedAt;
-  List<Slideshow> slideshows;
+  List<Galleryful> slideshows;
   Seo seo;
 
   factory HomePage.fromJson(Map<String, dynamic> json) => HomePage(
@@ -27,9 +28,9 @@ class HomePage {
     updatedAt: DateTime.parse(json["updatedAt"]),
     publishedAt: DateTime.parse(json["publishedAt"]),
     slideshows: json['slideshows'] == null
-        ? []
+        ? [Galleryful.dummy()]
         : (json['slideshows'] as List).map((e)
-    => Slideshow.fromJson(e)).toList(),
+    => Galleryful.fromJson(e)).toList(),
     seo: Seo.fromJson(json["seo"]),
   );
 
@@ -37,7 +38,7 @@ class HomePage {
     createdAt: DateTime.now(),
     updatedAt: DateTime.now(),
     publishedAt: DateTime.now(),
-    slideshows: [],
+    slideshows: [Galleryful.dummy()],
     seo: Seo.dummy(),
   );
 
@@ -47,7 +48,7 @@ class HomePage {
     // "updatedAt": updatedAt.toIso8601String(),
     // "publishedAt": publishedAt.toIso8601String(),
     "seo": seo.toJson(),
-    "slideshows": List<dynamic>.from(slideshows.map((x) => x)),
+    "slideshows": List<dynamic>.from(slideshows.map((x) => x.toJson())),
   };
 
   static Future<HomePage> get() async {
