@@ -208,7 +208,7 @@ class API {
             method == APIPostMethod.put ||
             method == APIPostMethod.delete
         ) {
-          Fluttertoast.showToast(msg: successMessage, gravity: ToastGravity.TOP_RIGHT);
+          Fluttertoast.showToast(msg: successMessage, gravity: ToastGravity.TOP);
         }
 
         if (showLog) {
