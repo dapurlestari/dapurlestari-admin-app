@@ -58,7 +58,7 @@ class Menu {
         title: 'Settings',
         subtitle: 'Customize default site configuration',
         icon: FeatherIcons.settings,
-        onTap: () => Get.to(() => SettingsScreen(showBackButton: true,))
+        onTap: () => Get.to(() => SettingsScreen())
     ),
   ];
 }

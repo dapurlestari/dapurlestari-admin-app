@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:admin/services/logger.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 
 import 'image_compressor.dart';

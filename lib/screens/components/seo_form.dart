@@ -1,8 +1,10 @@
 import 'package:admin/components/forms/custom_text_field.dart';
+import 'package:admin/models/image/media_file.dart';
 import 'package:admin/models/seo/seo.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../services/soft_keyboard.dart';
 import 'media_file_picker.dart';
 
 class SeoForm extends StatelessWidget {
@@ -24,6 +26,7 @@ class SeoForm extends StatelessWidget {
     }
     controller.canonicalURLField.value.text = seo.canonicalUrl;
     controller.metaKeywordsField.value.text = seo.keywords;
+    controller.metaImage.value = seo.metaImage;
 
     return Obx(() => CustomField.fieldGroup(
         label: 'SEO',
@@ -48,7 +51,10 @@ class SeoForm extends StatelessWidget {
                 label: 'Meta Social Description (Max. 65)',
                 minLines: 1,
                 maxLines: 2,
-                maxLength: 65
+                maxLength: 65,
+                inputFormatter: [
+                  SoftKeyboard.limit(65)
+                ]
             ),
             CustomField.text(
               controller: controller.canonicalURLField.value,
@@ -62,7 +68,11 @@ class SeoForm extends StatelessWidget {
                 minLines: 1,
                 maxLines: 5
             ),
-            MediaFilePicker(mediaFile: seo.metaImage, tag: '$tag.seo.media',)
+            MediaFilePicker(
+              mediaFile: controller.metaImage,
+              tag: '$tag.seo',
+              label: 'Meta Image',
+            ),
           ],
         )
     ));
@@ -70,6 +80,7 @@ class SeoForm extends StatelessWidget {
 }
 
 class SeoController extends GetxController {
+  final metaImage = MediaFile.dummy().obs;
   final metaTitleField = TextEditingController().obs;
   final metaDescriptionField = TextEditingController().obs;
   final metaSocialDescriptionField = TextEditingController().obs;

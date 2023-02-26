@@ -5,26 +5,31 @@ class Loadings {
   static Widget basic({
     Size size = const Size(20, 20),
     double width = 2,
+    bool centered = true,
     Color? color
   }) {
-    return Center(
-      child: SizedBox(
-        width: size.width,
-        height: size.height,
-        child: CircularProgressIndicator(
-          strokeWidth: width,
-          valueColor: AlwaysStoppedAnimation<Color>(color ?? Get.theme.progressIndicatorTheme.color ?? Colors.lightBlueAccent),
-        ),
+    final loading = SizedBox(
+      width: size.width,
+      height: size.height,
+      child: CircularProgressIndicator(
+        strokeWidth: width,
+        valueColor: AlwaysStoppedAnimation<Color>(color ?? Get.theme.progressIndicatorTheme.color ?? Colors.lightBlueAccent),
       ),
+    );
+
+    if (!centered) return loading;
+
+    return Center(
+      child: loading,
     );
   }
 
   static Widget get basicPrimary => basic(color: Colors.indigoAccent, size: const Size(18, 18));
-  static Widget get basicPrimarySmall => basic(color: Colors.indigoAccent, size: const Size(15, 15));
-  static Widget get basicSecondary => basic(color: Colors.indigoAccent, size: const Size(18, 18));
-  static Widget get basicSecondarySmall => basic(color: Colors.indigoAccent, size: const Size(15, 15));
-  static Widget get basicLight => basic(color: Colors.indigoAccent, size: const Size(17, 17));
-  static Widget get basicLightSmall => basic(color: Colors.indigoAccent, size: const Size(15, 15));
+  static Widget get basicPrimarySmall => basic(color: Colors.indigoAccent, size: const Size(15, 15), width: 1);
+  static Widget get basicSecondary => basic(color: Colors.grey.shade500, size: const Size(18, 18));
+  static Widget get basicSecondarySmall => basic(color: Colors.grey.shade500, size: const Size(15, 15), width: 1);
+  static Widget get basicLight => basic(color: Colors.white, size: const Size(17, 17));
+  static Widget get basicLightSmall => basic(color: Colors.white, size: const Size(15, 15), width: 1);
   static Widget get primaryWithBg => Center(
     child: CircleAvatar(
       radius: 20,

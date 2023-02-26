@@ -1,5 +1,5 @@
-import 'package:admin/services/soft_keyboard.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
 
@@ -11,8 +11,16 @@ class CustomField {
     int? minLines,
     int maxLines = 1,
     int? maxLength,
+    bool readOnly = false,
+    bool enabled = true,
     TextInputAction? action,
-    EdgeInsets? margin
+    TextInputType? keyboardType,
+    EdgeInsets? margin,
+    Widget? suffixIcon,
+    BoxConstraints? suffixConstraint,
+    List<TextInputFormatter>? inputFormatter,
+    GestureTapCallback? onTap,
+    ValueChanged<String>? onChanged
   }) {
     return Container(
       margin: margin ?? const EdgeInsets.only(bottom: 12),
@@ -20,17 +28,19 @@ class CustomField {
         controller: controller,
         minLines: minLines,
         maxLines: maxLines,
-        inputFormatters: maxLength != null ? [
-          SoftKeyboard.limit(maxLength)
-        ] : null,
+        readOnly: readOnly,
+        enabled: enabled,
+        keyboardType: keyboardType,
+        inputFormatters: inputFormatter,
         textInputAction: action ?? (maxLines > 1 ? TextInputAction.newline : TextInputAction.next),
         style: Get.textTheme.bodyLarge?.copyWith(
             fontSize: 16,
             fontWeight: FontWeight.w400,
-            color: Colors.grey.shade900
+            color: !enabled ? Colors.grey.shade500 : Colors.grey.shade900
         ),
         decoration: InputDecoration(
           hintText: hint,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
           label: label.isNotEmpty ? Text(label) : null,
           labelStyle: Get.textTheme.bodyLarge?.copyWith(
               fontSize: 16,
@@ -42,16 +52,13 @@ class CustomField {
               fontWeight: FontWeight.w300,
               color: Colors.grey.shade500
           ),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: BorderSide(color: Colors.grey.shade600),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
-            borderSide: const BorderSide(color: Colors.indigoAccent),
-          ),
+          filled: readOnly,
+          fillColor: Colors.grey.shade100,
+          suffixIcon: suffixIcon,
+          suffixIconConstraints: suffixConstraint
         ),
+        onTap: onTap,
+        onChanged: onChanged,
       ),
     );
   }
@@ -76,7 +83,7 @@ class CustomField {
           children: [
             Text(label, style: Get.textTheme.bodyLarge?.copyWith(
                 fontSize: 16,
-                fontWeight: FontWeight.w300,
+                fontWeight: FontWeight.w400,
                 color: Colors.grey.shade900
             )),
             const SizedBox(width: 12),
@@ -91,11 +98,13 @@ class CustomField {
 
   static Widget fieldGroup({
     required String label,
-    required Widget content
+    required Widget content,
+    bool useLabel = true,
+    Widget? action,
   }) {
     return Container(
       color: Colors.white,
-      child: Column(
+      child: !useLabel ? content : Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
@@ -110,7 +119,8 @@ class CustomField {
             )),
           ),
           const SizedBox(height: 14),
-          content
+          content,
+          if (action != null) action
         ],
       ),
     );

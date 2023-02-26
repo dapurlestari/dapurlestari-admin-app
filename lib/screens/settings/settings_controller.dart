@@ -98,7 +98,6 @@ class SettingsController extends GetxController {
     SoftKeyboard.hide();
 
     final SeoController seoC = Get.find(tag: '${ConstLib.configPage}.seo');
-    final MediaFilePickerController seoMediaC = Get.find(tag: '${ConstLib.configPage}.seo.media');
     saving.value = true;
     config.value.title = titleField.value.text;
     config.value.subtitle = subtitleField.value.text;
@@ -135,11 +134,11 @@ class SettingsController extends GetxController {
     newSeo.metaDescription = seoC.metaDescriptionField.value.text;
     newSeo.canonicalUrl = seoC.canonicalURLField.value.text;
     newSeo.keywords = seoC.metaKeywordsField.value.text;
-    newSeo.metaImage = seoMediaC.metaImage.value;
+    newSeo.metaImage = seoC.metaImage.value;
     newSeo.metaSocial = MetaSocial.defaultSocials(
       title: newSeo.metaTitle,
       description: metaSocialDescription,
-      mediaFile: seoMediaC.metaImage.value
+      mediaFile: seoC.metaImage.value
     );
     config.value.seo = newSeo;
 

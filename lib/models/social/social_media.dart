@@ -50,11 +50,15 @@ class SocialMedia {
     "publishedAt": publishedAt.toIso8601String(),
   };
 
-  static Future<List<SocialMedia>> get() async {
+  static Future<List<SocialMedia>> get({
+    int page = 1
+  }) async {
     StrapiResponse response = await API.get(
-        page: 'social-medias',
-        populateMode: APIPopulate.all,
-        // showLog: true
+      page: 'social-medias',
+      paginate: true,
+      paginationPage: page,
+      populateMode: APIPopulate.all,
+      // showLog: true
     );
 
     if (response.isSuccess) {

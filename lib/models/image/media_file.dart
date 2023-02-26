@@ -2,10 +2,9 @@
 import 'dart:io';
 
 import 'package:admin/services/api.dart';
-import 'package:admin/services/logger.dart';
+import 'package:admin/services/constant_lib.dart';
 import 'package:admin/services/strapi_response.dart';
 import 'package:dio/dio.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path/path.dart';
 import 'package:http_parser/http_parser.dart' show MediaType;
 
@@ -115,9 +114,29 @@ class MediaFile {
   bool get isImage => mime.contains('image');
   bool get hasURL => url.isNotEmpty;
 
-  static Future<List<MediaFile>?> get() async {
+  static Future<List<MediaFile>?> get({
+    List<MediaFile>? excludeFiles,
+    int start = 0
+  }) async {
+
+    String filterExc = '';
+
+    if (excludeFiles != null) {
+      filterExc = excludeFiles.map((e) => e.id).toList().join(',');
+      filterExc = 'id:notIn:$filterExc';
+    }
+
     StrapiResponse response = await API.get(
         page: 'upload/files',
+        paginateAlt: true,
+        start: start,
+        filterList: [
+          ConstLib.filtersMediaImage,
+          filterExc,
+        ],
+        sortList: [
+          ConstLib.sortLatest
+        ]
         // populateMode: APIPopulate.all,
         // showLog: true
     );
@@ -148,11 +167,7 @@ class MediaFile {
     );
 
     if (response.isSuccess) {
-      Fluttertoast.showToast(msg: 'Success upload media!');
-      logInfo(response.data, logLabel: 'upload_response');
       return MediaFile.fromJson(response.data[0]); // response is a list
-    } else {
-      Fluttertoast.showToast(msg: 'Failed upload media!');
     }
 
     return null;

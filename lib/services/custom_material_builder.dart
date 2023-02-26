@@ -15,10 +15,10 @@ class CustomMaterialBuilder extends StatelessWidget {
         minWidth: 480,
         defaultName: MOBILE,
         breakpoints: [
-          ResponsiveBreakpoint.autoScale(480, name: MOBILE),
-          ResponsiveBreakpoint.resize(600, name: MOBILE),
-          ResponsiveBreakpoint.resize(850, name: TABLET),
-          ResponsiveBreakpoint.resize(1080, name: DESKTOP),
+          const ResponsiveBreakpoint.autoScale(480, name: MOBILE),
+          const ResponsiveBreakpoint.resize(600, name: MOBILE),
+          const ResponsiveBreakpoint.resize(850, name: TABLET),
+          const ResponsiveBreakpoint.resize(1080, name: DESKTOP),
         ],
         background: Container(color: Colors.white)
     );

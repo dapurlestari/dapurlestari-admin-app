@@ -1,8 +1,7 @@
 import 'package:admin/models/map/map_object.dart';
 import 'package:admin/services/api.dart';
-import 'package:admin/services/logger.dart';
+import 'package:admin/services/constant_lib.dart';
 import 'package:admin/services/strapi_response.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 import '../seo/seo.dart';
 
@@ -79,7 +78,7 @@ class Config {
 
   static Future<Config?> get() async {
     StrapiResponse response = await API.get(
-        page: 'config',
+        page: ConstLib.configPage,
         populateMode: APIPopulate.custom,
         populateList: [
           'seo.metaSocial',
@@ -99,7 +98,7 @@ class Config {
 
   Future<Config> save() async {
     StrapiResponse response = await API.put(
-        page: 'config',
+        page: ConstLib.configPage,
         data: toJson(),
         populateMode: APIPopulate.custom,
         populateList: [
@@ -112,7 +111,6 @@ class Config {
     );
 
     if (response.isSuccess) {
-      Fluttertoast.showToast(msg: 'Settings Updated!');
       return Config.fromJson(response.data['attributes']);
     }
 

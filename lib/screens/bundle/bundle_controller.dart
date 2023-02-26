@@ -19,6 +19,7 @@ class BundleController extends GetxController {
     final newBundles = await Bundle.get(page: page.value);
     if (newBundles.isNotEmpty) page.value++;
     bundles.addAll(newBundles);
+    bundles.insert(0, Bundle.dummy());
     isRefresh.value = false;
     refresher.value.refreshCompleted();
     refresher.value.loadComplete();

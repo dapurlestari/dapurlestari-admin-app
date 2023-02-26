@@ -19,6 +19,7 @@ class CategoryController extends GetxController {
     final newCategories = await Category.get(page: page.value);
     if (newCategories.isNotEmpty) page.value++;
     categories.addAll(newCategories);
+    categories.insert(0, Category.dummy());
     isRefresh.value = false;
     refresher.value.refreshCompleted();
     refresher.value.loadComplete();

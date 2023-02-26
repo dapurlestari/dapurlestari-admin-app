@@ -1,9 +1,7 @@
-import 'package:admin/models/product/product.dart';
 import 'package:admin/models/seo/seo.dart';
 import 'package:admin/services/api.dart';
 import 'package:admin/services/constant_lib.dart';
 import 'package:admin/services/strapi_response.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class Category {
   Category({
@@ -42,14 +40,15 @@ class Category {
   );
 
   Map<String, dynamic> toJson() => {
-    "name": name,
-    "icon_name": iconName,
+    "name": name.trim(),
+    "icon_name": iconName.trim(),
     // "createdAt": createdAt.toIso8601String(),
     // "updatedAt": updatedAt.toIso8601String(),
     // "publishedAt": publishedAt.toIso8601String(),
     // "seo": seo.toJson(),
   };
 
+  String get nameAlt => name.isEmpty ? 'None' : name;
   bool get isNotEmpty => id > 0;
 
   static Future<List<Category>> get({
@@ -60,7 +59,7 @@ class Category {
         paginate: true,
         paginationPage: page,
         populateMode: APIPopulate.all,
-        showLog: true
+        // showLog: true
     );
 
     if (response.isSuccess) {
@@ -79,7 +78,6 @@ class Category {
     );
 
     if (response.isSuccess) {
-      Fluttertoast.showToast(msg: 'Success add category');
       return Category.fromJson(response.data[ConstLib.attributes], response.data[ConstLib.id]);
     }
 
@@ -94,7 +92,6 @@ class Category {
     );
 
     if (response.isSuccess) {
-      Fluttertoast.showToast(msg: 'Success edit category');
       return Category.fromJson(response.data[ConstLib.attributes], response.data[ConstLib.id]);
     }
 

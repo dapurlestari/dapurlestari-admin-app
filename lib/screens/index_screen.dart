@@ -1,10 +1,14 @@
+import 'package:admin/components/custom_scaffold.dart';
 import 'package:admin/models/app/menu.dart';
 import 'package:admin/screens/collection/collection_screen.dart';
 import 'package:admin/screens/home/home_screen.dart';
 import 'package:admin/screens/index_controller.dart';
-import 'package:admin/screens/settings/settings_screen.dart';
 import 'package:admin/screens/single_type/single_type_screen.dart';
+import 'package:admin/services/constant_lib.dart';
+import 'package:admin/services/logger.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 
 class IndexScreen extends StatefulWidget {
@@ -21,11 +25,36 @@ class _IndexScreenState extends State<IndexScreen> {
   bool showMenuLabel = false;
 
   @override
+  void initState() {
+    indexController.closeCounter.value = 0;
+    super.initState();
+  }
+
+  Future<bool> _onBack() async {
+    indexController.closeCounter.value++;
+    logInfo(indexController.closeCounter.value, logLabel: 'close_counter');
+    if (indexController.closeCounter.value > 1) {
+      indexController.closeCounter.value = 0;
+      SystemNavigator.pop(); // close app
+      return true;
+    } else {
+      Fluttertoast.showToast(
+        msg: ConstLib.appExitGesture,
+        toastLength: Toast.LENGTH_LONG
+      );
+    }
+    return false;
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Obx(() => Scaffold(
+    return Obx(() => CustomScaffold(
       backgroundColor: Colors.white,
       extendBody: true,
       bottomNavigationBar: _bottomNavBar,
+      overrideOnBack: true,
+      useAppBar: false,
+      onBack: _onBack,
       body: PageView(
         controller: pageController,
         onPageChanged: _onPageChanged,

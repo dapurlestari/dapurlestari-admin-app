@@ -1,9 +1,6 @@
-import 'package:admin/models/product/product.dart';
 import 'package:admin/services/api.dart';
 import 'package:admin/services/constant_lib.dart';
-import 'package:admin/services/logger.dart';
 import 'package:admin/services/strapi_response.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class Bundle {
   Bundle({
@@ -38,14 +35,15 @@ class Bundle {
   );
 
   Map<String, dynamic> toJson() => {
-    "name": name,
-    "description": description,
+    "name": name.trim(),
+    "description": description.trim(),
     // "createdAt": createdAt.toIso8601String(),
     // "updatedAt": updatedAt.toIso8601String(),
     // "publishedAt": publishedAt.toIso8601String(),
     // "products": List<dynamic>.from(products.map((x) => x.toJson())),
   };
 
+  String get nameAlt => name.isEmpty ? 'None' : name;
   bool get isNotEmpty => id > 0;
 
   static Future<List<Bundle>> get({
@@ -75,7 +73,6 @@ class Bundle {
     );
 
     if (response.isSuccess) {
-      Fluttertoast.showToast(msg: 'Success add category');
       return Bundle.fromJson(response.data[ConstLib.attributes], response.data[ConstLib.id]);
     }
 
@@ -90,7 +87,6 @@ class Bundle {
     );
 
     if (response.isSuccess) {
-      Fluttertoast.showToast(msg: 'Success edit category');
       return Bundle.fromJson(response.data[ConstLib.attributes], response.data[ConstLib.id]);
     }
 

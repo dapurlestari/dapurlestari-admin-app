@@ -34,28 +34,30 @@ class API {
     Map<String, dynamic>? files,
     APIPopulate populateMode = APIPopulate.none,
     List<String>? populateList,
+    List<String>? sortList,
+    List<String>? filterList,
     bool paginate = false,
+    bool paginateAlt = false,
     int paginationPage = 1,
     int paginationSize = ConstLib.defaultPageSize,
+    int start = 0,
+    int limit = ConstLib.defaultPageSize,
     bool useToken = true,
     bool encodedData = true,
     bool showLog = false,
     bool showPostToast = true,
+    bool showErrorToast = true,
   }) async {
     String label = '${page}_api';
     String path = '${Env.apiURL}/$page';
 
-    Map<String, dynamic> header = {};
+    Map<String, dynamic> headers = {};
     Map<String, dynamic> defaultParams = {};
     Map<String, dynamic> defaultData = {};
 
     if (useToken) {
-      header[HttpHeaders.authorizationHeader] = 'Bearer ${Env.apiSecret}';
+      headers[HttpHeaders.authorizationHeader] = 'Bearer ${Env.apiSecret}';
     }
-
-    Options options = Options(
-        headers: header
-    );
 
     String populateKey = 'populate';
     switch (populateMode) {
@@ -77,9 +79,56 @@ class API {
         break;
     }
 
+    /* ============= Filters
+    * Example:
+    * filters[id][$in][0] = 1
+    * filters[id][$in][1] = 2
+    *
+    * Input
+    * id:in:1,2,3,4
+    *
+    *  */
+    String filtersKey = 'filters';
+    if (filterList != null) {
+      filterList.asMap().forEach((key, value) {
+        List<String> array = value.split(':');
+        String filterKey = array[0];
+        String filterCondition = array[1];
+        String filterValue = array[2];
+        if (filterValue.contains(',')) {
+          List<String> values = filterValue.split(',');
+          values.asMap().forEach((key, value) {
+            defaultParams['$filtersKey[$filterKey][\$$filterCondition][$key]'] = value;
+          });
+        } else {
+          defaultParams['$filtersKey[$filterKey][\$$filterCondition]'] = filterValue;
+        }
+      });
+    }
+
+    /* ============= Sorts
+    * Example:
+    * sort[0] = field1:asc
+    * sort[1] = field1:desc
+    *
+    * Input
+    * field1:asc
+    * field2:asc
+    *
+    *  */
+    String sortsKey = 'sort';
+    if (sortList != null) {
+      sortList.asMap().forEach((key, value) {
+        defaultParams['$sortsKey[$key]'] = value;
+      });
+    }
+
     if (paginate) {
       defaultParams['pagination[page]'] = paginationPage;
       defaultParams['pagination[pageSize]'] = paginationSize;
+    } else if (paginateAlt) {
+      defaultParams['start'] = start;
+      defaultParams['limit'] = limit;
     }
 
     if (params != null) defaultParams.addAll(params);
@@ -87,7 +136,7 @@ class API {
     if (data != null) defaultData['data'] = data;
 
     logInfo(path, logLabel: '${label}_url');
-    if (showLog) logInfo(header, logLabel: '${label}_header');
+    if (showLog) logInfo(headers, logLabel: '${label}_header');
     if (showLog) logInfo(defaultParams, logLabel: '${label}_params');
     if (showLog) logInfo(defaultData, logLabel: '${label}_data');
 
@@ -96,48 +145,48 @@ class API {
     try {
       Response response;
       String successMessage = 'OK';
+      final dio = Dio(BaseOptions(
+        baseUrl: '${Env.apiURL}/$page',
+        headers: headers,
+        queryParameters: defaultParams,
+      ));
+
+      List<String> pages = page.split('/');
+      if (pages.isNotEmpty) {
+        successMessage = pages[0].replaceAll('-', ' ');
+      }
 
       switch (method) {
         case APIPostMethod.get:
-          response = await Dio().get(
+          response = await dio.get(
               path,
-              queryParameters: defaultParams,
-              options: options
           );
           break;
         case APIPostMethod.post:
-          successMessage = 'Success add to $page';
-          response = await Dio().post(
+          successMessage = 'Success add to $successMessage';
+          response = await dio.post(
               path,
-              queryParameters: defaultParams,
               data: finalData,
-              options: options
           );
           break;
         case APIPostMethod.put:
-          successMessage = 'Success update from ${page.split('/')[0]}';
-          response = await Dio().put(
+          successMessage = 'Success update from $successMessage';
+          response = await dio.put(
               path,
-              queryParameters: defaultParams,
               data: finalData,
-              options: options
           );
           break;
         case APIPostMethod.patch:
-          response = await Dio().patch(
+          response = await dio.patch(
               path,
-              queryParameters: defaultParams,
               data: finalData,
-              options: options
           );
           break;
         case APIPostMethod.delete:
-          successMessage = 'Success delete from ${page.split('/')[0]}';
-          response = await Dio().delete(
+          successMessage = 'Success delete from $successMessage';
+          response = await dio.delete(
               path,
-              queryParameters: defaultParams,
               data: finalData,
-              options: options
           );
           break;
       }
@@ -164,25 +213,29 @@ class API {
 
         if (showLog) {
           if (newData is List) {
-            logInfo((newData as List).first.toString(), logLabel: '${label}_response_data');
+            logInfo((newData as List).first.toString(), logLabel: '${label}_response_list');
           } else {
-            logInfo(newData.toString(), logLabel: '${label}_response_data');
+            logInfo(newData.toString(), logLabel: '${label}_response_map');
           }
         }
       }
 
       return strapiResponse;
     } on DioError catch (e) {
-      logError(e.response?.data);
+      logError(e, logLabel: 'dio');
       StrapiResponse response = StrapiResponse.errorDefault();
-      if (e.response != null) {
+      if (e.response != null && (e.response!.data is Map<String, dynamic>)) {
+        // logError(e.response!.data, logLabel: 'dio');
         response = StrapiResponse.response(e.response!.data);
         String msg = '${response.error!.status}. ${response.error!.name}, ${response.error!.message}';
-        Fluttertoast.showToast(msg: msg, gravity: ToastGravity.TOP);
+        if (showErrorToast) Fluttertoast.showToast(msg: msg, gravity: ToastGravity.TOP);
         // logError(response.error?.toJson(), logLabel: 'error');
       }
 
       return response;
+    } on Exception catch (e) {
+      logError(e, logLabel: 'exception');
+      return StrapiResponse.errorDefault();
     }
   }
 
@@ -192,12 +245,18 @@ class API {
     Map<String, dynamic>? files,
     APIPopulate populateMode = APIPopulate.none,
     List<String>? populateList,
+    List<String>? sortList,
+    List<String>? filterList,
     bool paginate = false,
+    bool paginateAlt = false,
     int paginationPage = 1,
     int paginationSize = ConstLib.defaultPageSize,
+    int start = 0,
+    int limit = ConstLib.defaultPageSize,
     bool useToken = true,
     bool encodedData = true,
     bool showLog = false,
+    bool showErrorToast = false,
   }) async {
     return await request(
       page: page,
@@ -206,11 +265,17 @@ class API {
       encodedData: encodedData,
       files: files,
       populateList: populateList,
+      sortList: sortList,
+      filterList: filterList,
       populateMode: populateMode,
       paginate: paginate,
+      paginateAlt: paginateAlt,
       paginationPage: paginationPage,
       paginationSize: paginationSize,
+      start: start,
+      limit: limit,
       showLog: showLog,
+      showErrorToast: showErrorToast,
       useToken: useToken
     );
   }
@@ -260,6 +325,21 @@ class API {
       files: files,
       populateList: populateList,
       populateMode: populateMode,
+      showLog: showLog,
+      useToken: useToken
+    );
+  }
+
+  static Future<StrapiResponse> delete({
+    required String page,
+    Map<String, dynamic>? params,
+    bool useToken = true,
+    bool showLog = false,
+  }) async {
+    return await request(
+      page: page,
+      method: APIPostMethod.delete,
+      params: params,
       showLog: showLog,
       useToken: useToken
     );

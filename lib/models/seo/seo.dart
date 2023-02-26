@@ -36,8 +36,8 @@ class Seo {
     structuredData: json["structuredData"],
     metaViewport: json["metaViewport"] ?? '',
     canonicalUrl: json["canonicalURL"] ?? '',
-    metaImage: json["metaImage"]["data"] != null ? MediaFile.fromJson(json["metaImage"]["data"]) : MediaFile.dummy(),
-    metaSocial: List<MetaSocial>.from(json["metaSocial"].map((x) => MetaSocial.fromJson(x))),
+    metaImage: json["metaImage"] == null || json["metaImage"]["data"] == null ? MediaFile.dummy() : MediaFile.fromJson(json["metaImage"]["data"]),
+    metaSocial: json["metaSocial"] == null ? [] : List<MetaSocial>.from(json["metaSocial"].map((x) => MetaSocial.fromJson(x))),
   );
 
   factory Seo.dummy() => Seo(
@@ -48,17 +48,20 @@ class Seo {
   Map<String, dynamic> toJson() {
     final map = {
       // "id": id,
-      "metaTitle": metaTitle,
-      "metaDescription": metaDescription,
-      "keywords": keywords,
+      "metaTitle": metaTitle.trim(),
+      "metaDescription": metaDescription.trim(),
+      "keywords": keywords.trim(),
       "metaRobots": metaRobots,
       "structuredData": structuredData,
       "metaViewport": metaViewport,
       "canonicalURL": canonicalUrl,
-      "metaImage": metaImage.id,
     };
 
-    if (metaSocial.first.description.isNotEmpty) { // only check first item
+    if (metaImage.hasURL) {
+      map['metaImage'] = metaImage.id;
+    }
+
+    if (metaSocial.isNotEmpty && metaSocial.first.description.isNotEmpty) { // only check first item
       map['metaSocial'] = List<dynamic>.from(metaSocial.map((x) => x.toJson()));
     }
 

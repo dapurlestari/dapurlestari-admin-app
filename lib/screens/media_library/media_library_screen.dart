@@ -7,61 +7,107 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
-import 'package:line_icons/line_icons.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class MediaLibraryScreen extends StatelessWidget {
   final bool enableSelection;
   final bool isMultiselect;
+  final List<MediaFile> selectedFiles;
   MediaLibraryScreen({Key? key,
     this.enableSelection = false,
     this.isMultiselect = false,
+    this.selectedFiles = const []
   }) : super(key: key);
 
   final MainController _mainController = Get.find();
 
   @override
   Widget build(BuildContext context) {
-    _mainController.deselectMedia();
-    return Obx(() => CustomScaffold(
-      title: 'Media Library',
-      showBackButton: true,
-      body: SmartRefresher(
-        controller: _mainController.mediaLibraryRefresher.value,
-        onRefresh: _mainController.refreshMediaLibrary,
-        child: _body,
-      ),
-      actions: [
-        if (_mainController.isLoadingMediaLibrary.value) Loadings.basicPrimary,
-        const SizedBox(width: 10),
-        IconButton(
-          icon: Icon(
-            _mainController.mediaLibraryEnableGridView.value
-              ? FeatherIcons.columns
-              : FeatherIcons.grid,
-            color: Colors.grey.shade800
+    return Obx(() {
+      bool isHideSelectionCounter = !(enableSelection
+          && isMultiselect
+          && !_mainController.isLoadingMediaLibrary.value
+          && _mainController.hasSelectedItems
+      );
+
+      return CustomScaffold(
+        title: 'Media Library',
+        showBackButton: true,
+        elevation: isHideSelectionCounter ? null : 0,
+        bottom: isHideSelectionCounter ? null : PreferredSize(
+          preferredSize: const Size.fromHeight(60),
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+            decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border(
+                    top: BorderSide(
+                        color: Colors.grey.shade300
+                    )
+                )
+            ),
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              decoration: BoxDecoration(
+                  color: Colors.indigoAccent,
+                  borderRadius: BorderRadius.circular(8)
+              ),
+              child: Center(
+                  child: Text('${_mainController.selectedCount} selected item(s)',
+                    style: Get.textTheme.titleMedium?.copyWith(
+                        color: Colors.white
+                    ),
+                  )
+              ),
+            ),
           ),
-          onPressed: _mainController.mediaLibraryEnableGridView.toggle,
         ),
-        IconButton(
-          icon: Icon(FeatherIcons.upload,
-            color: Colors.grey.shade800
-          ),
-          onPressed: _mainController.uploadToLibrary,
+        body: SmartRefresher(
+          controller: _mainController.mediaLibraryRefresher.value,
+          onRefresh: () => _mainController.refreshMediaLibrary(selectedFiles: selectedFiles),
+          onLoading: () => _mainController.loadMoreMediaLibrary(selectedFiles: selectedFiles),
+          enablePullUp: !_mainController.isLoadingMediaLibrary.value,
+          child: _body,
         ),
-        if (enableSelection) IconButton(
-          icon: Icon(FeatherIcons.save,
-            color: Colors.grey.shade800,
+        actions: [
+          if (_mainController.isLoadingMediaLibrary.value) Loadings.basicPrimary,
+          const SizedBox(width: 10),
+          IconButton(
+            icon: Icon(
+                _mainController.mediaLibraryEnableGridView.value
+                    ? FeatherIcons.columns
+                    : FeatherIcons.grid,
+                color: Colors.grey.shade800
+            ),
+            onPressed: _mainController.mediaLibraryEnableGridView.toggle,
           ),
-          onPressed: () {
-            MediaFile? media = _mainController.mediaFiles.firstWhereOrNull((e) => e.selected);
-            media?.selected = false;
-            _mainController.mediaFiles.refresh();
-            Get.back(result: media);
-          },
-        )
-      ],
-    ));
+          IconButton(
+            icon: Icon(FeatherIcons.upload,
+                color: Colors.grey.shade800
+            ),
+            onPressed: _mainController.uploadToLibrary,
+          ),
+          if (enableSelection) IconButton(
+            icon: Icon(isMultiselect ? FeatherIcons.checkSquare : FeatherIcons.checkCircle,
+              color: Colors.grey.shade800,
+            ),
+            onPressed: () {
+              if (isMultiselect) {
+                List<MediaFile>? mediaFiles = _mainController.mediaFiles.where((e) => e.selected).toList();
+                _mainController.mediaFiles.refresh();
+                Get.back(result: mediaFiles);
+              } else {
+                MediaFile? media = _mainController.mediaFiles.firstWhereOrNull((e) => e.selected);
+                media?.selected = false;
+                _mainController.mediaFiles.refresh();
+                Get.back(result: media);
+              }
+            },
+          )
+        ],
+      );
+    });
   }
 
   Widget get _body {
@@ -94,7 +140,7 @@ class MediaLibraryScreen extends StatelessWidget {
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                         decoration: BoxDecoration(
-                          color: Colors.black38,
+                          color: Colors.black54,
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Text(media.mimeExtOnly, style: Get.textTheme.bodySmall?.copyWith(
@@ -108,18 +154,29 @@ class MediaLibraryScreen extends StatelessWidget {
                       left: 6,
                       child: Container(
                         padding: const EdgeInsets.fromLTRB(4, 4, 8, 4),
-                        decoration: !media.selected ? null : BoxDecoration(
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        decoration: !media.selected ? BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.25),
+                                blurRadius: 20,
+                                spreadRadius: 3,
+                                offset: const Offset(2, 4),
+                              )
+                            ]
+                        ) : BoxDecoration(
                           color: Colors.indigoAccent,
-                          borderRadius: BorderRadius.circular(15)
+                          borderRadius: BorderRadius.circular(4),
                         ),
                         child: Row(
                           children: [
                             Icon(
                               isMultiselect
-                                  ? !media.selected ? LineIcons.checkSquare : LineIcons.square
-                                  : !media.selected ? LineIcons.circle : LineIcons.checkCircle,
-                              size: 16,
-                              color: media.selected ? Colors.white : Colors.grey.shade700,
+                                  ? !media.selected ? FeatherIcons.square : FeatherIcons.checkSquare
+                                  : !media.selected ? FeatherIcons.circle : FeatherIcons.checkCircle,
+                              size: 14,
+                              color: Colors.white,
                             ),
                             if (media.selected) const SizedBox(width: 6,),
                             if (media.selected) Text('Selected', style: Get.textTheme.titleSmall?.copyWith(

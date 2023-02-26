@@ -1,3 +1,4 @@
+import 'package:admin/components/badges.dart';
 import 'package:admin/components/custom_scaffold.dart';
 import 'package:admin/components/loadings.dart';
 import 'package:admin/models/server/content_type.dart';
@@ -66,9 +67,14 @@ class CollectionScreen extends StatelessWidget {
                     ],
                   )
                 ),
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  child: const Icon(FeatherIcons.chevronRight, color: Colors.indigoAccent),
+                Row(
+                  children: [
+                    if (type.isComingSoon) Badges.comingSoon,
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      child: const Icon(FeatherIcons.chevronRight, color: Colors.indigoAccent),
+                    )
+                  ],
                 )
               ],
             ),

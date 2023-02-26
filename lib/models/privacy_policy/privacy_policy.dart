@@ -3,7 +3,6 @@ import 'package:admin/models/seo/seo.dart';
 import 'package:admin/services/api.dart';
 import 'package:admin/services/constant_lib.dart';
 import 'package:admin/services/strapi_response.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 class PrivacyPolicy {
   PrivacyPolicy({
@@ -64,7 +63,6 @@ class PrivacyPolicy {
     );
 
     if (response.isSuccess) {
-      Fluttertoast.showToast(msg: 'Privacy Policy Updated!');
       return PrivacyPolicy.fromJson(response.data[ConstLib.attributes]);
     }
 

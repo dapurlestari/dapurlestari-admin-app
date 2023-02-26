@@ -6,7 +6,6 @@ import 'package:admin/screens/components/contentful_form.dart';
 import 'package:admin/screens/components/media_file_picker.dart';
 import 'package:admin/screens/components/seo_form.dart';
 import 'package:admin/services/constant_lib.dart';
-import 'package:admin/services/logger.dart';
 import 'package:admin/services/soft_keyboard.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -32,15 +31,13 @@ class PrivacyPolicyController extends GetxController {
     SoftKeyboard.hide();
     saving.value = true;
     final ContentfulController contentfulC = Get.find(tag: '${ConstLib.privacyPolicyPage}.contentful');
-    final MediaFilePickerController featuredImageC = Get.find(tag: '${ConstLib.privacyPolicyPage}.contentful.media');
     final SeoController seoC = Get.find(tag: '${ConstLib.privacyPolicyPage}.seo');
-    final MediaFilePickerController seoMediaC = Get.find(tag: '${ConstLib.privacyPolicyPage}.seo.media');
 
     privacyPolicy.value.contentful = Contentful(
       title: contentfulC.titleField.value.text,
       subtitle: contentfulC.subtitleField.value.text,
       content: contentfulC.contentField.value.text,
-      featuredImage: featuredImageC.metaImage.value
+      featuredImage: contentfulC.featuredImage.value
     );
 
     privacyPolicy.value.seo = Seo(
@@ -48,11 +45,11 @@ class PrivacyPolicyController extends GetxController {
       metaDescription: seoC.metaDescriptionField.value.text,
       keywords: seoC.metaKeywordsField.value.text,
       canonicalUrl: seoC.canonicalURLField.value.text,
-      metaImage: seoMediaC.metaImage.value,
+      metaImage: seoC.metaImage.value,
       metaSocial: MetaSocial.defaultSocials(
         title: seoC.metaTitleField.value.text,
         description: seoC.metaSocialDescriptionField.value.text,
-        mediaFile: seoMediaC.metaImage.value
+        mediaFile: seoC.metaImage.value
       )
     );
 

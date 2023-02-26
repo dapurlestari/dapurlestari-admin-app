@@ -2,6 +2,7 @@ import 'package:admin/screens/bundle/bundle_screen.dart';
 import 'package:admin/screens/category/category_screen.dart';
 import 'package:admin/screens/faq/faq_screen.dart';
 import 'package:admin/screens/product/product_screen.dart';
+import 'package:admin/screens/single_type/home/home_page_screen.dart';
 import 'package:admin/screens/single_type/privacy_policy/privacy_policy_screen.dart';
 import 'package:admin/screens/single_type/terms_services/terms_services_screen.dart';
 import 'package:admin/screens/social_media/social_media_screen.dart';
@@ -45,6 +46,17 @@ class ContentType {
   bool get isConfig => apiId == 'config';
   bool get isNotConfig => !isConfig;
   String get apiRoute => uid.split('.')[1]; //e.g. api::product.product => product
+  bool get isComingSoon => _comingSoonMenu.contains(apiId);
+  List<String> get _comingSoonMenu => [
+    ConstLib.experience, // collection
+    ConstLib.team,
+    ConstLib.testimonial,
+
+    ConstLib.aboutPage, // single type
+    ConstLib.faqPage,
+    ConstLib.galleryPage,
+    ConstLib.productPage,
+  ];
 
   void open() {
     switch (apiId) {
@@ -62,6 +74,9 @@ class ContentType {
         break;
       case ConstLib.faq:
         Get.to(() => FaqScreen());
+        break;
+      case ConstLib.homePage:
+        Get.to(() => HomePageScreen());
         break;
       case ConstLib.privacyPolicyPage:
         Get.to(() => PrivacyPolicyScreen());
