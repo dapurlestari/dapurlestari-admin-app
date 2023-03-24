@@ -1,7 +1,6 @@
 import 'package:admin/models/app/config.dart';
 import 'package:admin/models/map/map_marker.dart';
 import 'package:admin/models/seo/meta_social.dart';
-import 'package:admin/screens/components/media_file_picker.dart';
 import 'package:admin/screens/components/seo_form.dart';
 import 'package:admin/services/constant_lib.dart';
 import 'package:admin/services/logger.dart';

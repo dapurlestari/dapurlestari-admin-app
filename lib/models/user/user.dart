@@ -1,4 +1,3 @@
-import 'package:admin/models/user/authenticated_user.dart';
 
 class User {
   User({

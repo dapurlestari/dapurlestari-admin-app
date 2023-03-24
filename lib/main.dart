@@ -1,7 +1,6 @@
 import 'package:admin/screens/authentication/login_screen.dart';
 import 'package:admin/screens/index_screen.dart';
 import 'package:admin/screens/main_controller.dart';
-import 'package:admin/services/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';

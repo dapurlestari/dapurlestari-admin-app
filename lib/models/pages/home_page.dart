@@ -1,5 +1,4 @@
 import 'package:admin/models/components/galleryful.dart';
-import 'package:admin/models/pages/slideshow.dart';
 import 'package:admin/models/seo/seo.dart';
 import 'package:admin/services/api.dart';
 import 'package:admin/services/constant_lib.dart';

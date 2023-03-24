@@ -1,11 +1,8 @@
-import 'dart:convert';
 
 import 'package:admin/models/user/authenticated_user.dart';
 import 'package:admin/models/user/user.dart';
 import 'package:admin/services/api.dart';
-import 'package:admin/services/constant_lib.dart';
 import 'package:admin/services/strapi_response.dart';
-import 'package:get_storage/get_storage.dart';
 
 class UnauthenticatedUser {
   UnauthenticatedUser({
