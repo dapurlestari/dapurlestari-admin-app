@@ -13,6 +13,7 @@ class CustomField {
     int? maxLength,
     bool readOnly = false,
     bool enabled = true,
+    bool obscureText = false,
     TextInputAction? action,
     TextInputType? keyboardType,
     EdgeInsets? margin,
@@ -32,6 +33,7 @@ class CustomField {
         enabled: enabled,
         keyboardType: keyboardType,
         inputFormatters: inputFormatter,
+        obscureText: obscureText,
         textInputAction: action ?? (maxLines > 1 ? TextInputAction.newline : TextInputAction.next),
         style: Get.textTheme.bodyLarge?.copyWith(
             fontSize: 16,
