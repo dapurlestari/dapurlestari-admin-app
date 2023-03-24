@@ -38,8 +38,8 @@ class MenuButton extends StatelessWidget {
                 ),
                 Text(menu.subtitle,
                   style: Get.textTheme.bodyMedium?.copyWith(
-                      fontFamily: ConstLib.secondaryFont,
-                      letterSpacing: 0.4,
+                      letterSpacing: 0.3,
+                      fontWeight: FontWeight.w300,
                       color: Colors.grey.shade900
                   ),
                 ),
