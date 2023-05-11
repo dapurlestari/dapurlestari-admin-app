@@ -1,3 +1,5 @@
+import 'package:admin/models/user/authenticated_user.dart';
+import 'package:admin/screens/authentication/login_screen.dart';
 import 'package:admin/screens/media_library/media_library_screen.dart';
 import 'package:admin/screens/settings/settings_screen.dart';
 import 'package:flutter/material.dart';
@@ -59,6 +61,14 @@ class Menu {
         subtitle: 'Customize default site configuration',
         icon: FeatherIcons.settings,
         onTap: () => Get.to(() => SettingsScreen())
+    ),
+    Menu(
+        title: 'Logout',
+        subtitle: 'Clear current session and logout from this account',
+        icon: FeatherIcons.logOut,
+        onTap: () => AuthenticatedUser.fromStorage().logout(onSuccess: () {
+          Get.offAll(LoginScreen());
+        })
     ),
   ];
 }

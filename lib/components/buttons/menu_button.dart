@@ -1,6 +1,5 @@
 import 'package:admin/components/badges.dart';
 import 'package:admin/models/app/menu.dart';
-import 'package:admin/services/constant_lib.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -38,8 +37,8 @@ class MenuButton extends StatelessWidget {
                 ),
                 Text(menu.subtitle,
                   style: Get.textTheme.bodyMedium?.copyWith(
-                      fontFamily: ConstLib.secondaryFont,
-                      letterSpacing: 0.4,
+                      letterSpacing: 0.3,
+                      fontWeight: FontWeight.w300,
                       color: Colors.grey.shade900
                   ),
                 ),

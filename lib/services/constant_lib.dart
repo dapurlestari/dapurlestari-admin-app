@@ -4,6 +4,10 @@ class ConstLib {
   static const String secondaryFont = 'PlayfairDisplay';
   static const String monospaceFont = 'monospace';
 
+  /* Storage Keys */
+  static const String userStorage = 'userStorage';
+  static const String userAuth = 'userAuth';
+
   // API Structure Keys
   static const String id = 'id';
   static const String schema = 'schema';

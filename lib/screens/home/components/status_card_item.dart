@@ -39,7 +39,7 @@ class StatusCardItem extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(accessStatus.label, style: Get.textTheme.titleLarge?.copyWith(
+                  Text(accessStatus.label, style: Get.textTheme.titleMedium?.copyWith(
                       color: Colors.indigoAccent
                   )),
                   Text('Tap to refresh', style: Get.textTheme.bodySmall),

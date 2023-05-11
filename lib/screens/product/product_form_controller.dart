@@ -2,7 +2,6 @@ import 'package:admin/components/dialogs.dart';
 import 'package:admin/models/product/product.dart';
 import 'package:admin/models/seo/meta_social.dart';
 import 'package:admin/models/seo/seo.dart';
-import 'package:admin/screens/components/media_file_picker.dart';
 import 'package:admin/screens/components/media_files_picker.dart';
 import 'package:admin/screens/components/seo_form.dart';
 import 'package:admin/screens/product/product_controller.dart';

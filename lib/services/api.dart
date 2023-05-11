@@ -32,6 +32,7 @@ class API {
     Map<String, dynamic>? params,
     Map<String, dynamic>? data,
     Map<String, dynamic>? files,
+    String dataRequestKey = 'data',
     APIPopulate populateMode = APIPopulate.none,
     List<String>? populateList,
     List<String>? sortList,
@@ -47,6 +48,7 @@ class API {
     bool showLog = false,
     bool showPostToast = true,
     bool showErrorToast = true,
+    String customSuccessMessage = '',
   }) async {
     String label = '${page}_api';
     String path = '${Env.apiURL}/$page';
@@ -133,7 +135,13 @@ class API {
 
     if (params != null) defaultParams.addAll(params);
     if (files != null) defaultData.addAll(files);
-    if (data != null) defaultData['data'] = data;
+    if (data != null) {
+      if (dataRequestKey.isEmpty) {
+        defaultData = data;
+      } else {
+        defaultData['data'] = data;
+      }
+    }
 
     logInfo(path, logLabel: '${label}_url');
     if (showLog) logInfo(headers, logLabel: '${label}_header');
@@ -208,6 +216,7 @@ class API {
             method == APIPostMethod.put ||
             method == APIPostMethod.delete
         ) {
+          if (customSuccessMessage.isNotEmpty) successMessage = customSuccessMessage;
           Fluttertoast.showToast(msg: successMessage, gravity: ToastGravity.TOP);
         }
 
@@ -257,6 +266,7 @@ class API {
     bool encodedData = true,
     bool showLog = false,
     bool showErrorToast = false,
+    String customSuccessMessage = '',
   }) async {
     return await request(
       page: page,
@@ -276,6 +286,7 @@ class API {
       limit: limit,
       showLog: showLog,
       showErrorToast: showErrorToast,
+      customSuccessMessage: customSuccessMessage,
       useToken: useToken
     );
   }
@@ -285,22 +296,26 @@ class API {
     Map<String, dynamic>? params,
     Map<String, dynamic>? data,
     Map<String, dynamic>? files,
+    String dataRequestKey = 'data',
     APIPopulate populateMode = APIPopulate.none,
     List<String>? populateList,
     bool useToken = true,
     bool encodedData = true,
     bool showLog = false,
+    String customSuccessMessage = '',
   }) async {
     return await request(
       page: page,
       method: APIPostMethod.post,
       params: params,
       data: data,
+      dataRequestKey: dataRequestKey,
       encodedData: encodedData,
       files: files,
       populateList: populateList,
       populateMode: populateMode,
       showLog: showLog,
+      customSuccessMessage: customSuccessMessage,
       useToken: useToken
     );
   }
@@ -315,6 +330,7 @@ class API {
     bool useToken = true,
     bool encodedData = true,
     bool showLog = false,
+    String customSuccessMessage = '',
   }) async {
     return await request(
       page: page,
@@ -326,6 +342,7 @@ class API {
       populateList: populateList,
       populateMode: populateMode,
       showLog: showLog,
+      customSuccessMessage: customSuccessMessage,
       useToken: useToken
     );
   }
@@ -335,12 +352,14 @@ class API {
     Map<String, dynamic>? params,
     bool useToken = true,
     bool showLog = false,
+    String customSuccessMessage = '',
   }) async {
     return await request(
       page: page,
       method: APIPostMethod.delete,
       params: params,
       showLog: showLog,
+      customSuccessMessage: customSuccessMessage,
       useToken: useToken
     );
   }

@@ -3,7 +3,6 @@ import 'package:admin/models/seo/meta_social.dart';
 import 'package:admin/models/seo/seo.dart';
 import 'package:admin/models/terms_service/terms_service.dart';
 import 'package:admin/screens/components/contentful_form.dart';
-import 'package:admin/screens/components/media_file_picker.dart';
 import 'package:admin/screens/components/seo_form.dart';
 import 'package:admin/services/constant_lib.dart';
 import 'package:admin/services/soft_keyboard.dart';

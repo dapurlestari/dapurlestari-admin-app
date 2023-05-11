@@ -2,8 +2,8 @@ import 'package:admin/components/buttons/menu_button.dart';
 import 'package:admin/components/custom_scaffold.dart';
 import 'package:admin/models/app/menu.dart';
 import 'package:admin/models/server/access_status.dart';
+import 'package:admin/models/user/authenticated_user.dart';
 import 'package:admin/screens/home/home_controller.dart';
-import 'package:admin/services/constant_lib.dart';
 import 'package:admin/services/date_times.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,6 +13,7 @@ import 'components/status_card_item.dart';
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
   final homeController = Get.put(HomeController());
+  final auth = AuthenticatedUser.fromStorage();
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class HomeScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(vertical: 30),
               decoration: BoxDecoration(
-                  color: const Color(0xFFA1A9FE),
+                  color: const Color(0xFFB4BAFC),
                   borderRadius: const BorderRadius.only(
                     bottomLeft: Radius.circular(20),
                     bottomRight: Radius.circular(20),
@@ -42,9 +43,8 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(height: 20),
                   Image.asset('assets/images/logo.png', height: 80,),
                   const SizedBox(height: 40),
-                  Text('Good ${DateTimes.hourName}, Admin!', style: Get.textTheme.titleLarge?.copyWith(
+                  Text('Good ${DateTimes.hourName}, ${auth.user.username}', style: Get.textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.w400,
-                      fontFamily: ConstLib.secondaryFont,
                       letterSpacing: 0.5,
                       fontSize: 28,
                       color: Colors.white

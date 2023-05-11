@@ -1,7 +1,10 @@
+import 'package:admin/screens/authentication/login_screen.dart';
 import 'package:admin/screens/index_screen.dart';
 import 'package:admin/screens/main_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'services/constant_lib.dart';
@@ -9,22 +12,29 @@ import 'services/custom_material_builder.dart';
 import 'styles/no_scroll_overlay.dart';
 import 'styles/themes.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  initService();
+  await initService();
   initializeDateFormatting(ConstLib.localeID, null)
-      .then((_) => runApp(const MyApp()));
+      .then((_) => runApp(MyApp()));
 }
 
-void initService() {
+Future<void> initService() async {
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: Color(0xFFB4BAFC),
+      statusBarIconBrightness: Brightness.dark
+  ));
+  await GetStorage.init(ConstLib.userStorage);
   Get.put(MainController());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+  final box = GetStorage(ConstLib.userStorage);
 
   @override
   Widget build(BuildContext context) {
+    bool hasUser = box.hasData(ConstLib.userAuth);
     return GetMaterialApp(
       scrollBehavior: NoScrollOverlay(),
       title: ConstLib.appName,
@@ -33,7 +43,7 @@ class MyApp extends StatelessWidget {
       theme: Themes.light,
       color: Colors.white,
       builder: (_, child) => CustomMaterialBuilder(child: child,),
-      home: const IndexScreen(),
+      home: !hasUser ? LoginScreen() : const IndexScreen(),
     );
   }
 }

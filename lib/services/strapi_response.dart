@@ -12,6 +12,8 @@ class StrapiResponse {
   factory StrapiResponse.response(Map<String, dynamic> json) {
     if (json.containsKey('error')) {
       return StrapiResponse.error(json);
+    } else if (json.containsKey('jwt')) {
+      return StrapiResponse.successAuth(json);
     } else if (json.containsKey('data')) {
       return StrapiResponse.successNoMeta(json);
     } else if (json.containsKey('meta')) {
@@ -24,6 +26,10 @@ class StrapiResponse {
   factory StrapiResponse.success(Map<String, dynamic> json) => StrapiResponse(
     meta: Meta.fromJson(json["meta"]),
     data: json['data']
+  );
+
+  factory StrapiResponse.successAuth(Map<String, dynamic> json) => StrapiResponse(
+    data: json
   );
 
   factory StrapiResponse.successNoMeta(Map<String, dynamic> json) => StrapiResponse(
@@ -42,7 +48,7 @@ class StrapiResponse {
     "meta": meta?.toJson(),
   };
 
-  bool get isSuccess => meta != null || data != null;
+  bool get isSuccess => meta != null || data != null || error == null;
   bool get isError => !isSuccess;
 }
 
