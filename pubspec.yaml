@@ -83,6 +83,12 @@ dev_dependencies:
   envied_generator: ^0.3.0
   build_runner: ^2.3.3
 
+#   Run envied generator
+#   dart
+#   dart run build_runner build
+#   flutter
+#   flutter pub run build_runner build
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
